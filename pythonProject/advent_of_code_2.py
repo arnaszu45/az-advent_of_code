@@ -22,5 +22,5 @@ def converter(string, dictionary):
         found = False
         for word, number in dictionary.items():
             if string.startswith(word, i):
-                print(result)
+                print(i)
 
