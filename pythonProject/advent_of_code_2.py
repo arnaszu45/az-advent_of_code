@@ -9,13 +9,13 @@ word_number_map = {'one': '1', 'two': '2', 'three': '3', 'four': '4',
 
 
 def converter(line, dictionary):
-    char = 0
-    while char < len(line):
+    char_inx = 0
+    while char_inx < len(line):
         for word, number in dictionary.items():
-            if line.startswith(word, char):
-                replaced = (word.replace(word[1], number))
+            if line.startswith(word, char_inx):
+                replaced = (word.replace(word[0], number))
                 line = line.replace(word, replaced)
-        char += 1
+        char_inx += 1
     return line
 
 
