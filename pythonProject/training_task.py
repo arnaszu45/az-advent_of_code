@@ -1,13 +1,19 @@
 from pathlib import Path
-import os
-list_of_files = []
-for path, subdir, files in os.walk(Path('TestAutomation')):
-    for name in files:
-        file = os.path.join(path, name)
-        list_of_files.append(file)
 
 
-for file in list_of_files:
-    with open(file, 'r') as single_file:
-        if 'cleaning.start_cleaning' in single_file:
-            print(single_file)
+def main():
+    polarion_list = []
+    for path in Path('TestAutomation').rglob("test_*.py"):
+        file = path.read_text()
+        if 'cleaning.start_cleaning(' in file:
+            lines = file[file.find('ID: ') + 3:]
+            lines = lines.split('\n')
+            polarion_id = (lines[0])
+            polarion_id = polarion_id.strip().split('\n')
+            polarion_list.extend(polarion_id)
+    print(polarion_list)
+    print(len(polarion_list))
+
+
+if __name__ == "__main__":
+    main()
