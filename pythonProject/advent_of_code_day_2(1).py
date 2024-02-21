@@ -1,5 +1,5 @@
 from pathlib import Path
-p = Path("advent_of_code_day_2_input").read_text().splitlines()
+data = Path("advent_of_code_day_2_input").read_text().splitlines()
 
 RED = 12
 GREEN = 13
@@ -29,11 +29,13 @@ def is_game_valid(line: str):
     return True
 
 
-def main(lines: str):
-    sum = 0
+def main(lines: list):
+    sum_of_game = 0
     for i, line in enumerate(lines):
         if is_game_valid(line):
-            sum += 1 + i
-    print(sum)
+            sum_of_game += 1 + i
+    print(sum_of_game)
 
-main(p)
+
+if __name__ == "__main__":
+    main(data)
