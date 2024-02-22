@@ -7,8 +7,8 @@ def main():
     for path in args.test_automation_dir.rglob("test_*.py"):
         file = path.read_text()
         if args.pattern in file:
-            x = '"""\n    Polarion ID:'
-            remaining_text = file[file.find(x) + len(x):]
+            id_pattern = '"""\n    Polarion ID:'
+            remaining_text = file[file.find(id_pattern) + len(id_pattern):]
             remaining_text = remaining_text.split('\n', 1)[0]
             polarion_id = remaining_text.strip()
             polarion_list.append(polarion_id)
