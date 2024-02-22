@@ -1,28 +1,24 @@
 from pathlib import Path
 import argparse
-search_for = {
-    'a': 'cleaning.start_cleaning(',
-    'b': 'shunts'
-}
-parser = argparse.ArgumentParser(description='Searching for function by name')
-parser.add_argument("function", type=str)
-args = parser.parse_args()
-function = search_for.get(args.function, "")
 
 
 def main():
     polarion_list = []
-    for path in Path('TestAutomation').rglob("test_*.py"):
+    for path in args.test_automation_dir.rglob("test_*.py"):
         file = path.read_text()
-        if function in file:
-            lines = file[file.find('Polarion ID: ') + 13:]
-            lines = lines.split('\n')
-            polarion_id = (lines[0])
-            polarion_id = polarion_id.strip().split('\n')
-            polarion_list.extend(polarion_id)
+        if args.pattern in file:
+            x = '"""\n    Polarion ID:'
+            remaining_text = file[file.find(x) + len(x):]
+            remaining_text = remaining_text.split('\n', 1)[0]
+            polarion_id = remaining_text.strip()
+            polarion_list.append(polarion_id)
     print(polarion_list)
     print(len(polarion_list))
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--test_automation_dir", type=Path, help="Directory of test automation folder")
+    parser.add_argument("-p", "--pattern", type=str, help="The pattern what should be looked for in files")
+    args = parser.parse_args()
     main()
