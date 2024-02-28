@@ -8,6 +8,7 @@ def search_for_pattern(file_text: str, selected_list: list, pattern: str):
         remaining_text = file_text[id_index + len(pattern):]
         remaining_text = remaining_text.split()[0]
         polarion_id = remaining_text.strip()
+        print(polarion_id)
         selected_list.append(polarion_id)
         return selected_list
 
@@ -18,11 +19,10 @@ def get_function_name(start_pos: int, file_text: str):
     return file_text[function_starts:function_ends]
 
 
-def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list, n: str):
-    n = n - 1
-    print(n)
-    if n < 0:
+def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list, n: int):
+    if n == 0:
         return polarion_list
+    n = n - 1
     print(f"Searching for '{pattern}' in {directory} directory \n")
     single_files = list(directory.rglob("*.py"))
     functions_list = []
@@ -30,24 +30,17 @@ def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list
     for path in single_files:
         file_text = path.read_text(encoding="UTF-8")
         if '.' + pattern in file_text:  # A way to avoid definition
-            if path.match('test_*.py'): # Wrong approach, supposed to look for /test_cases/ folder, not test_
+            if path.match('test_*.py'):  # Wrong approach, supposed to look for /test_cases/ folder, not test_
                 search_for_pattern(file_text, polarion_list, 'Polarion ID:')
-                print(f'TestCase APPROACH \n {path}')
+                print(f'TestCase APPROACH \n{path} \n')
             else:
-                print(f'NOT TestCase APPROACH \n {path}')
+                print(f'NOT TestCase APPROACH \n{path} \n')
                 index_of_def = file_text.rfind('def ', 0, file_text.find(pattern))
                 function_name = get_function_name(index_of_def, file_text)
                 functions_list.append(function_name)
+
     function = functions_list[0]
     find_pattern_in_functions(directory, function, polarion_list, n)
-
-    #     for function in functions_list:
-    #         if function == pattern:
-    #             a = function
-
-# !!!!!            # find_pattern_in_functions(directory, function, polarion_list)
-# cuurent value +1
-#if value 6 reetutrn and do nothing
 
 
 def main(directory: Path, pattern: str):
