@@ -1,5 +1,6 @@
 from pathlib import Path
 import argparse
+from ipdb import set_trace
 
 
 def search_for_pattern(file_text: str, selected_list: list, pattern: str):
@@ -15,7 +16,7 @@ def search_for_pattern(file_text: str, selected_list: list, pattern: str):
 
 def get_function_name(start_pos: int, file_text: str):
     function_starts = file_text.find(' ', start_pos) + 1
-    function_ends = file_text.find('(', start_pos) + 1
+    function_ends = file_text.find('(', start_pos)
     return file_text[function_starts:function_ends]
 
 
@@ -29,23 +30,35 @@ def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list
 
     for path in single_files:
         file_text = path.read_text(encoding="UTF-8")
-        if '.' + pattern in file_text:  # A way to avoid definition
-            if path.match('test_*.py'):  # Wrong approach, supposed to look for /test_cases/ folder, not test_
+        if pattern in file_text:
+
+            if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
                 search_for_pattern(file_text, polarion_list, 'Polarion ID:')
                 print(f'TestCase APPROACH \n{path} \n')
+
             else:
                 print(f'NOT TestCase APPROACH \n{path} \n')
                 index_of_def = file_text.rfind('def ', 0, file_text.find(pattern))
                 function_name = get_function_name(index_of_def, file_text)
-                functions_list.append(function_name)
+                if function_name != pattern:
+                    functions_list.append(function_name)
+                else:
+                    index_of_def = file_text.rfind('def ', 0, file_text.rfind(pattern))
+                    function_name = get_function_name(index_of_def, file_text)
+                    if function_name != pattern:
+                        functions_list.append(function_name)
 
+
+    # print(functions_list)
     function = functions_list[0]
+    print(function)
+    set_trace()
     find_pattern_in_functions(directory, function, polarion_list, n)
 
 
 def main(directory: Path, pattern: str):
     polarion_list = []
-    find_pattern_in_functions(directory, pattern, polarion_list, 6)
+    find_pattern_in_functions(directory, pattern, polarion_list, 4)
     print(polarion_list)
     print(len(set(polarion_list)))
 
