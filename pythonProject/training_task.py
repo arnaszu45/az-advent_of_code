@@ -47,6 +47,8 @@ def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
 
 
 def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
+    """Prints out matching lines in test cases scenarios"""
+
     print(f'TestCase APPROACH\n{path} \n')
     for i, line in enumerate(file_text.splitlines()):
         if pattern in line:
@@ -56,7 +58,7 @@ def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
 
 
 def print_not_test_case_matching_lines(path: Path, file_text: str, pattern: str):
-    """Prints out if it's """
+    """Prints out matching lines in not test cases scenarios"""
 
     print(f'\nNOT TestCase APPROACH\n{path} \n')
     for i, line in enumerate(file_text.splitlines()):
