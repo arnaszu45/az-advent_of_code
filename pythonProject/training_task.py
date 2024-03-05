@@ -1,6 +1,7 @@
 from pathlib import Path
 import argparse
 import re
+import time
 
 
 def search_for_id_pattern(file_text: str, pattern: str) -> str:
@@ -48,7 +49,6 @@ def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
 
 def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
     """Prints out matching lines in test cases scenarios"""
-
     print(f'TestCase APPROACH\n{path} \n')
     for i, line in enumerate(file_text.splitlines()):
         if pattern in line:
@@ -59,7 +59,6 @@ def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
 
 def print_not_test_case_matching_lines(path: Path, file_text: str, pattern: str):
     """Prints out matching lines in not test cases scenarios"""
-
     print(f'\nNOT TestCase APPROACH\n{path} \n')
     for i, line in enumerate(file_text.splitlines()):
         if pattern in line:
@@ -93,6 +92,7 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
             if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
                 polarion_list.append(search_for_id_pattern(file_text, 'Polarion ID:'))
                 print_test_case_matching_lines(path, file_text, pattern)
+
             else:
                 for index in function_usages:
                     function_name = get_function_name(index, file_text)
@@ -106,9 +106,12 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
 
 
 def main(directory: Path, pattern: str, depth: int):
+    start = time.time()
     list_of_ids = find_pattern_in_functions(directory, pattern, depth)
     print(list_of_ids)
     print(len(set(list_of_ids)))
+    end_time = time.time()
+    print(end_time - start)
 
 
 if __name__ == "__main__":
@@ -117,7 +120,7 @@ if __name__ == "__main__":
                         help="Directory of test automation folder")
     parser.add_argument("-p", "--pattern", type=str, required=True,
                         help="The pattern what should be looked for in files")
-    parser.add_argument("-n", "--number_of_depth", type=int, required=True, default=5,
+    parser.add_argument("-n", "--number_of_depth", type=int, default=6,
                         help="The depth or the number of recursive calls the function should make.")
     args = parser.parse_args()
     main(directory=args.test_automation_dir, pattern=args.pattern, depth=args.number_of_depth)
