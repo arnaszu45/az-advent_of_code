@@ -46,7 +46,29 @@ def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
     return functions_indexes
 
 
-def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list, n: int) -> list[str]:
+def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
+    print(f'TestCase APPROACH\n{path} \n')
+    for i, line in enumerate(file_text.splitlines()):
+        if pattern in line:
+            line = line.strip()
+            if not line.startswith('def ') and not line.startswith('self.'):
+                print(f'{i - 1}: {line}')
+
+
+def print_not_test_case_matching_lines(path: Path, file_text: str, pattern: str):
+    """Prints out if it's """
+
+    print(f'\nNOT TestCase APPROACH\n{path} \n')
+    for i, line in enumerate(file_text.splitlines()):
+        if pattern in line:
+            line = line.strip()
+            print(f'{i - 1}: {line}')
+
+
+def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str]:
+    polarion_list = []
+    function_list = []
+    list_of_repeated_definition = []
 
     if n == 0:
         return polarion_list
@@ -54,83 +76,37 @@ def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list
 
     print(f"Searching for '{pattern}' in {directory}\n")
     single_files = list(directory.rglob("*.py"))
-    function_list = []
 
     for path in single_files:
         file_text = path.read_text(encoding="UTF-8")
         function_usages = find_all_pattern_usages(file_text, pattern)
-        amount_of_function = len(re.findall(fr'def {pattern}\b', file_text))
+        function_definition_usages = re.findall(fr'def {pattern}\b', file_text)
+        list_of_repeated_definition.extend(function_definition_usages)
 
-        if amount_of_function > 1:
+        if len(list_of_repeated_definition) > 1:
             print('ERROR: There is more than 1 usages of function definition \n')
             return polarion_list
 
         if pattern in file_text:
             if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
-                if 'def ' + pattern or 'def test_' not in file_text:
-                    polarion_list.append(search_for_id_pattern(file_text, 'Polarion ID:'))
-                    print(f'TestCase APPROACH\n{path} \n')
-                    for i, line in enumerate(file_text.splitlines()):
-                        line = line.strip()
-                        if pattern in line:
-                            if not line.startswith('def test_') or not line.startswith('self'):
-                                print(f'{i - 1}: {line}')
+                polarion_list.append(search_for_id_pattern(file_text, 'Polarion ID:'))
+                print_test_case_matching_lines(path, file_text, pattern)
             else:
                 for index in function_usages:
                     function_name = get_function_name(index, file_text)
-
-                    if pattern in file_text:
-                        if function_name != pattern:
-                            print(f'\nNOT TestCase APPROACH \n{path} \n')
-                            function_list.append(function_name)
-                            for i, line in enumerate(file_text.splitlines()):
-                                if pattern in line:
-                                    print(f'{i - 1}: {line.strip()}')
+                    if function_name != pattern:
+                        function_list.append(function_name)
+                        print_not_test_case_matching_lines(path, file_text, pattern)
 
     for function in set(function_list):
-        find_pattern_in_functions(directory, function, polarion_list, n)
-
-    #Keeping old version, in order to input new one without breaking it
-# def find_pattern_in_functions(directory: Path, pattern: str, polarion_list: list, n: int):
-#
-#     if n == 0:
-#         return polarion_list
-#     n = n - 1
-#
-#     print(f"Searching for '{pattern}' in {directory} directory \n")
-#     single_files = list(directory.rglob("*.py"))
-#     functions_list = []
-#
-#     for path in single_files:
-#         file_text = path.read_text(encoding="UTF-8")
-#         for i, line in enumerate(file_text.splitlines()):
-#             if pattern in line:
-#                 line = line.strip()
-#                 if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
-#
-#                     if not line.startswith('def '):
-#                         if '_' + pattern not in line:
-#                             search_for_pattern(file_text, polarion_list, 'Polarion ID:')
-#                             print(f'TestCase APPROACH \n{path} \n{i}:    {line}\n')
-#
-#                 elif not line.startswith('def '):
-#                     print(f'NOT TestCase APPROACH \n{path} \n{line.strip()} \n')
-#                     index_of_def = file_text.index(line)
-#                     function_name = get_function_name(index_of_def, file_text)
-#                     functions_list.append(function_name)
-#
+        polarion_list.extend(find_pattern_in_functions(directory, function, n))
+    return polarion_list
 
 
-    # print(functions_list)
-    # function = functions_list[0]
-    # find_pattern_in_functions(directory, function, polarion_list, n)
-
-
-def main(directory: Path, pattern: str):
-    polarion_list = []
-    find_pattern_in_functions(directory, pattern, polarion_list, 4)
-    print(polarion_list)
-    print(len(set(polarion_list)))
+def main(directory: Path, pattern: str, depth: int):
+    list_of_ids = find_pattern_in_functions(directory, pattern, depth)
+    print(list_of_ids)
+    print(len(set(list_of_ids)))
 
 
 if __name__ == "__main__":
@@ -139,5 +115,7 @@ if __name__ == "__main__":
                         help="Directory of test automation folder")
     parser.add_argument("-p", "--pattern", type=str, required=True,
                         help="The pattern what should be looked for in files")
+    parser.add_argument("-n", "--number_of_depth", type=int, required=True, default=5,
+                        help="The depth or the number of recursive calls the function should make.")
     args = parser.parse_args()
-    main(directory=args.test_automation_dir, pattern=args.pattern)
+    main(directory=args.test_automation_dir, pattern=args.pattern, depth=args.number_of_depth)
