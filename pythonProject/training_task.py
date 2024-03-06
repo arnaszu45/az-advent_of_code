@@ -49,13 +49,32 @@ def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
     return functions_indexes
 
 
-def print_matching_lines(path: Path, file_text: str, pattern: str):
+# def print_matching_lines(path: Path, file_text: str, pattern: str):
+#     """Prints out matching lines with pattern"""
+#
+#     for i, line in enumerate(file_text.splitlines()):
+#         if pattern in line:
+#             line = line.strip()
+#             print(f'{i + 1}: {line}')
+
+
+def print_matching_lines(file_text: str, pattern: str):
     """Prints out matching lines with pattern"""
 
-    for i, line in enumerate(file_text.splitlines()):
-        if pattern in line:
-            line = line.strip()
-            print(f'{i + 1}: {line}')
+    indexes = find_all_pattern_usages(file_text, pattern)
+    for index in indexes:
+        line_number = file_text.count('\n', 0, index) + 1
+        start_line = file_text.rfind('\n', 0, index) + 1
+        end_line = file_text.find('\n', index)
+        full_line = file_text[start_line:end_line].strip()
+        print(f'{line_number}: {full_line}')
+
+
+def process_polarion_id_cases(file_text: str, polarion_list: list, path: Path, pattern: str): # Is this good appraoch? This function does not return anything
+    found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
+    polarion_list.append(found_polarion_id)
+    print(f'TestCase APPROACH\n{path} \n')
+    print_matching_lines(file_text, pattern)
 
 
 def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str]:
@@ -77,16 +96,18 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
         pattern_usage = find_all_pattern_usages(file_text, pattern)
         function_definitions = re.findall(fr'def \b{escaped_patter}\b', file_text)
         list_of_repeated_definition.extend(function_definitions)
+
         if len(list_of_repeated_definition) > 1:
             print('ERROR: There is more than 1 usages of function definition \n')
             return []
 
         if pattern in file_text:
             if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
-                found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
-                polarion_list.append(found_polarion_id)
-                print(f'TestCase APPROACH\n{path} \n')
-                print_matching_lines(path, file_text, pattern)
+                process_polarion_id_cases(file_text, polarion_list, path, pattern) # IS it okay to use it like this? It does all the magic, but does not return anything
+                # found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
+                # polarion_list.append(found_polarion_id)
+                # print(f'TestCase APPROACH\n{path} \n')
+                # print_matching_lines(file_text, pattern)
 
             else:
                 for index in pattern_usage:
@@ -94,7 +115,7 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
                     if function_name + '(' != pattern:
                         function_list.append(function_name)
                 print(f'\nNOT TestCase APPROACH\n{path} \n')
-                print_matching_lines(path, file_text, pattern)
+                print_matching_lines(file_text, pattern)
 
     print(f"\nWas found {len(polarion_list)} Polarion ID's with '{pattern}' pattern\n")
     for function in set(function_list):
