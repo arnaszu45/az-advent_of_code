@@ -35,46 +35,15 @@ def get_function_name(start_pos: int, file_text: str) -> str:
         return function_name
 
 
-def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
-    """Returns a list of positions where pattern appears in string"""
-
-    start = 0
-    functions_indexes = []
-    while start != -1:
-        start = text.find(pattern, start)
-        if start == -1:
-            continue
-        functions_indexes.append(start)
-        start += len(pattern)
-    return functions_indexes
-
-
-# def print_matching_lines(path: Path, file_text: str, pattern: str):
-#     """Prints out matching lines with pattern"""
-#
-#     for i, line in enumerate(file_text.splitlines()):
-#         if pattern in line:
-#             line = line.strip()
-#             print(f'{i + 1}: {line}')
-
-
-def print_matching_lines(file_text: str, pattern: str):
+def find_matching_lines(file_text: str, index) -> str:
     """Prints out matching lines with pattern"""
 
-    indexes = find_all_pattern_usages(file_text, pattern)
-    for index in indexes:
-        line_number = file_text.count('\n', 0, index) + 1
-        start_line = file_text.rfind('\n', 0, index) + 1
-        end_line = file_text.find('\n', index)
-        full_line = file_text[start_line:end_line].strip()
-        print(f'{line_number}: {full_line}')
-
-
-def process_polarion_id_cases(file_text: str, polarion_list: list, path: Path, pattern: str): # Is this good appraoch? This function does not return anything
-    found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
-    polarion_list.append(found_polarion_id)
-    print(f'TestCase APPROACH\n{path} \n')
-    print_matching_lines(file_text, pattern)
+    line_number = file_text.count('\n', 0, index) + 1
+    start_line = file_text.rfind('\n', 0, index) + 1
+    end_line = file_text.find('\n', index)
+    line = file_text[start_line:end_line].strip()
+    full_line = f'{line_number}: {line}'
+    return full_line
 
 
 def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str]:
@@ -93,7 +62,7 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
 
     for path in single_files:
         file_text = path.read_text(encoding="UTF-8")
-        pattern_usage = find_all_pattern_usages(file_text, pattern)
+        found_elements = list(match.start() for match in re.finditer(escaped_patter, file_text))
         function_definitions = re.findall(fr'def \b{escaped_patter}\b', file_text)
         list_of_repeated_definition.extend(function_definitions)
 
@@ -103,19 +72,21 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
 
         if pattern in file_text:
             if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
-                process_polarion_id_cases(file_text, polarion_list, path, pattern) # IS it okay to use it like this? It does all the magic, but does not return anything
-                # found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
-                # polarion_list.append(found_polarion_id)
-                # print(f'TestCase APPROACH\n{path} \n')
-                # print_matching_lines(file_text, pattern)
-
+                found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
+                polarion_list.append(found_polarion_id)
+                print(f'TestCase APPROACH\n{path} \n')
+                for element in found_elements:
+                    line = find_matching_lines(file_text, element)
+                    print(line)
             else:
-                for index in pattern_usage:
+                for index in found_elements:
                     function_name = get_function_name(index, file_text)
                     if function_name + '(' != pattern:
                         function_list.append(function_name)
-                print(f'\nNOT TestCase APPROACH\n{path} \n')
-                print_matching_lines(file_text, pattern)
+                line = find_matching_lines(file_text, index)
+                if not f'def {pattern}' in line:
+                    print(f'\nNOT TestCase APPROACH\n{path} \n')
+                    print(line)
 
     print(f"\nWas found {len(polarion_list)} Polarion ID's with '{pattern}' pattern\n")
     for function in set(function_list):
