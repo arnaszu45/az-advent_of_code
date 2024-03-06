@@ -3,6 +3,8 @@ import argparse
 import re
 import time
 
+processed_functions = set()
+
 
 def search_for_id_pattern(file_text: str, pattern: str) -> str:
     """Search for specific pattern and collects it into list of strings"""
@@ -47,26 +49,17 @@ def find_all_pattern_usages(text: str, pattern: str) -> list[int]:
     return functions_indexes
 
 
-def print_test_case_matching_lines(path: Path, file_text: str, pattern: str):
-    """Prints out matching lines in test cases scenarios"""
-    print(f'TestCase APPROACH\n{path} \n')
+def print_matching_lines(path: Path, file_text: str, pattern: str):
+    """Prints out matching lines with pattern"""
+
     for i, line in enumerate(file_text.splitlines()):
         if pattern in line:
             line = line.strip()
-            if not line.startswith('def ') and not line.startswith('self.'):
-                print(f'{i - 1}: {line}')
-
-
-def print_not_test_case_matching_lines(path: Path, file_text: str, pattern: str):
-    """Prints out matching lines in not test cases scenarios"""
-    print(f'\nNOT TestCase APPROACH\n{path} \n')
-    for i, line in enumerate(file_text.splitlines()):
-        if pattern in line:
-            line = line.strip()
-            print(f'{i - 1}: {line}')
+            print(f'{i + 1}: {line}')
 
 
 def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str]:
+    global processed_functions
     polarion_list = []
     function_list = []
     list_of_repeated_definition = []
@@ -77,31 +70,38 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
 
     print(f"Searching for '{pattern}' in {directory}\n")
     single_files = list(directory.rglob("*.py"))
+    escaped_patter = re.escape(pattern)
 
     for path in single_files:
         file_text = path.read_text(encoding="UTF-8")
-        function_usages = find_all_pattern_usages(file_text, pattern)
-        function_definition_usages = re.findall(fr'def {pattern}\b', file_text)
-        list_of_repeated_definition.extend(function_definition_usages)
-
+        pattern_usage = find_all_pattern_usages(file_text, pattern)
+        function_definitions = re.findall(fr'def \b{escaped_patter}\b', file_text)
+        list_of_repeated_definition.extend(function_definitions)
         if len(list_of_repeated_definition) > 1:
             print('ERROR: There is more than 1 usages of function definition \n')
-            return polarion_list
+            return []
 
         if pattern in file_text:
             if "/test_cases/" in path.as_posix() and path.match("test_*.py"):
-                polarion_list.append(search_for_id_pattern(file_text, 'Polarion ID:'))
-                print_test_case_matching_lines(path, file_text, pattern)
+                found_polarion_id = search_for_id_pattern(file_text, 'Polarion ID:')
+                polarion_list.append(found_polarion_id)
+                print(f'TestCase APPROACH\n{path} \n')
+                print_matching_lines(path, file_text, pattern)
 
             else:
-                for index in function_usages:
+                for index in pattern_usage:
                     function_name = get_function_name(index, file_text)
-                    if function_name != pattern:
+                    if function_name + '(' != pattern:
                         function_list.append(function_name)
-                        print_not_test_case_matching_lines(path, file_text, pattern)
+                print(f'\nNOT TestCase APPROACH\n{path} \n')
+                print_matching_lines(path, file_text, pattern)
 
+    print(f"\nWas found {len(polarion_list)} Polarion ID's with '{pattern}' pattern\n")
     for function in set(function_list):
-        polarion_list.extend(find_pattern_in_functions(directory, function, n))
+        if function not in processed_functions:
+            processed_functions.add(function)
+            print(f"Extending search with '{function}'\n")
+            polarion_list.extend(find_pattern_in_functions(directory, function, n))
     return polarion_list
 
 
