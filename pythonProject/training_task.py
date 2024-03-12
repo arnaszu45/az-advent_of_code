@@ -47,7 +47,8 @@ def process_not_test_case_scenario(index, file_text, pattern, function_list, pat
     if function_name + '(' != pattern:
         function_list.append(function_name)
         line = find_matching_lines(file_text, index)
-        if not f'def {pattern}' in line:
+        pattern = re.escape(pattern)
+        if re.search(rf'\b{pattern}', line):
             print(f'\nNOT TestCase APPROACH\n{path} \n')
             print(line)
     return function_list
