@@ -1,7 +1,6 @@
 from pathlib import Path
 import xml.etree.ElementTree as Et
-import re
-import argparse
+import os
 from copy import deepcopy
 
 
@@ -18,41 +17,37 @@ def search_for_setup_name(file_text: str, pattern: str) -> str:
         return ''
 
 
-# def create_new_sorted_file(root: Et.Element, element: Et.Element):
-#     new_root = deepcopy(root)
-#     new_protocols = new_root.find('.//protocols')
-#     new_protocols.clear()
-
-
 def main(filename: str, directory: str):
     tree = Et.parse(filename)
     root = tree.getroot()
     protocols = root.findall('.//protocol')
+
+    os.makedirs('output', exist_ok=True)
+    list_of_protocols = []
+
     for element in protocols:
         script = element.find('.//test-script-reference').text
         path = script[script.find('test_cases/'): script.find('.py') + 3]
-        filename = Path(directory + '/' + path)
-        if filename.exists():
-            file_text = filename.read_text(encoding="UTF-8")
+        file_name = Path(directory + '/' + path)
+        if file_name.exists():
+            file_text = file_name.read_text(encoding="UTF-8")
+            filename = ''
             if 'Title: Semi-automated:' in file_text:
-                filename = 'semi_automated.xml'
+                list_of_protocols.append(deepcopy(element))
+                filename = 'semi-automated.xml'
             elif 'Setup: ' in file_text:
                 setup_name = search_for_setup_name(file_text, 'Setup: ')
                 filename = f'{setup_name.lower()}.xml'
         else:
             filename = 'unknown.xml'
 
-        copied_tree = deepcopy(tree)
+        new_file = os.path.join('output', filename)
         new_root = deepcopy(root)
         new_protocols = new_root.find('.//protocols')
         new_protocols.clear()
+        new_protocols.extend(deepcopy(list_of_protocols))
         new_tree = Et.ElementTree(new_root)
-        new_tree.write(filename, encoding='utf-8', xml_declaration=True)
-        break
-
-        # protocols_in_copied_file = copied_tree.find('.//protocols')
-        # protocols_in_copied_file.append(element)
-        # copied_tree.write(filename, encoding="UTF-8", xml_declaration=True)
+        new_tree.write(new_file, encoding='utf-8', xml_declaration=True)
 
 
 if __name__ == '__main__':
@@ -66,3 +61,7 @@ if __name__ == '__main__':
     export_file = "export.xml"
     test_automation_dir = 'TestAutomation'
     main(export_file, test_automation_dir)
+
+
+## Main is too big, simplify it
+### Was thinking about other solution - collect all names into set.
