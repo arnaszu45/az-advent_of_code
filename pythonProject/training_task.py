@@ -3,8 +3,6 @@ import argparse
 import re
 import time
 
-processed_functions = set()
-
 
 def search_for_id_pattern(file_text: str, pattern: str) -> str:
     """Search for specific pattern, prints and returns it as a string"""
@@ -44,24 +42,29 @@ def find_matching_lines(file_text: str, index) -> str:
     return f'{line_number}: {line}'
 
 
-def process_not_test_case_scenario(file_text: str, index: int, pattern: str) -> tuple[str, str]:
+def process_not_test_case_scenario(index, file_text, pattern, function_list, path) -> list[str]:
     function_name = get_function_name(index, file_text)
     if function_name + '(' != pattern:
+        function_list.append(function_name)
         line = find_matching_lines(file_text, index)
         if not f'def {pattern}' in line:
-            return line, function_name
-    else:
-        return '', ''
+            print(f'\nNOT TestCase APPROACH\n{path} \n')
+            print(line)
+    return function_list
 
 
-def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str]:
-    global processed_functions
+def find_pattern_in_functions(directory: Path, pattern: str, n: int, processed_functions: set = None)\
+        -> tuple[list[str], set[str]]:
+
+    if processed_functions is None:
+        processed_functions = set()
+
     polarion_list = []
     function_list = []
     list_of_repeated_definition = []
 
     if n == 0:
-        return polarion_list
+        return polarion_list, processed_functions
     n = n - 1
 
     print(f"Searching for '{pattern}' in {directory}\n")
@@ -75,7 +78,7 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
 
         if len(list_of_repeated_definition) > 1:
             print('ERROR: There is more than 1 usages of function definition \n')
-            return []
+            return [], processed_functions
 
         found_elements = list(match.start() for match in re.finditer(escaped_patter, file_text))
         if pattern in file_text:
@@ -88,30 +91,22 @@ def find_pattern_in_functions(directory: Path, pattern: str, n: int) -> list[str
                     print(line)
             else:
                 for index in found_elements:
-                    # line, function_list = process_not_test_case_scenario(file_text, index, pattern)
-                    # print(f'\nNOT TestCase APPROACH\n{path} \n')
-                    # print(line)
-
-                    function_name = get_function_name(index, file_text)
-                    if function_name + '(' != pattern:
-                        function_list.append(function_name)
-                        line = find_matching_lines(file_text, index)
-                        if not f'def {pattern}' in line:
-                            print(f'\nNOT TestCase APPROACH\n{path} \n')
-                            print(line)
+                    function_list = process_not_test_case_scenario(index, file_text, pattern, function_list, path)
 
     print(f"\nWas found {len(polarion_list)} Polarion ID's with '{pattern}' pattern\n")
     for function in set(function_list):
         if function not in processed_functions:
             processed_functions.add(function)
             print(f"Extending search with '{function}'\n")
-            polarion_list.extend(find_pattern_in_functions(directory, function, n))
-    return polarion_list
+            additional_polarion_list, processed_functions = find_pattern_in_functions(directory, function, n,
+                                                                                      processed_functions)
+            polarion_list.extend(additional_polarion_list)
+    return polarion_list, processed_functions
 
 
 def main(directory: Path, pattern: str, depth: int):
     start = time.time()
-    list_of_ids = find_pattern_in_functions(directory, pattern, depth)
+    list_of_ids, _ = find_pattern_in_functions(directory, pattern, depth)
     print(set(list_of_ids))
     print(len(set(list_of_ids)))
     end_time = time.time()
