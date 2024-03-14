@@ -30,7 +30,7 @@ def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -
         script = element.find('.//test-script-reference').text
         test_case_file_name = script[script.find('test_cases/') + 11: script.find('.py') + 3]
 
-        file_name = os.path.join(directory, test_case_file_name)                        ## Fix this part 4AP2-38092
+        file_name = os.path.join(directory, test_case_file_name)  # 4AP2-38092
         full_path = Path(file_name)
 
         test_type = 'unknown'
@@ -54,7 +54,7 @@ def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -
 def distribute_protocols_through_files(filename: str, dictionary: dict, new_folder: str):
     """Distributes protocols from given XML file into separated new XML files by setup names"""
 
-    os.makedirs('output', exist_ok=True)
+    os.makedirs(new_folder, exist_ok=True)
 
     tree = Et.parse(filename)
     root = tree.getroot()
@@ -72,7 +72,7 @@ def distribute_protocols_through_files(filename: str, dictionary: dict, new_fold
 
 
 def main(filename: str, directory: Path, new_folder: str):
-    print('--- Running the script ---') # <-- Are prints in here legal??
+    print('--- Running the script ---')  # <-- Are prints in here legal?? I mean in main
     dictionary = make_dictionary_of_setup_name_and_protocol(filename, directory)
     distribute_protocols_through_files(filename, dictionary, new_folder)
     amount_of_files_in_directory = len(os.listdir(new_folder))
@@ -88,7 +88,7 @@ if __name__ == '__main__':
                         help="Directory of test automation folder + test_cases directory, - <"
                              "test_automation/test_cases/>")
     parser.add_argument("-n", "--new_folder", required=True, type=str,
-                        help="A name of new folder, where xml files will be saved after writing") # Don't know how to write it nicely
+                        help="A name of new folder, where xml files will be saved after writing")  #Don't know how to write it nicely
     args = parser.parse_args()
 
     main(filename=args.xml_file, directory=args.test_automation_dir, new_folder=args.new_folder)
