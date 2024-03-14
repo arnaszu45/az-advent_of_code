@@ -4,6 +4,7 @@ from copy import deepcopy
 import os
 import time
 import argparse
+import traceback
 
 
 def search_for_setup_name(file_text: str, pattern: str) -> str:
@@ -19,7 +20,7 @@ def search_for_setup_name(file_text: str, pattern: str) -> str:
         return ''
 
 
-def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -> dict:
+def make_dictionary_of_setup_name_and_protocol(filename: Path, directory: Path) -> dict:
     """Collect protocols from XML according to setup name and keeps it in dictionary"""
 
     dict_of_elements_and_test_type = {}
@@ -27,8 +28,9 @@ def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -
     root = tree.getroot()
     protocols = root.findall('.//protocol')
     for element in protocols:
-        script = element.find('.//test-script-reference').text
-        test_case_file_name = script[script.find('test_cases/') + 11: script.find('.py') + 3]
+        script = element.find('test-script-reference').text
+
+        test_case_file_name = script[script.find('test_cases/') + 11: script.find('.py') + 3]  ## Handle random name
 
         file_name = os.path.join(directory, test_case_file_name)  # 4AP2-38092
         full_path = Path(file_name)
@@ -47,14 +49,23 @@ def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -
         dict_of_elements_and_test_type[test_type] = test_case_list
 
     if len(dict_of_elements_and_test_type) == 1:
-        raise Exception("-- Probably was given wrong 'test_cases' directory -- ")
+        try:
+            raise TypeError
+        except TypeError:
+            print("-- Probably was given wrong 'test_cases' directory -- ")
+            traceback.print_exception(quit(), limit=0)
+
     return dict_of_elements_and_test_type
 
 
-def distribute_protocols_through_files(filename: str, dictionary: dict, new_folder: str):
+def distribute_protocols_through_files(filename: Path, dictionary: dict, new_folder: str):
     """Distributes protocols from given XML file into separated new XML files by setup names"""
 
-    os.makedirs(new_folder, exist_ok=False)
+    try:
+        os.makedirs(new_folder)
+    except FileExistsError:
+        print(f"--- ERROR: Folder {new_folder} already exists. Use another folder name or delete existing one---")
+        traceback.print_exception(quit(), limit=0)
 
     tree = Et.parse(filename)
     root = tree.getroot()
@@ -71,7 +82,7 @@ def distribute_protocols_through_files(filename: str, dictionary: dict, new_fold
         new_tree.write(setup_filename, encoding='utf-8', xml_declaration=True)
 
 
-def main(filename: str, directory: Path, new_folder: str):
+def main(filename: Path, directory: Path, new_folder: str):
     print('--- Running the script ---')  # <-- Are prints in here legal?? I mean in main
     dictionary = make_dictionary_of_setup_name_and_protocol(filename, directory)
     distribute_protocols_through_files(filename, dictionary, new_folder)
@@ -88,9 +99,8 @@ if __name__ == '__main__':
                         help="Directory of test automation folder + test_cases directory, - <"
                              "test_automation/test_cases/>")
     parser.add_argument("-n", "--new_folder", required=True, type=str,
-                        help="A name of new folder, where xml files will be saved after writing")  #Don't know how to write it nicely
+                        help="A name of new folder, where xml files will be saved after writing")  # Don't know how to write it nicely
     args = parser.parse_args()
-
     main(filename=args.xml_file, directory=args.test_automation_dir, new_folder=args.new_folder)
     end_time = time.time()
     print(end_time - start)
