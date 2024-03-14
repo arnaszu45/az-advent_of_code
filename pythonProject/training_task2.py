@@ -54,7 +54,7 @@ def make_dictionary_of_setup_name_and_protocol(filename: str, directory: Path) -
 def distribute_protocols_through_files(filename: str, dictionary: dict, new_folder: str):
     """Distributes protocols from given XML file into separated new XML files by setup names"""
 
-    os.makedirs(new_folder, exist_ok=True)
+    os.makedirs(new_folder, exist_ok=False)
 
     tree = Et.parse(filename)
     root = tree.getroot()
