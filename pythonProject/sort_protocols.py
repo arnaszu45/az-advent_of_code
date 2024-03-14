@@ -28,22 +28,22 @@ def make_dictionary_of_setup_name_and_protocol(filename: Path, directory: Path) 
     root = tree.getroot()
     protocols = root.findall('.//protocol')
     for element in protocols:
-        script = element.find('test-script-reference').text
-
-        test_case_file_name = script[script.find('test_cases/') + 11: script.find('.py') + 3]  ## Handle random name
-
-        file_name = os.path.join(directory, test_case_file_name)  # 4AP2-38092
-        full_path = Path(file_name)
-
         test_type = 'unknown'
-        if full_path.exists():
-            file_text = full_path.read_text(encoding="UTF-8")
-            if 'Title: Semi-automated:' in file_text:
-                test_type = 'semi-automated'
-            elif 'Setup: ' in file_text:
-                setup_name = search_for_setup_name(file_text, 'Setup: ')
-                test_type = f'{setup_name.lower()}'
+        script = element.find('test-script-reference').text
+        if script[script.find('/test_cases/'): script.find('.py') + 3]:
+            test_case_file_name = script[script.find('/test_cases/'): script.find('.py') + 3]  ## Handle random name
+            file_name = f'{directory}{test_case_file_name}'  # 4AP2-38092
+            full_path = Path(file_name)
 
+            if full_path.exists():
+                file_text = full_path.read_text(encoding="UTF-8")
+                if 'Title: Semi-automated:' in file_text:
+                    test_type = 'semi-automated'
+                elif 'Setup: ' in file_text:
+                    setup_name = search_for_setup_name(file_text, 'Setup: ')
+                    test_type = f'{setup_name.lower()}'
+        else:
+            print(f"{Et.tostring(element)}\n !!! WARNING, Protocol path is damaged, adding to 'unknown.xml' !!!\n")
         test_case_list = dict_of_elements_and_test_type.get(test_type, [])  # Get is able to return empty list
         test_case_list.append(element)
         dict_of_elements_and_test_type[test_type] = test_case_list
@@ -52,7 +52,7 @@ def make_dictionary_of_setup_name_and_protocol(filename: Path, directory: Path) 
         try:
             raise TypeError
         except TypeError:
-            print("-- Probably was given wrong 'test_cases' directory -- ")
+            print("-- Probably was given wrong 'test_automation' directory -- ")
             traceback.print_exception(quit(), limit=0)
 
     return dict_of_elements_and_test_type
@@ -64,7 +64,7 @@ def distribute_protocols_through_files(filename: Path, dictionary: dict, new_fol
     try:
         os.makedirs(new_folder)
     except FileExistsError:
-        print(f"--- ERROR: Folder {new_folder} already exists. Use another folder name or delete existing one---")
+        print(f"!!! ERROR: Folder {new_folder} already exists. Use another folder name or delete existing one !!!")
         traceback.print_exception(quit(), limit=0)
 
     tree = Et.parse(filename)
@@ -83,7 +83,7 @@ def distribute_protocols_through_files(filename: Path, dictionary: dict, new_fol
 
 
 def main(filename: Path, directory: Path, new_folder: str):
-    print('--- Running the script ---')  # <-- Are prints in here legal?? I mean in main
+    print('--- Running the script ---\n')  # <-- Are prints in here legal?? I mean in main
     dictionary = make_dictionary_of_setup_name_and_protocol(filename, directory)
     distribute_protocols_through_files(filename, dictionary, new_folder)
     amount_of_files_in_directory = len(os.listdir(new_folder))
@@ -96,8 +96,7 @@ if __name__ == '__main__':
     parser.add_argument("-f", "--xml_file", required=True, type=Path,
                         help="File name or path of xml file which has to be proceeded")
     parser.add_argument("-d", "--test_automation_dir", required=True, type=Path,
-                        help="Directory of test automation folder + test_cases directory, - <"
-                             "test_automation/test_cases/>")
+                        help="Directory of test automation folder")
     parser.add_argument("-n", "--new_folder", required=True, type=str,
                         help="A name of new folder, where xml files will be saved after writing")  # Don't know how to write it nicely
     args = parser.parse_args()
