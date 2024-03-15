@@ -58,19 +58,18 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
     new_root = deepcopy(root)
     pattern = './/protocols'
     new_protocols = new_root.find(pattern)
-
     if new_protocols is None:
         print(f"!!! ERROR: '{pattern}' does not exists in XML root")  # Ummm not sure how to correctly give this information
         sys.exit()
-    new_protocols.clear()
 
-    try:  # Creating new folder
+    try:
         os.makedirs(output_folder)
     except FileExistsError:
         print(f"!!! ERROR: Folder {output_folder} already exists. Use another folder name or delete existing one !!!")  # All prints has to be changed into logs
         sys.exit()
 
     for key, values in setup_name_and_protocol.items():
+        new_protocols.clear()
         new_protocols.extend(values)
         new_tree = Et.ElementTree(new_root)
         setup_filename = os.path.join(output_folder, f"{key}.xml")
