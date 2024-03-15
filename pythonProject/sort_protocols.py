@@ -20,11 +20,11 @@ def search_for_setup_name(file_text: str, pattern: str) -> str:
         return ''
 
 
-def categorise_protocols_by_setup(directory: Path, protocols: list[Et.Element]) -> dict:
+def categorise_protocols_by_setup(directory: Path, root: Et.Element) -> dict:
     """Collects protocols from XML file, categorise by setup name and keeps it in dictionary"""
 
     dict_of_elements_and_test_type = {}
-    for element in protocols:
+    for element in root.findall('.//protocol'):
         test_type = 'unknown'
         script = element.find('test-script-reference').text
         if script[script.find('/test_cases/'): script.find('.py') + 3]:
@@ -52,24 +52,28 @@ def categorise_protocols_by_setup(directory: Path, protocols: list[Et.Element]) 
     return dict_of_elements_and_test_type
 
 
-def distribute_protocols_through_files(setup_name_and_protocol: dict, new_folder: str, root: Et.Element):
+def distribute_protocols_through_files(setup_name_and_protocol: dict, output_folder: str, root: Et.Element):
     """Distributes protocols from given XML file into separated new XML files by setup names"""
 
-    try:
-        os.makedirs(new_folder)
+    new_root = deepcopy(root)
+    pattern = './/protocols'
+    new_protocols = new_root.find(pattern)
+
+    if new_protocols is None:
+        print(f"!!! ERROR: '{pattern}' does not exists in XML root")  # Ummm not sure how to correctly give this information
+        sys.exit()
+    new_protocols.clear()
+
+    try:  # Creating new folder
+        os.makedirs(output_folder)
     except FileExistsError:
-        print(f"!!! ERROR: Folder {new_folder} already exists. Use another folder name or delete existing one !!!")
+        print(f"!!! ERROR: Folder {output_folder} already exists. Use another folder name or delete existing one !!!")  # All prints has to be changed into logs
         sys.exit()
 
     for key, values in setup_name_and_protocol.items():
-        new_root = deepcopy(root)
-        new_protocols = new_root.find('.//protocols')
-        new_protocols.clear()
-
         new_protocols.extend(values)
-
         new_tree = Et.ElementTree(new_root)
-        setup_filename = os.path.join(new_folder, f"{key}.xml")
+        setup_filename = os.path.join(output_folder, f"{key}.xml")
         new_tree.write(setup_filename, encoding='utf-8', xml_declaration=True)
 
 
@@ -79,16 +83,15 @@ def parse_xml_file(xml_file_name: Path):
     try:
         tree = Et.parse(xml_file_name)
         root = tree.getroot()
-        protocols = root.findall('.//protocol')
-        return root, protocols
+        return root
     except Et.ParseError as e:
         print(f'!!! ERROR, can not parse this XML file, error message: !!!\n{e}'), sys.exit()
 
 
 def main(export_file_name: Path, test_automation_dir: Path, output_folder: str):
     print('--- Running the script ---\n')  # <-- Make logs
-    root, protocols = parse_xml_file(export_file_name)
-    protocols_by_setup = categorise_protocols_by_setup(test_automation_dir, protocols)
+    root = parse_xml_file(export_file_name)
+    protocols_by_setup = categorise_protocols_by_setup(test_automation_dir, root)
     distribute_protocols_through_files(protocols_by_setup, output_folder, root)
     amount_of_files_in_directory = len(os.listdir(output_folder))
     print(f'Was generated {amount_of_files_in_directory} new files from {export_file_name}')
