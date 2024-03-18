@@ -20,30 +20,76 @@ def search_for_setup_name(file_text: str, pattern: str) -> str:
         return ''
 
 
+def find_test_case_start(string: str):
+    """Finds the index where given pattern begins, if it's not exists - returns -1 """
+
+    start_position = string.find("/test_cases/")
+    if start_position != -1:
+        return start_position
+    else:
+        return -1
+
+
+def get_full_name_from_http(element: Et.Element):
+    sub_element = 'test-script-reference'
+    script_reference = element.find(sub_element)
+    if script_reference is None:
+        print(f'!!! ERROR, given {sub_element} sub element does not exists in given XML file')
+        sys.exit()
+    script = script_reference.text.strip()
+
+    if 'href' in script:
+        script = script[script.find('>') + 1: script.rfind('<')]
+
+    if script.startswith('http'):
+        return script
+    else:
+        print(f'!!! ERROR, {sub_element} sub element does not contain a valid URL starting with "http"')
+        sys.exit()
+
+
+def find_test_case_file_name(full_protocol: Et.Element):
+    script_reference = full_protocol.find('test-script-reference')
+    print(script_reference)
+    ## handle a elemnt, grab href
+
+    # if script_reference is None:
+    #     return file_name
+    # script = script_reference.text
+    # start_position = find_test_case_start(script)
+    # if start_position == -1:
+    #     return file_name
+    # remaining_script = script[start_position:]
+    # path, ext = os.path.splitext(remaining_script)
+    # print(path, ext)
+
+
+
 def categorise_protocols_by_setup(directory: Path, root: Et.Element) -> dict:
     """Collects protocols from XML file, categorise by setup name and keeps it in dictionary"""
 
     dict_of_elements_and_test_type = {}
-    for element in root.findall('.//protocol'):
-        test_type = 'unknown'
-        script = element.find('test-script-reference').text
-        if script[script.find('/test_cases/'): script.find('.py') + 3]:
-            test_case_file_name = script[script.find('/test_cases/'): script.find('.py') + 3]
-            file_name = f'{directory}{test_case_file_name}'  # 4AP2-38092
-            full_path = Path(file_name)
+    for element in root.findall(".//protocol"):
+        test_type = "unknown"
+        find_test_case_file_name(element)
+        # script = element.find('test-script-reference').text
+        # if script[script.find('/test_cases/'): script.find('.py') + 3]:
+        #     test_case_file_name = script[script.find('/test_cases/'): script.find('.py') + 3]
+        #     file_name = f'{directory}{test_case_file_name}'  # 4AP2-38092
+        #     full_path = Path(file_name)
 
-            if full_path.exists():
-                file_text = full_path.read_text(encoding="UTF-8")
-                if 'Title: Semi-automated:' in file_text:
-                    test_type = 'semi-automated'
-                elif 'Setup: ' in file_text:
-                    setup_name = search_for_setup_name(file_text, 'Setup: ')
-                    test_type = f'{setup_name.lower()}'
-        else: # Fix here, do everything above
-            print(f"{script}\n !!! WARNING, Protocol path is damaged, adding to 'unknown.xml' !!!\n") # do if not above instead of going down
-        test_case_list = dict_of_elements_and_test_type.get(test_type, [])  # Get is able to return empty list
-        test_case_list.append(element)
-        dict_of_elements_and_test_type[test_type] = test_case_list
+        #     if full_path.exists():
+        #         file_text = full_path.read_text(encoding="UTF-8")
+        #         if 'Title: Semi-automated:' in file_text:
+        #             test_type = 'semi-automated'
+        #         elif 'Setup: ' in file_text:
+        #             setup_name = search_for_setup_name(file_text, 'Setup: ')
+        #             test_type = f'{setup_name.lower()}'
+        # else: # Fix here, do everything above
+        #     print(f"{script}\n !!! WARNING, Protocol path is damaged, adding to 'unknown.xml' !!!\n") # do if not above instead of going down
+        # test_case_list = dict_of_elements_and_test_type.get(test_type, [])  # Get is able to return empty list
+        # test_case_list.append(element)
+        # dict_of_elements_and_test_type[test_type] = test_case_list
 
     if len(dict_of_elements_and_test_type) == 1:
         print("-- Probably was given wrong 'test_automation' directory -- ")
@@ -81,10 +127,11 @@ def parse_xml_file(xml_file_name: Path):
 
     try:
         tree = Et.parse(xml_file_name)
-        root = tree.getroot()
+        root = tree.getroot()   # BAD BAD BAD
         return root
     except Et.ParseError as e:
-        print(f'!!! ERROR, can not parse this XML file, error message: !!!\n{e}'), sys.exit()
+        print(f'!!! ERROR, can not parse this XML file, error message: !!!\n{e}')
+        sys.exit()
 
 
 def main(export_file_name: Path, test_automation_dir: Path, output_folder: str):
