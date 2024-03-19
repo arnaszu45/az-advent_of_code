@@ -1,3 +1,4 @@
+import unicodedata
 from pathlib import Path
 import xml.etree.ElementTree as Et
 from copy import deepcopy
@@ -7,7 +8,6 @@ import argparse
 import sys
 import logging
 from enum import Enum, auto
-logger = logging.getLogger(__name__)
 
 
 class Errors(Enum):
@@ -15,7 +15,7 @@ class Errors(Enum):
     XML_ERROR_WRITING = auto()  # Learn stuff bout Enum and how to use it
 
 
-def parse_xml_file(xml_file_name: Path):
+def parse_xml_file(xml_file_name: Path) -> Et.Element:
     """"Parses given XML file and returns root and specified SubElement """
 
     try:
@@ -47,18 +47,23 @@ def get_full_name_from_http(element: Et.Element) -> str:
     script_reference = element.find(sub_element)
 
     if script_reference is None:
-        print(f'!!! ERROR, given {sub_element} sub element does not exists in given XML file')
-        logger.error(f'Given {sub_element} sub element does not exists in given XML file')
-        sys.exit(1) # Should it better return '' or exiting is better ??
+        logger.error(f"Given {sub_element} sub element does not exists in given XML file")
+        return ""
     if script_reference.text is None:
-        print(f'!!! ERROR, given {sub_element} sub element does not exists in given XML file')
-        logger.error(f'Given {sub_element} sub element does not exists in given XML file')
-        sys.exit(1) # Should it better return '' or exiting is better ??
+        logger.error(f"Given {sub_element} sub element does not exists in given XML file")
+        return ""
 
     script = script_reference.text
-    if 'href' in script:  # Need another approach, testing
-        script = script[script.find('>') + 1: script.rfind('<')]  # Need another approach, testing
-
+    if 'href' in script:  # need to be updated
+        clean_et_element = unicodedata.normalize("NFKD", script)
+        try:
+            new_xml_element = Et.fromstring(clean_et_element)
+        except Et.ParseError as e:
+            logger.error(f"\nJunk protocol {clean_et_element}, {e}\n")
+            return ""
+        if new_xml_element.attrib.get("href") is not None:
+            href = new_xml_element.attrib.get("href")
+            return href
     return script
 
 
@@ -67,16 +72,15 @@ def find_test_case_name(string: str) -> str:
 
     start_position = string.find("/test_cases/")
     if start_position == -1:
-        print(f'!!! WARNING, given protocol is damaged:\n {string}\n')
-        logger.warning(f"Given protocol is damaged:\n {string}\n")
-        return ''
+        logger.warning(f"Given protocol is damaged.")
+        return ""
     else:
         remaining_script = string[start_position:]
         root, ext = os.path.splitext(remaining_script)
         return root + ext
 
 
-def select_name_of_test_type(full_path: Path) -> str:
+def select_name_of_test_type(full_path: Path) -> str:  # improve
     """Identify test type of test case and returns its name"""
 
     file_text = full_path.read_text(encoding="UTF-8")
@@ -85,29 +89,29 @@ def select_name_of_test_type(full_path: Path) -> str:
     elif 'Setup: ' in file_text:
         setup_name = search_for_setup_name(file_text, 'Setup: ')
         return f'{setup_name.lower()}'
+    return ""
 
 
 def categorise_protocols_by_setup(test_automation_dir: Path, root: Et.Element) -> dict:
     """Collects protocols from XML file, categorise by setup name and keeps it in dictionary"""
 
-    dict_of_elements_and_test_type = {}
+    dict_of_elements_and_test_type: dict[str, list[Et.Element]] = {}
     for element in root.findall(".//protocol"):
         test_type = "unknown"
 
         file_name = get_full_name_from_http(element)
+
         path = find_test_case_name(file_name)
-        full_path = Path(f'{test_automation_dir}{path}')
+        full_path = Path(f'{test_automation_dir}{path}')  # Fix here, / does not work
         if full_path.exists() and path != "":
             test_type = select_name_of_test_type(full_path)
         else:
-            print(f"{path}\n!!! WARNING, File does not exists, adding to 'unknown.xml' !!!\n")
             logger.warning(f"{path}\nFile does not exists, adding to 'unknown.xml' !!!\n")
         test_case_list = dict_of_elements_and_test_type.get(test_type, [])
         test_case_list.append(element)
         dict_of_elements_and_test_type[test_type] = test_case_list
 
     if len(dict_of_elements_and_test_type) == 1 and dict_of_elements_and_test_type["unknown"]:
-        print("!!! ERROR, files consists only of 'unknown' test type, cancelling !!! ")
         logger.error("Files consists only of 'unknown' test type, cancelling !!!")
         sys.exit(1)
     return dict_of_elements_and_test_type
@@ -120,14 +124,12 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
     pattern = './/protocols'
     new_protocols = new_root.find(pattern)
     if new_protocols is None:
-        print(f"!!! ERROR: '{pattern}' does not exists in XML root")
-        logger.error(f"!!! ERROR: '{pattern}' does not exists in XML root")  # Ummm not sure how to correctly give this information
+        logger.error(f"!!! ERROR: '{pattern}' does not exists in XML root")
         sys.exit(1)
 
     try:
         os.makedirs(output_folder)
     except FileExistsError:
-        print(f"!!! ERROR: Folder {output_folder} already exists. Use another folder name or delete existing one !!!")
         logger.error(f"Folder {output_folder} already exists. Use another folder name or delete existing one!")
         sys.exit(1)
 
@@ -140,15 +142,14 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
 
 
 def main(export_file_name: Path, test_automation_dir: Path, output_folder: str):
+
     logging.basicConfig(filename="sorting.log", level=logging.INFO)
     logger.info("Running the script\n")
-    print("--- Running the script ---")  # IF I use logging ,should I keep prints ????
     root = parse_xml_file(export_file_name)
     protocols_by_setup = categorise_protocols_by_setup(test_automation_dir, root)
     distribute_protocols_through_files(protocols_by_setup, output_folder, root)
     amount_of_files_in_directory = len(os.listdir(output_folder))
     logger.info(f"Was generated {amount_of_files_in_directory} new files from {export_file_name}")
-    print(f"Was generated {amount_of_files_in_directory} new files from {export_file_name}")
 
 
 if __name__ == "__main__":
@@ -160,6 +161,14 @@ if __name__ == "__main__":
     parser.add_argument("-n", "--new_folder", required=True, type=Path,
                         help="A name of new folder, where xml files will be saved after writing")
     args = parser.parse_args()
+# Class or function for the logger should be applied?
+    logger = logging.getLogger("__name__")
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter("%(asctime)s [%(levelname)s] - %(name)s - %(message)s")
+    file_handler = logging.FileHandler("sort.log")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
     start = time.time()
     main(export_file_name=args.xml_file, test_automation_dir=args.test_automation_dir, output_folder=args.new_folder)
     end_time = time.time()
