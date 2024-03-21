@@ -1,4 +1,4 @@
-import unicodedata
+import re
 from pathlib import Path
 import xml.etree.ElementTree as Et
 from copy import deepcopy
@@ -8,7 +8,7 @@ import argparse
 import sys
 import logging
 from enum import Enum, auto
-import glob
+from collections import defaultdict
 
 
 class Errors(Enum):
@@ -22,7 +22,7 @@ def parse_xml_file(xml_file_name: Path) -> Et.Element:
     try:
         tree = Et.parse(xml_file_name)
     except Et.ParseError as e:
-        logger.error(f'Can not parse this XML file, error message: !!!\n{e}')
+        logger.error(f"Can not parse this XML file, error message: !!!\n{e}")
         sys.exit(1)
     root = tree.getroot()
     return root
@@ -38,13 +38,13 @@ def search_for_setup_name(file_text: str, pattern: str) -> str:
         setup_name = remaining_text.strip()
         return setup_name
     else:
-        return ''
+        return ""
 
 
 def get_sub_element_text_from_protocol(element: Et.Element):
     """Takes Et.Element and look for specific Sub Element, returns its text"""  # Not testable
 
-    sub_element = 'test-script-reference'
+    sub_element = "test-script-reference"
     script_reference = element.find(sub_element)
 
     if script_reference is None:
@@ -56,31 +56,32 @@ def get_sub_element_text_from_protocol(element: Et.Element):
     return script_reference.text
 
 
-def get_full_http_name(script: str) -> str:
+def get_test_script_reference(script: str, ext: str) -> str:
     """Collects and returns full link of the file"""  # Need UnitTest
 
-    clean_et_element = unicodedata.normalize("NFKD", script)  # Actually it does not do anything at this moment
-    start_position = clean_et_element.rfind('http')  # Href has https
-    if start_position == -1:
-        logger.warning(f"There is no 'http' inside --> {script}")
+    found_http = re.search(r'http(s)?://', script)
+    if not found_http:
+        logging.debug("No 'http' found in the script.")
         return ""
-    end_position = clean_et_element.rfind('.')  # Results good, better for different extensions than .py
+
+    start_position = found_http.start()
+    end_position = script.find(ext, start_position)
     if end_position == -1:
-        logger.warning(f"There is no '.' inside --> {script}")
+        logging.debug("No '.py' found in the script.")
         return ""
-    return clean_et_element[start_position:end_position]
+
+    return script[start_position:end_position + 3]
 
 
 def find_test_case_name(string: str) -> str:  # Can be joined with get_full_http_name, one function for file name
     """Search in full link for /test_case/ pattern and returns file name"""  # Need UnitTest
 
-    start_position = string.find("/test_cases/")
+    start_position = string.find("test_cases/")
     if start_position == -1:
         logger.warning(f"Protocol is damaged. There is no '/test_cases/' inside --> {string}")
         return ""
     else:
-        remaining_script = string[start_position:]
-        return remaining_script
+        return string[start_position:]
 
 
 def select_name_of_test_type(file_text: str) -> str:  # Need UnitTest
@@ -94,33 +95,40 @@ def select_name_of_test_type(file_text: str) -> str:  # Need UnitTest
     return ""
 
 
-def categorise_protocols_by_setup(test_automation_dir: Path, root: Et.Element) -> dict:
+def categorise_protocols_by_setup(test_automation_dir: Path, root: Et.Element, ext: str) -> dict:
     """Collects protocols from XML file, categorise by setup name and keeps it in dictionary"""
 
-    dict_of_elements_and_test_type: dict[str, list[Et.Element]] = {}
+    protocols_by_setup_name = defaultdict(list)
+    default_test_type = "unknown"
     for element in root.findall(".//protocol"):
-        test_type = "unknown"
+        test_type = default_test_type
 
-        http_name = get_full_http_name(get_sub_element_text_from_protocol(element))
-        path = find_test_case_name(http_name)
-        file = glob.glob(f"{test_automation_dir}{path}.*")  # Returns list of one element
-        if not file:
+        test_script_reference_text = get_sub_element_text_from_protocol(element)
+        file_address = get_test_script_reference(test_script_reference_text, ext)
+        if not file_address:
+            protocols_by_setup_name[test_type].append(element)
+            continue
+
+        file_name = find_test_case_name(file_address)
+        path = test_automation_dir / file_name
+        if not path.exists():
             logger.warning(f"File does not exists --> {path}")
-        else:
-            existing_file = Path(file[0])
-            file_text = existing_file.read_text(encoding="UTF-8")
-            test_type = select_name_of_test_type(file_text)
-        test_case_list = dict_of_elements_and_test_type.get(test_type, [])
-        test_case_list.append(element)
-        dict_of_elements_and_test_type[test_type] = test_case_list
+            protocols_by_setup_name[test_type].append(element)
+            continue
 
-    if len(dict_of_elements_and_test_type) == 1 and dict_of_elements_and_test_type["unknown"]:
+        file_text = path.read_text(encoding="UTF-8")
+        test_type = select_name_of_test_type(file_text)
+        test_case_list = protocols_by_setup_name.get(test_type, [])
+        test_case_list.append(element)
+        protocols_by_setup_name[test_type] = test_case_list
+
+    if len(protocols_by_setup_name) == 1 and protocols_by_setup_name["unknown"]:
         logger.error("Files consists only of 'unknown' test type, cancelling !!!")
         sys.exit(1)
-    return dict_of_elements_and_test_type
+    return protocols_by_setup_name
 
 
-def distribute_protocols_through_files(setup_name_and_protocol: dict, output_folder: str, root: Et.Element):
+def distribute_protocols_through_files(setup_name_and_protocol: dict, output_folder: Path, root: Et.Element):
     """Distributes protocols from given XML file into separated new XML files by setup names"""
 
     new_root = deepcopy(root)
@@ -128,12 +136,6 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
     new_protocols = new_root.find(pattern)
     if new_protocols is None:
         logger.error(f"!!! ERROR: '{pattern}' does not exists in XML root")
-        sys.exit(1)
-
-    try:
-        os.makedirs(output_folder)
-    except FileExistsError:
-        logger.error(f"Folder {output_folder} already exists. Use another folder name or delete existing one!")
         sys.exit(1)
 
     for key, values in setup_name_and_protocol.items():
@@ -144,10 +146,19 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
         new_tree.write(setup_filename, encoding='utf-8', xml_declaration=True)
 
 
-def main(export_file_name: Path, test_automation_dir: Path, output_folder: str, logger: logging.Logger):
+def create_an_output_folder(output_folder: Path):
+    try:
+        os.makedirs(output_folder)
+    except FileExistsError:
+        logger.error(f"Folder {output_folder} already exists. Use another folder name or delete existing one!")
+        sys.exit(1)
+
+
+def main(export_file_name: Path, test_automation_dir: Path, extension: str, output_folder: Path, logger: logging.Logger):
     logger.info("Running the script\n")
     root = parse_xml_file(export_file_name)
-    protocols_by_setup = categorise_protocols_by_setup(test_automation_dir, root)
+    create_an_output_folder(output_folder)
+    protocols_by_setup = categorise_protocols_by_setup(test_automation_dir, root, extension)
     distribute_protocols_through_files(protocols_by_setup, output_folder, root)
     amount_of_files_in_directory = len(os.listdir(output_folder))
     logger.info(f"Was generated {amount_of_files_in_directory} new files from {export_file_name}")
@@ -156,7 +167,7 @@ def main(export_file_name: Path, test_automation_dir: Path, output_folder: str, 
 def configure_logger(filename: str) -> logging.Logger:
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter("%(asctime)s [%(levelname)s] - %(name)s - %(message)s")
+    formatter = logging.Formatter("%(asctime)s [%(levelname)s] - %(funcName)s - %(message)s")
     file_handler = logging.FileHandler(filename)
     stdout_handle = logging.StreamHandler(sys.stdout)
     stdout_handle.setFormatter(formatter)
@@ -174,13 +185,15 @@ if __name__ == "__main__":
                         help="Directory of test automation folder")
     parser.add_argument("-o", "--output_folder", required=True, type=Path,
                         help="A name of new folder, where xml files will be saved after writing")
-    parser.add_argument("-l", "--log_file", required=True, type=Path,
+    parser.add_argument("-l", "--log_file", default="sorting.log", type=Path,
                         help="Log path")
+    parser.add_argument("-x", "--file_extension", default=".py",
+                        help="Specify the file extension to search for. (default: .py)")
 
     args = parser.parse_args()
     logger = configure_logger(args.log_file)
     start = time.time()
     main(export_file_name=args.xml_file, test_automation_dir=args.test_automation_dir,
-         output_folder=args.output_folder, logger=logger)
+         extension=args.file_extension, output_folder=args.output_folder, logger=logger)
     end_time = time.time()
     print(end_time - start)

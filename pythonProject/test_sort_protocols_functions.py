@@ -13,7 +13,7 @@ import xml.etree.ElementTree as Et
 
 def test_get_full_name_from_http_positive():
     string = """
-            <protocol project-id="4008APackage2" id="4AP2-65627">
+<protocol project-id="4008APackage2" id="4AP2-65627">
                 <test-script-reference>https://central.svn.alm.gpdm.fresenius.com/svn/4008A/apps/trunk/test_automation/test_cases/Hydraulics/ConcentrateSupply/test_limitation_of_bicarbonate_pump_step_cd132_ntc133_bibag.py</test-script-reference>
             </protocol>
         """
