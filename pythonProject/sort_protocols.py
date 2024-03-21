@@ -28,6 +28,14 @@ def parse_xml_file(xml_file_name: Path) -> Et.Element:
     return root
 
 
+def remove_empty_folder():
+    folder_path = args.output_folder
+    if not os.path.exists(folder_path):
+        return
+    if not os.listdir(folder_path):
+        os.rmdir(folder_path)
+
+
 def search_for_setup_name(file_text: str, pattern: str) -> str:
     """Search for specific pattern, returns element after the pattern"""  # Need UnitTest
 
@@ -124,6 +132,7 @@ def categorise_protocols_by_setup(test_automation_dir: Path, root: Et.Element, e
 
     if len(protocols_by_setup_name) == 1 and protocols_by_setup_name["unknown"]:
         logger.error("Files consists only of 'unknown' test type, cancelling !!!")
+        remove_empty_folder()
         sys.exit(1)
     return protocols_by_setup_name
 
@@ -136,6 +145,7 @@ def distribute_protocols_through_files(setup_name_and_protocol: dict, output_fol
     new_protocols = new_root.find(pattern)
     if new_protocols is None:
         logger.error(f"!!! ERROR: '{pattern}' does not exists in XML root")
+        remove_empty_folder()
         sys.exit(1)
 
     for key, values in setup_name_and_protocol.items():
