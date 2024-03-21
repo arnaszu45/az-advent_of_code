@@ -78,7 +78,7 @@ def get_test_script_reference(script: str, ext: str) -> str:
         logging.debug("No '.py' found in the script.")
         return ""
 
-    return script[start_position:end_position + 3]
+    return script[start_position:end_position + len(ext)]
 
 
 def find_test_case_name(string: str) -> str:  # Can be joined with get_full_http_name, one function for file name
@@ -126,13 +126,10 @@ def categorise_protocols_by_setup(test_automation_dir: Path, root: Et.Element, e
 
         file_text = path.read_text(encoding="UTF-8")
         test_type = select_name_of_test_type(file_text)
-        test_case_list = protocols_by_setup_name.get(test_type, [])
-        test_case_list.append(element)
-        protocols_by_setup_name[test_type] = test_case_list
+        protocols_by_setup_name[test_type].append(element)
 
     if len(protocols_by_setup_name) == 1 and protocols_by_setup_name["unknown"]:
         logger.error("Files consists only of 'unknown' test type, cancelling !!!")
-        remove_empty_folder()
         sys.exit(1)
     return protocols_by_setup_name
 
