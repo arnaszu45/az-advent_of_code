@@ -90,8 +90,8 @@ def get_deletions_from_git_log(commit_log: str) -> str:
     return match.group()
 
 
-def get_commit_info(git_repo: Path) -> list:
-    all_commits_data = []
+def get_commit_info(git_repo: Path) -> dict:
+    all_commits_data = {}
     commits = get_commits(git_repo)
     for commit_hash in commits:
         full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat"], shell=True,
@@ -106,7 +106,7 @@ def get_commit_info(git_repo: Path) -> list:
                 "Deletions: ": get_deletions_from_git_log(full_info_of_commit)
             }
         }
-        all_commits_data.append(commit_data)
+        all_commits_data.update(commit_data)
 
     return all_commits_data
 
