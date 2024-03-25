@@ -2,28 +2,24 @@ import logging
 import argparse
 import subprocess
 from pathlib import Path
-import os
 import sys
 import re
-import json
 
 
-def check_git_repository(git_repo: Path):
+def is_git_repo(git_repo: Path):
     """Takes directory name and checks if it's Git repository"""
 
     if not git_repo.is_dir():
         logger.error(f"{git_repo} is not valid directory")
-        sys.exit(1)
 
-    with open(os.devnull, "w") as d:
-        result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"], stdout=d, stderr=d)
-        if result.returncode != 0:
-            logger.error(f"Error: {git_repo} is not a git repository.")
-            sys.exit(1)
+    result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"])
+    if result.returncode != 0:
+        logger.error(f"Error: {git_repo} is not a git repository.")
+    return "Given repository is valid"
 
 
-def get_commits(git_repo: Path) -> list[str]:
-    """Collects all commit names from given Git repository and put them into list"""  # Correct description??
+def get_commits(git_repo: Path) -> list[str]:  # here text = true must, otherwise it returns bytes
+    """Collects all commit hashes from given Git repository and put them into list"""
 
     commits = []
     git_log_output = subprocess.run(["git", "log"], shell=True, capture_output=True, text=True,
@@ -31,7 +27,11 @@ def get_commits(git_repo: Path) -> list[str]:
     lines = git_log_output.splitlines()
     for line in lines:
         if line.startswith("commit"):
-            single_commit = line.split()[1]
+            line_parts = len(line.split(" "))
+            if line_parts != 2:
+                logger.warning(f"Commit line consists not of 2 parts -> {line}")
+                continue
+            single_commit = line.split(" ")[1]
             commits.append(single_commit)
     return commits
 
@@ -43,8 +43,7 @@ def get_author_from_git_log(commit_log: str) -> str:
     if match is None:
         logger.warning("Could not find Author in commit log")
         return ""
-    else:
-        return match.group(1)
+    return match.group(1).strip()
 
 
 def get_date_from_git_log(commit_log: str) -> str:
@@ -54,36 +53,36 @@ def get_date_from_git_log(commit_log: str) -> str:
     if match is None:
         logger.warning("Could not find Date in commit log")
         return ""
-    else:
-        return match.group(1)
+    return match.group(1).strip()
 
 
-def get_message_from_git_log(commit_name: str) -> str:  # Different approach than other two
-    message = subprocess.run(["git", "show", "-s", "--format=%B", commit_name], shell=True, capture_output=True,
+def get_message_from_git_log(commit_hash: str) -> str:
+    message = subprocess.run(["git", "show", "-s", "--format=%B", commit_hash], shell=True, capture_output=True,
                              text=True, encoding="UTF-8").stdout
-    return message
+    return message.strip()
 
 
-def get_file_names_from_git_log(commit_name: str) -> str:
-    file_name = subprocess.run(["git", "show", "--pretty=""", "--name-only", commit_name],
+def get_file_names_from_git_log(commit_hash: str) -> str:
+    file_name = subprocess.run(["git", "show", "--pretty=""", "--name-only", commit_hash],
                                shell=True, capture_output=True, text=True, encoding="UTF-8").stdout
     return file_name
 
 
 def get_commit_info(git_repo: Path):
-    list_of_commits = get_commits(git_repo)
-    for single_commit in list_of_commits:
+    commits = get_commits(git_repo)
+    for single_commit in commits:
         full_info_of_commit = subprocess.run(["git", "show", single_commit, "--stat"], shell=True, capture_output=True,
                                             encoding="UTF-8").stdout
-        author = get_author_from_git_log(full_info_of_commit).strip()
-        date = get_date_from_git_log(full_info_of_commit).strip()
-        message = get_message_from_git_log(single_commit).strip()
+        author = get_author_from_git_log(full_info_of_commit)
+        date = get_date_from_git_log(full_info_of_commit)
+        message = get_message_from_git_log(single_commit)
         changed_files = get_file_names_from_git_log(single_commit)
 
         print(full_info_of_commit)
         print(f"{single_commit}\n{author}\n{date}\n{message}\n{changed_files}\n")
 
         break
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -109,7 +108,9 @@ def configure_logger(filename: str) -> logging.Logger:
 
 def main(logger: logging.Logger):
     logger.info(" >>> Running the script\n")
-    check_git_repository(args.git_repository)
+    git_repository = is_git_repo(args.git_repository)
+    if git_repository != "Given repository is valid":
+        sys.exit(1)
     get_commit_info(args.git_repository)
     logger.info(" >>> Done")
 
