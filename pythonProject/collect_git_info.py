@@ -16,9 +16,10 @@ def is_git_repo(git_repo: Path) -> bool:
         logger.error(f"{git_repo} is not valid directory")
         return False
 
-    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"])
+    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True)
+
     if result.returncode != 0:
-        logger.error(f"Error: {git_repo} is not a git repository.")
+        logger.error(f"{git_repo} is not a git repository.")
         return False
 
     return True
@@ -29,7 +30,7 @@ def get_commits(git_repo: Path) -> list[str]:
 
     commits = []
 
-    git_log_message = subprocess.run(["git", "log"], shell=True, capture_output=True, text=True, cwd=git_repo)
+    git_log_message = subprocess.run(["git", "log"],  capture_output=True, text=True, cwd=git_repo)
     if git_log_message.returncode != 0:
         logger.error("Command does not exists, please check the subprocess running command")
         return []
@@ -66,7 +67,9 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
 
 
 def get_message_from_git_log(commit_hash: str) -> str:
-    message = subprocess.run(["git", "show", "-s", "--format=%B", commit_hash], shell=True, capture_output=True,
+    """Gets the commit message for a given commit hash"""
+
+    message = subprocess.run(["git", "show", "-s", "--format=%B", commit_hash], capture_output=True,
                              text=True, encoding="UTF-8")
     if message.returncode != 0:
         logger.error("Command does not exists, please check the subprocess running command")
@@ -78,6 +81,8 @@ def get_message_from_git_log(commit_hash: str) -> str:
 
 
 def get_file_names_from_git_log(commit_hash: str) -> list[str]:
+    """Gets the list of file names changed in a commit specified by its hash"""
+
     file_names = subprocess.run(["git", "show", "--pretty=""", "--name-only", commit_hash],
                                 capture_output=True, text=True, encoding="UTF-8")
     if file_names.returncode != 0:
