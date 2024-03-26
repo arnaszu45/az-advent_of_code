@@ -7,55 +7,52 @@ import re
 import json
 
 
-def is_git_repo(git_repo: Path):
+def is_git_repo(git_repo: Path) -> bool:
     """Takes directory name and checks if it's Git repository"""
 
     if not git_repo.is_dir():
         logger.error(f"{git_repo} is not valid directory")
+        return False
 
     result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"])
     if result.returncode != 0:
         logger.error(f"Error: {git_repo} is not a git repository.")
+        return False
 
-    return "Given repository is valid"
+    return True
 
 
 def get_commits(git_repo: Path) -> list[str]:
     """Collects all commit hashes from given Git repository and put them into list"""
 
     commits = []
-    git_log_output = subprocess.run(["git", "log"], shell=True, capture_output=True, text=True,
-                                    cwd=git_repo).stdout
+    git_log_message = subprocess.run(["git", "log"], shell=True, capture_output=True, text=True, cwd=git_repo)
+    if git_log_message.returncode == 1:
+        logger.error("Command does not exists, please check the subprocess running command")
+        return []
+    git_log_output = git_log_message.stdout
     lines = git_log_output.splitlines()
     for line in lines:
-        if line.startswith("commit"):
-            line_parts = len(line.split(" "))
-            if line_parts != 2:
-                logger.warning(f"Commit line consists not of 2 parts -> {line}")
-                continue
-            single_commit = line.split(" ")[1]
-            commits.append(single_commit)
+        if not line.startswith("commit"):
+            continue
+        _, single_commit_hash, * _ = line.split(" ")  # Checked, commit hash is always 40 symbols
+        if len(single_commit_hash) != 40:
+            logger.error(f"Commit hash is broken")
+            continue
+        commits.append(single_commit_hash)
     return commits
 
 
-def get_author_from_git_log(commit_log: str) -> str:
-    """Finds and returns 'Author' from Git log message"""
+def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
+    """Finds and returns 'Author: ' or 'Date: ' from Git log message"""
 
-    match = re.search(r"Author: (.+)", commit_log)
+    match = re.search(r'Author: (?P<author>.*)\nDate: (?P<date>.*)', commit_log)
     if match is None:
-        logger.warning("Could not find Author in commit log")
-        return "No author"
-    return match.group(1).strip()
-
-
-def get_date_from_git_log(commit_log: str) -> str:
-    """Finds and returns 'Date' from Git log message"""
-
-    match = re.search(r"Date: (.+)", commit_log)
-    if match is None:
-        logger.warning("Could not find Date in commit log")
-        return "No date"
-    return match.group(1).strip()
+        logger.warning("Could not find author or date in log message")
+        return "No author", "No date"
+    author = match.group('author')
+    date = match.group('date')
+    return author.strip(), date.strip()
 
 
 def get_message_from_git_log(commit_hash: str) -> str:
@@ -64,7 +61,7 @@ def get_message_from_git_log(commit_hash: str) -> str:
     return message.strip()
 
 
-def get_file_names_from_git_log(commit_hash: str) -> list:
+def get_file_names_from_git_log(commit_hash: str) -> list[str]:
     file_names_output = subprocess.run(["git", "show", "--pretty=""", "--name-only", commit_hash],
                                        shell=True, capture_output=True, text=True, encoding="UTF-8").stdout
     file_names_list = file_names_output.strip().split('\n')
@@ -72,41 +69,37 @@ def get_file_names_from_git_log(commit_hash: str) -> list:
     return file_names_list
 
 
-def get_insertions_from_git_log(commit_log: str) -> str:
-    pattern = r"\d+.insertions\(\+\)"
-    match = re.search(pattern, commit_log)
-    if match is None:
-        logger.warning("Could not find any insertions in commit log")
-        return "0 insertions(+)"
-    return match.group()
+def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
+    """Finds and returns 'insertions(+): ' or 'deletions(-)' from Git log message"""
 
+    if pattern not in ["insertions", "deletions"]:
+        logger.error("Function get_insertion_or_deletion_from_git_log requires pattern to be 'insertions' or 'deletions'")
 
-def get_deletions_from_git_log(commit_log: str) -> str:
-    pattern = r"\d+.deletions\(\-\)"
-    match = re.search(pattern, commit_log)
+    match = re.search(rf"(\d+) {pattern}\(\W\)", commit_log)
     if match is None:
-        logger.warning("Could not find any deletions in commit log")
-        return "0 deletions(-)"
-    return match.group()
+        logger.warning(f"Could not find any {pattern} in commit log")
+        return 0
+    return int(match.group(1))
 
 
 def get_commit_info(git_repo: Path) -> dict:
     all_commits_data = {}
     commits = get_commits(git_repo)
+    if not commits:
+        return {}
     for commit_hash in commits:
         full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat"], shell=True,
                                              capture_output=True, encoding="UTF-8").stdout
+        author, date = get_author_and_date_from_git_log(full_info_of_commit)
         commit_data = {
-            f"Commit hash: {commit_hash}": {
-                "Author: ": get_author_from_git_log(full_info_of_commit),
-                "Date: ": get_date_from_git_log(full_info_of_commit),
+                "Author: ": author,
+                "Date: ": date,
                 "Message: ": get_message_from_git_log(commit_hash),
                 "Changed_files: ": get_file_names_from_git_log(commit_hash),
-                "Insertions: ": get_insertions_from_git_log(full_info_of_commit),
-                "Deletions: ": get_deletions_from_git_log(full_info_of_commit)
-            }
-        }
-        all_commits_data.update(commit_data)
+                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit, "insertions"),
+                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit, "deletions")
+                }
+        all_commits_data[f"Commit: {commit_hash}"] = commit_data
 
     return all_commits_data
 
@@ -143,9 +136,11 @@ def configure_logger(filename: str) -> logging.Logger:
 def main(logger: logging.Logger):
     logger.info(" >>> Running the script\n")
     git_repository = is_git_repo(args.git_repository)
-    if git_repository != "Given repository is valid":
-        sys.exit(1)  # Should here be logger or reman inside the function?
+    if git_repository is False:
+        sys.exit(1)
     commits_data = get_commit_info(args.git_repository)
+    if commits_data == {}:
+        sys.exit(1)
     create_json_file(commits_data, args.json_file)
     logger.info(" >>> Done")
 
