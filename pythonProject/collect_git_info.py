@@ -16,7 +16,7 @@ def is_git_repo(git_repo: Path) -> bool:
         logger.error(f"{git_repo} is not valid directory")
         return False
 
-    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True)
+    result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"], capture_output=True)
 
     if result.returncode != 0:
         logger.error(f"{git_repo} is not a git repository.")
@@ -80,19 +80,22 @@ def get_message_from_git_log(commit_hash: str) -> str:
     return message_output.strip()
 
 
-def get_file_names_from_git_log(commit_hash: str) -> list[str]:
+def get_file_names_from_git_log(commit_log: str) -> list[str]:
     """Gets the list of file names changed in a commit specified by its hash"""
 
-    file_names = subprocess.run(["git", "show", "--pretty=""", "--name-only", commit_hash],
-                                capture_output=True, text=True, encoding="UTF-8")
-    if file_names.returncode != 0:
-        logger.error("Command does not exists, please check the subprocess running command")
-        return []
+    file_names = []
+    for line in commit_log.splitlines():
+        if "|" not in line:
+            continue
 
-    file_names_output = file_names.stdout
-    file_names_list = file_names_output.strip().split('\n')
+        index = line.find("|")
+        if index == -1:
+            continue
 
-    return file_names_list
+        file_name = line[:index].strip()
+        file_names.append(file_name)
+
+    return file_names
 
 
 def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
@@ -141,7 +144,7 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
                 "Author: ": author,
                 "Date: ": date,
                 "Message: ": get_message_from_git_log(commit_hash),
-                "Changed_files: ": get_file_names_from_git_log(commit_hash),
+                "Changed_files: ": get_file_names_from_git_log(full_info_of_commit_output),
                 "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertions"),
                 "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletions")
                 }
