@@ -32,7 +32,7 @@ def get_commits(git_repo: Path) -> list[str]:
 
     git_log_message = subprocess.run(["git", "log"],  capture_output=True, text=True, cwd=git_repo)
     if git_log_message.returncode != 0:
-        logger.error("Command does not exists, please check the subprocess running command")
+        logger.error(f"Error occurred running subprocess:\n{git_log_message.stderr}")
         return []
 
     git_log_output = git_log_message.stdout
@@ -43,7 +43,7 @@ def get_commits(git_repo: Path) -> list[str]:
 
         _, single_commit_hash, * _ = line.split(" ")
         if len(single_commit_hash) != 40:  # Checked, commit hash is always 40 symbols
-            logger.error(f"Commit hash is broken")
+            logger.error(f"Expected commit hash to be 40 symbols, got {len(single_commit_hash)}")
             continue
 
         commits.append(single_commit_hash)
@@ -66,28 +66,11 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     return author.strip(), date.strip()
 
 
-def get_message_from_git_log(commit_hash: str) -> str:
-    """Gets the commit message for a given commit hash"""
-
-    message = subprocess.run(["git", "show", "-s", "--format=%B", commit_hash], capture_output=True,
-                             text=True, encoding="UTF-8")
-    if message.returncode != 0:
-        logger.error("Command does not exists, please check the subprocess running command")
-        return ""
-
-    message_output = message.stdout
-
-    return message_output.strip()
-
-
 def get_file_names_from_git_log(commit_log: str) -> list[str]:
     """Gets the list of file names changed in a commit specified by its hash"""
 
     file_names = []
     for line in commit_log.splitlines():
-        if "|" not in line:
-            continue
-
         index = line.find("|")
         if index == -1:
             continue
@@ -98,7 +81,29 @@ def get_file_names_from_git_log(commit_log: str) -> list[str]:
     return file_names
 
 
-def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
+def get_message_from_git_log(commit_log: str, date: str) -> str:
+    """Gets the commit message for a given commit log"""
+
+    if not get_file_names_from_git_log(commit_log):
+        logger.warning("There is no changed files in log message")
+        return ""
+
+    first_file = get_file_names_from_git_log(commit_log)[0]
+
+    date_index = commit_log.find(date)
+    if date_index == -1:
+        return ""
+
+    file_index = commit_log.find(first_file)
+    if file_index == -1:
+        return ""
+
+    comment = commit_log[date_index + len(date):file_index].strip()
+
+    return comment
+
+
+def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str, commit_hash: str) -> int:
     """Finds and returns 'insertions(+): ' or 'deletions(-)' from Git log message"""
     expected_patterns = ["insertions", "deletions"]
 
@@ -109,7 +114,7 @@ def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int
     match = re.search(rf"(?P<{pattern}>\d+) {pattern}\(\W\)", commit_log)
 
     if match is None:
-        logger.warning(f"Could not find any {pattern} in commit log")
+        logger.warning(f"Could not find any {pattern} in commit {commit_hash} log")
         return 0
 
     if match.group(pattern) is None:
@@ -143,10 +148,12 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
         commit_data: CommitData = {
                 "Author: ": author,
                 "Date: ": date,
-                "Message: ": get_message_from_git_log(commit_hash),
+                "Message: ": get_message_from_git_log(full_info_of_commit_output, date),
                 "Changed_files: ": get_file_names_from_git_log(full_info_of_commit_output),
-                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertions"),
-                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletions")
+                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertions",
+                                                                       commit_hash),
+                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletions",
+                                                                      commit_hash)
                 }
 
         all_commits_data[f"Commit: {commit_hash}"] = commit_data
