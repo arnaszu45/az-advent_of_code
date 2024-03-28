@@ -8,6 +8,8 @@ import json
 import time
 from typing import Dict
 
+logger = logging.getLogger(__name__)
+
 
 def is_git_repo(git_repo: Path) -> bool:
     """Takes directory name and checks if it's Git repository"""
@@ -16,7 +18,7 @@ def is_git_repo(git_repo: Path) -> bool:
         logger.error(f"{git_repo} is not valid directory")
         return False
 
-    result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"], capture_output=True)
+    result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"], capture_output=True, cwd=git_repo)
 
     if result.returncode != 0:
         logger.error(f"{git_repo} is not a git repository.")
@@ -30,9 +32,10 @@ def get_commits(git_repo: Path) -> list[str]:
 
     commits = []
 
-    git_log_message = subprocess.run(["git", "log"],  capture_output=True, text=True, cwd=git_repo)
+    git_log_message = subprocess.run(["git", "log"], capture_output=True, text=True, cwd=git_repo,
+                                     encoding="UTF-8")
     if git_log_message.returncode != 0:
-        logger.error(f"Error occurred running subprocess:\n{git_log_message.stderr}")
+        logger.error(f"Error occurred running subprocess:\n{git_log_message.args}\n{git_log_message.stderr}\n")
         return []
 
     git_log_output = git_log_message.stdout
@@ -67,28 +70,56 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
 
 
 def get_file_names_from_git_log(commit_log: str) -> list[str]:
-    """Gets the list of file names changed in a commit specified by its hash"""
+    """Gets the list of file names changed in a commit from Git log"""
 
     file_names = []
     for line in commit_log.splitlines():
+        if "|" not in line:
+            continue
+
         index = line.find("|")
         if index == -1:
             continue
 
-        file_name = line[:index].strip()
+        if "=>" not in line:
+            file_name = line[:index].strip()
+        else:
+            renamed_file_name = line[line.index("=>")+2:line.index("}")]
+            file_name = renamed_file_name.strip()
+
         file_names.append(file_name)
 
     return file_names
 
 
+def get_renamed_files_from_git_log(commit_log: str) -> list[str]:
+    """Gets the list of file names renamed in a commit from Git log"""
+
+    renamed_files = []
+
+    if "=>" not in commit_log:
+        return []
+
+    for line in commit_log.splitlines():
+        if "=>" not in line:
+            continue
+
+        file_names = line[line.index("{")+1:line.index("}")]
+        renamed_files.append(file_names)
+
+    return renamed_files
+
+
 def get_message_from_git_log(commit_log: str, date: str) -> str:
     """Gets the commit message for a given commit log"""
 
-    if not get_file_names_from_git_log(commit_log):
+    commit_files = get_file_names_from_git_log(commit_log)
+
+    if not commit_files:
         logger.warning("There is no changed files in log message")
         return ""
 
-    first_file = get_file_names_from_git_log(commit_log)[0]
+    first_file = commit_files[0]
 
     date_index = commit_log.find(date)
     if date_index == -1:
@@ -103,18 +134,17 @@ def get_message_from_git_log(commit_log: str, date: str) -> str:
     return comment
 
 
-def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str, commit_hash: str) -> int:
+def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
     """Finds and returns 'insertions(+): ' or 'deletions(-)' from Git log message"""
-    expected_patterns = ["insertions", "deletions"]
+    expected_patterns = ["insertion", "deletion"]
 
     if pattern not in expected_patterns:
         logger.error("Function  requires pattern to be 'insertions' or 'deletions'")
         raise ValueError("Invalid pattern provided. Pattern must be 'insertions' or 'deletions'.")
 
-    match = re.search(rf"(?P<{pattern}>\d+) {pattern}\(\W\)", commit_log)
+    match = re.search(rf"(?P<{pattern}>\d+) {pattern}(s)?\(\W\)", commit_log)
 
     if match is None:
-        logger.warning(f"Could not find any {pattern} in commit {commit_hash} log")
         return 0
 
     if match.group(pattern) is None:
@@ -136,34 +166,34 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
         return {}
 
     for commit_hash in commits:
-        full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat"],
-                                             capture_output=True, encoding="UTF-8")
+        full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat", "--date=iso8601"],
+                                             capture_output=True, encoding="UTF-8", cwd=git_repo)
         if full_info_of_commit.returncode != 0:
-            logger.error("Command does not exists, please check the subprocess running command")
+            logger.error(f"Error occurred running subprocess:\n{full_info_of_commit.args}\n{full_info_of_commit.stderr}\n")
             return {}
 
         full_info_of_commit_output = full_info_of_commit.stdout
 
         author, date = get_author_and_date_from_git_log(full_info_of_commit_output)
         commit_data: CommitData = {
+                "Commit: ": commit_hash,
                 "Author: ": author,
                 "Date: ": date,
                 "Message: ": get_message_from_git_log(full_info_of_commit_output, date),
+                "Renamed_files: ": get_renamed_files_from_git_log(full_info_of_commit_output),
                 "Changed_files: ": get_file_names_from_git_log(full_info_of_commit_output),
-                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertions",
-                                                                       commit_hash),
-                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletions",
-                                                                      commit_hash)
+                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertion"),
+                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletion")
                 }
 
-        all_commits_data[f"Commit: {commit_hash}"] = commit_data
+        all_commits_data[f"Commit - {commit_hash}"] = commit_data
 
     return all_commits_data
 
 
 def create_json_file(data, json_file_name):
-    with open(json_file_name, "w") as file:
-        json.dump(data, file, indent=4)
+    with open(json_file_name, "w", encoding="UTF-8") as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
 
 
 def parse_args() -> argparse.Namespace:
