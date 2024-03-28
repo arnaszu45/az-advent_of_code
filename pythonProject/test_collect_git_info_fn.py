@@ -215,6 +215,25 @@ Date:   2024-02-19 14:57:17 +0200
     assert result == expected_result
 
 
+def test_get_message_from_git_log_renamed_files():
+    string = """
+commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
+Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+Date:   2024-03-14 13:46:48 +0200
+
+    wip: uppaded handling bad folders errors
+
+ .../{training_task.py => find_pattern_usage.py}    |  0
+ .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
+ 2 files changed, 19 insertions(+), 9 deletions(-)
+        """
+    _, date = cg.get_author_and_date_from_git_log(string)
+    print(date)
+    result = cg.get_message_from_git_log(string, date)
+    expected_result = "wip: uppaded handling bad folders errors"
+    assert result == expected_result
+
+
 def test_get_insertion_or_deletion_from_git_log():
     string = """
     commit 50c76e327549dd683d5a2af8310433589757725f
@@ -270,6 +289,39 @@ Date:   2024-02-19 15:03:24 +0200
     expected_deletions = 1
     assert insertions == expected_insertions
     assert deletions == expected_deletions
+
+
+def test_get_renamed_files_from_git_log():
+    string = """
+    commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
+    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+    Date:   2024-03-14 13:46:48 +0200
+
+        wip: uppaded handling bad folders errors
+
+     .../{training_task.py => find_pattern_usage.py}    |  0
+     .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
+     2 files changed, 19 insertions(+), 9 deletions(-)
+        """
+    result = cg.get_renamed_files_from_git_log(string)
+    expected_result = ["training_task.py => find_pattern_usage.py", "training_task2.py => sort_protocols.py"]
+    assert result == expected_result
+
+
+def test_get_renamed_files_from_git_log_negative():
+    string = """
+        commit e78c1fe49557fb8c713790f750b710c740bfb626
+    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+    Date:   2024-02-19 15:03:24 +0200
+
+        Commiting not completely done advent of code part 2
+
+     pythonProject/advent_of_code_2.py | 2 +-
+     1 file changed, 1 insertion(+), 1 deletion(-)
+    """
+    result = cg.get_renamed_files_from_git_log(string)
+    expected_result = []
+    assert result == expected_result
 
 
 if __name__ == "__main__":

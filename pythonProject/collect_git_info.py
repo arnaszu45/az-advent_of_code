@@ -1,5 +1,6 @@
 import logging
 import argparse
+import os
 import subprocess
 from pathlib import Path
 import sys
@@ -18,10 +19,10 @@ def is_git_repo(git_repo: Path) -> bool:
         logger.error(f"{git_repo} is not valid directory")
         return False
 
-    result = subprocess.run(["git", "-C", str(git_repo), "rev-parse"], capture_output=True, cwd=git_repo)
+    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True, cwd=git_repo)
 
     if result.returncode != 0:
-        logger.error(f"{git_repo} is not a git repository.")
+        logger.error(f"{git_repo} is not a git repository: \n{result.args}\n{result.stderr}\n")
         return False
 
     return True
@@ -110,16 +111,27 @@ def get_renamed_files_from_git_log(commit_log: str) -> list[str]:
     return renamed_files
 
 
+def get_renamed_file_line(commit_log: str) -> str:
+    """Used in specific cases, when files are renamed in Git commits. Gets a line of renamed files"""
+
+    for line in commit_log.splitlines():
+        if "=>" and "|" not in line:
+            continue
+        return line
+    return ""
+
+
 def get_message_from_git_log(commit_log: str, date: str) -> str:
     """Gets the commit message for a given commit log"""
 
-    commit_files = get_file_names_from_git_log(commit_log)
+    if "=>" and "|" in commit_log:
+        first_file = get_renamed_file_line(commit_log)
+    else:
+        commit_files = get_file_names_from_git_log(commit_log)
+        if not commit_files:
+            return ""
 
-    if not commit_files:
-        logger.warning("There is no changed files in log message")
-        return ""
-
-    first_file = commit_files[0]
+        first_file = commit_files[0]
 
     date_index = commit_log.find(date)
     if date_index == -1:
@@ -239,7 +251,7 @@ def main(logger: logging.Logger):
     except PermissionError:
         logger.error(f"User does not have permission to write in {args.json_file}")
         sys.exit()
-    logger.info(" >>> Done")
+    logger.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
 
 
 if __name__ == "__main__":
