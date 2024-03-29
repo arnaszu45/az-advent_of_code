@@ -23,14 +23,12 @@ def test_get_commits():
 def test_get_commits_empty_repo():
     git_repo = Path("../empty_repo")
     result = cg.get_commits(git_repo)
-    print(result)
-
+    assert result == []
 
 def test_get_commits_not_git_repo():
     git_repo = Path("../../../arnas.zuklija/Downloads/TestAutomation")
     result = cg.get_commits(git_repo)
-    print(result)
-
+    assert result == []
 
 def test_get_author_and_date_from_git_log():
     string = """
@@ -228,7 +226,6 @@ Date:   2024-03-14 13:46:48 +0200
  2 files changed, 19 insertions(+), 9 deletions(-)
         """
     _, date = cg.get_author_and_date_from_git_log(string)
-    print(date)
     result = cg.get_message_from_git_log(string, date)
     expected_result = "wip: uppaded handling bad folders errors"
     assert result == expected_result

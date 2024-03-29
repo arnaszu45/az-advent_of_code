@@ -57,6 +57,7 @@ def get_commits(git_repo: Path) -> list[str]:
 def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     """Finds and returns 'Author: ' or 'Date: ' from Git log message"""
 
+    print(commit_log)
     author_group = "author"
     date_group = "date"
     match = re.search(fr'Author: (?P<{author_group}>.*)\nDate: (?P<{date_group}>.*)', commit_log)
@@ -84,6 +85,11 @@ def get_file_names_from_git_log(commit_log: str) -> list[str]:
 
         if "=>" not in line:
             file_name = line[:index].strip()
+
+        elif "}" not in line:
+            renamed_file_name = line[line.index("=>") + 2:line.index("|")]
+            file_name = renamed_file_name.strip()
+
         else:
             renamed_file_name = line[line.index("=>")+2:line.index("}")]
             file_name = renamed_file_name.strip()
@@ -95,7 +101,6 @@ def get_file_names_from_git_log(commit_log: str) -> list[str]:
 
 def get_renamed_files_from_git_log(commit_log: str) -> list[str]:
     """Gets the list of file names renamed in a commit from Git log"""
-
     renamed_files = []
 
     if "=>" not in commit_log:
@@ -105,7 +110,15 @@ def get_renamed_files_from_git_log(commit_log: str) -> list[str]:
         if "=>" not in line:
             continue
 
-        file_names = line[line.index("{")+1:line.index("}")]
+        if "{" in line:
+            file_names = line[line.index("{")+1:line.index("}")]
+
+        elif "}" in line:
+            file_names = line[line.index("=>")+3:line.index("}")]
+
+        else:
+            renamed_file = line[line.index("=>") + 3:line.index("|")]
+            file_names = renamed_file.strip()
         renamed_files.append(file_names)
 
     return renamed_files
@@ -121,28 +134,31 @@ def get_renamed_file_line(commit_log: str) -> str:
 
 
 def get_message_from_git_log(commit_log: str, date: str) -> str:
-    """Gets the commit message for a given commit log"""
-
-    if "=>" and "|" in commit_log:
-        first_file = get_renamed_file_line(commit_log)
-    else:
-        commit_files = get_file_names_from_git_log(commit_log)
-        if not commit_files:
-            return ""
-
-        first_file = commit_files[0]
-
     date_index = commit_log.find(date)
     if date_index == -1:
         return ""
 
-    file_index = commit_log.find(first_file)
-    if file_index == -1:
+    if "=>" not in commit_log and "|" not in commit_log:
+        message = commit_log[date_index + len(date):].strip()
+        return message
+
+    commit_files = get_file_names_from_git_log(commit_log)
+    if not commit_files:
         return ""
 
-    comment = commit_log[date_index + len(date):file_index].strip()
+    first_changed_file = get_file_names_from_git_log(commit_log)[0]
 
-    return comment
+    if "=>" in commit_log and "|" in commit_log:
+        renamed_file = get_renamed_file_line(commit_log)
+
+        if commit_log.index(renamed_file) < commit_log.index(first_changed_file):
+            message = commit_log[date_index + len(date):commit_log.index(renamed_file)].strip()
+        else:
+            message = commit_log[date_index + len(date):commit_log.index(first_changed_file)].strip()
+        return message
+
+    message = commit_log[date_index + len(date):commit_log.index(first_changed_file)].strip()
+    return message
 
 
 def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
@@ -177,7 +193,7 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
         return {}
 
     for commit_hash in commits:
-        full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat", "--date=iso8601"],
+        full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat=300", "--date=iso8601"],
                                              capture_output=True, encoding="UTF-8", cwd=git_repo)
         if full_info_of_commit.returncode != 0:
             logger.error(f"Error occurred running subprocess:\n{full_info_of_commit.args}\n{full_info_of_commit.stderr}\n")
