@@ -115,9 +115,8 @@ def get_renamed_file_line(commit_log: str) -> str:
     """Used in specific cases, when files are renamed in Git commits. Gets a line of renamed files"""
 
     for line in commit_log.splitlines():
-        if "=>" and "|" not in line:
-            continue
-        return line
+        if "=>" in line and "|" in line:
+            return line
     return ""
 
 

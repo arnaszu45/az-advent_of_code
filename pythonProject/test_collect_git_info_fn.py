@@ -324,5 +324,45 @@ def test_get_renamed_files_from_git_log_negative():
     assert result == expected_result
 
 
+def test_get_renamed_file_line():
+    string = """
+    commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
+    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+    Date:   2024-03-14 13:46:48 +0200
+
+        wip: uppaded handling bad folders errors
+
+     .../{training_task.py => find_pattern_usage.py}    |  0
+     .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
+     2 files changed, 19 insertions(+), 9 deletions(-)
+            """
+    result = cg.get_renamed_file_line(string)
+    expected_result = "     .../{training_task.py => find_pattern_usage.py}    |  0"
+    assert result == expected_result
+
+
+def test_get_renamed_file_line_empty_string():
+    string = ""
+    result = cg.get_renamed_file_line(string)
+    expected_result = ""
+    assert result == expected_result
+
+
+def test_get_renamed_file_line_no_renamed_files():
+    string = """
+        commit e78c1fe49557fb8c713790f750b710c740bfb626
+    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+    Date:   2024-02-19 15:03:24 +0200
+
+        Commiting not completely done advent of code part 2
+
+     pythonProject/advent_of_code_2.py | 2 +-
+     1 file changed, 1 insertion(+), 1 deletion(-)
+            """
+    result = cg.get_renamed_file_line(string)
+    expected_result = ""
+    assert result == expected_result
+
+
 if __name__ == "__main__":
     logger = cg.configure_logger("tester_log.log")
