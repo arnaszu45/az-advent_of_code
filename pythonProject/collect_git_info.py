@@ -16,13 +16,13 @@ def is_git_repo(git_repo: Path) -> bool:
     """Takes directory name and checks if it's Git repository"""
 
     if not git_repo.is_dir():
-        logger.error(f"{git_repo} is not valid directory")
+        logger.error(f"{git_repo} is not a directory")
         return False
 
     result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True, cwd=git_repo)
 
     if result.returncode != 0:
-        logger.error(f"{git_repo} is not a git repository: \n{result.args}\n{result.stderr}\n")
+        logger.error(f"{git_repo} is not a git repository: \n{' '.join(result.args)}\n{result.stderr}\n")
         return False
 
     return True
@@ -36,7 +36,7 @@ def get_commits(git_repo: Path) -> list[str]:
     git_log_message = subprocess.run(["git", "log"], capture_output=True, text=True, cwd=git_repo,
                                      encoding="UTF-8")
     if git_log_message.returncode != 0:
-        logger.error(f"Error occurred running subprocess:\n{git_log_message.args}\n{git_log_message.stderr}\n")
+        logger.error(f"Error occurred running subprocess:\n{' '.join(git_log_message.args)}\n{git_log_message.stderr}\n")
         return []
 
     git_log_output = git_log_message.stdout
@@ -62,7 +62,7 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     match = re.search(fr'Author: (?P<{author_group}>.*)\nDate: (?P<{date_group}>.*)', commit_log)
 
     if match is None:
-        logger.warning(f"Could not find {author_group} or {date_group} in log message")
+        logger.error(f"Could not find {author_group} or {date_group} in log message")
         return "", ""
 
     author = match.group(author_group)
@@ -71,12 +71,23 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     return author.strip(), date.strip()
 
 
-def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, list]:
-    """Gets the list of file names changed in a commit from Git log"""
+def process_renamed_string(line: str) -> tuple[str, str]:
+    """Process the renamed file line, returns full old and new file names"""
 
-    modified_files = []
-    renamed_files = []
+    # NOTE: Pattern used for simplifying complex renamed or modified file path into two paths.
+    pattern = r'{(.*?)\s*=>\s*(.*?)}'
+    old_file, new_file = re.sub(pattern, r'\1', line), re.sub(pattern, r'\2', line)
+    return old_file, new_file
+
+
+def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, dict[str: str]]:
+    """Gets the list of modified file names, old and new renamed file names and the first modified file name"""
+
+    # NOTE: Returns only modified and renamed files, added and removed files cannot be indicated with 'git show'.
+    # NOTE: 'first_changed_file' will be used to extract commit message.
     first_changed_file = ""
+    modified_files = []
+    renamed_files = {}
 
     for line in commit_log.splitlines():
         if "|" not in line:
@@ -86,16 +97,24 @@ def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, li
             first_changed_file = line.strip()
 
         cropped_line = line[:line.index("|")].strip()
-        if "{" in line and "=>" in line and " 0" in line:
-            renamed_files.append(cropped_line)
 
+        # NOTE: "{}", "=>" indicates, that file is renamed, "0" indicates, that it wasn't modified
+        if "{" in line and "=>" in line and " 0" in line:
+            old_file, new_file = process_renamed_string(cropped_line)
+            renamed_files["new_file_name"] = new_file
+            renamed_files["old_file_name"] = old_file
+
+        # NOTE: "{}", "=>" indicates, that file is renamed, keeping the new file
+        elif "{" in line and "=>" in line:
+            _, new_file = process_renamed_string(cropped_line)
+            modified_files.append(new_file)
         else:
             modified_files.append(cropped_line)
 
     return first_changed_file, modified_files, renamed_files
 
 
-def get_message_from_git_log(commit_log: str, date: str, first_commit_file_index: str) -> str:
+def get_message_from_git_log(commit_log: str, date: str, first_commit_file: str) -> str:
     """Gets the commit message - text between date and first changed file"""
 
     if not date:
@@ -105,11 +124,11 @@ def get_message_from_git_log(commit_log: str, date: str, first_commit_file_index
     if date_index == -1:
         return ""
 
-    if first_commit_file_index == "":
+    if first_commit_file == "":
         message = commit_log[date_index + len(date):]
         return message.strip()
 
-    message = commit_log[date_index + len(date):commit_log.index(first_commit_file_index)]
+    message = commit_log[date_index + len(date):commit_log.index(first_commit_file)]
 
     return message.strip()
 
@@ -119,7 +138,7 @@ def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int
     expected_patterns = ["insertion", "deletion"]
 
     if pattern not in expected_patterns:
-        logger.error("Function  requires pattern to be 'insertions' or 'deletions'")
+        logger.error(f"Function requires pattern to be {expected_patterns}")
         raise ValueError("Invalid pattern provided. Pattern must be 'insertions' or 'deletions'.")
 
     match = re.search(rf"(?P<{pattern}>\d+) {pattern}(s)?\(\W\)", commit_log)
@@ -134,7 +153,7 @@ def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int
 
 
 CommitHash = str
-CommitData = Dict[str, str | list[str] | int]
+CommitData = Dict[str, str | list[str] | int | dict[str : str]]
 
 
 def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
@@ -146,13 +165,15 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
         return {}
 
     for commit_hash in commits:
-        full_info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat=300", "--date=iso8601"],
-                                             capture_output=True, encoding="UTF-8", cwd=git_repo)
-        if full_info_of_commit.returncode != 0:
-            logger.error(f"Error occurred running subprocess:\n{full_info_of_commit.args}\n{full_info_of_commit.stderr}\n")
+        # NOTE: '--stat=350' parameter is used to extract whole path, in case it's very long.
+        # NOTE: '--date=iso8601' parameter is used to set date formatting, instead using default format.
+        info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat=350", "--date=iso8601"],
+                                        capture_output=True, encoding="UTF-8", cwd=git_repo)
+        if info_of_commit.returncode != 0:
+            logger.error(f"Error occurred running subprocess:\n{' '.join(info_of_commit.args)}\n{info_of_commit.stderr}\n")
             return {}
 
-        info_of_commit_output = full_info_of_commit.stdout
+        info_of_commit_output = info_of_commit.stdout
 
         author, date = get_author_and_date_from_git_log(info_of_commit_output)
         first_line, modified_files, renamed_files = get_changed_and_renamed_files_from_git_log(info_of_commit_output)
@@ -164,7 +185,7 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
                 "Author: ": author,
                 "Date: ": date,
                 "Message: ": get_message_from_git_log(info_of_commit_output, date, first_line),
-                "Renamed_files: ": renamed_files,
+                'Renamed_files: ': renamed_files,
                 "Changed_files: ": modified_files,
                 "Insertions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "insertion"),
                 "Deletions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "deletion")
@@ -219,9 +240,9 @@ def main(logger: logging.Logger):
 
     try:
         create_json_file(commits_data, args.json_file)
-    except PermissionError:
-        logger.error(f"User does not have permission to write in {args.json_file}")
-        sys.exit()
+    except Exception as e:
+        logger.error(f"Error occurred trying write {args.json_file}: \n{e}")
+        sys.exit(1)
 
     logger.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
 
