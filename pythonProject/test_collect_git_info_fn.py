@@ -250,5 +250,59 @@ def test_get_changed_and_renamed_files_from_git_log_variety():
                              "services/{test_cases => project_service_tmt}/unittests/test_data/testcases_process_test_cases_data.py"]
 
 
+def test_get_message_from_git_log():
+    string = """
+    commit 0b44f202c497c7efb8599567c92b052ee573afc3
+Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+Date:   2024-03-26 23:21:18 +0200
+
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
+
+ services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
+"""
+    _, date = cg.get_author_and_date_from_git_log(string)
+    first_file, _, _ = cg.get_changed_and_renamed_files_from_git_log(string)
+    message = cg.get_message_from_git_log(string, date, first_file)
+    expected_result = """# Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py"""
+    assert message == expected_result
+
+
+def test_get_message_from_git_log_no_file():
+    string = """
+    commit 0b44f202c497c7efb8599567c92b052ee573afc3
+Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+Date:   2024-03-26 23:21:18 +0200
+
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
+
+"""
+    _, date = cg.get_author_and_date_from_git_log(string)
+    first_file, _, _ = cg.get_changed_and_renamed_files_from_git_log(string)
+    message = cg.get_message_from_git_log(string, date, first_file)
+    expected_result = """# Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py"""
+    assert message == expected_result
+
+
+def test_get_message_from_git_log_no_date():
+    string = """
+    commit 0b44f202c497c7efb8599567c92b052ee573afc3
+    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
+        
+ services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
+"""
+    _, date = cg.get_author_and_date_from_git_log(string)
+    first_file, _, _ = cg.get_changed_and_renamed_files_from_git_log(string)
+    message = cg.get_message_from_git_log(string, date, first_file)
+    expected_result = ""
+    assert message == expected_result
+
+
 if __name__ == "__main__":
     logger = cg.configure_logger("tester_log.log")

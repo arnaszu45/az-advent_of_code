@@ -98,6 +98,9 @@ def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, li
 def get_message_from_git_log(commit_log: str, date: str, first_commit_file_index: str) -> str:
     """Gets the commit message - text between date and first changed file"""
 
+    if not date:
+        return ""
+
     date_index = commit_log.find(date)
     if date_index == -1:
         return ""
