@@ -3,13 +3,19 @@ import collect_git_info as cg
 
 
 def test_is_git_repo():
-    git_repo = Path("../../advent_of_code_az")
+    git_repo = Path("../../../arnas.zuklija/Downloads/git/")
     result = cg.is_git_repo(git_repo.resolve())
     assert result
 
 
+def test_is_git_repo_not_dir():
+    git_repo = Path("../../../arnas.zuklija/advent_of_code_az/pythonProject/collect_git_info.py")
+    result = cg.is_git_repo(git_repo.resolve())
+    assert not result
+
+
 def test_is_git_repo_negative():
-    git_repo = Path("../../../arnas.zuklija/Downloads/TestAutomation")
+    git_repo = Path("../../../arnas.zuklija/Desktop/")
     result = cg.is_git_repo(git_repo.resolve())
     assert not result
 
@@ -25,10 +31,12 @@ def test_get_commits_empty_repo():
     result = cg.get_commits(git_repo)
     assert result == []
 
+
 def test_get_commits_not_git_repo():
     git_repo = Path("../../../arnas.zuklija/Downloads/TestAutomation")
     result = cg.get_commits(git_repo)
     assert result == []
+
 
 def test_get_author_and_date_from_git_log():
     string = """
@@ -72,8 +80,9 @@ Date:   2024-03-26 23:21:18 +0200
  pythonProject/collect_git_info.py | 13 +++++++++----
  1 file changed, 9 insertions(+), 4 deletions(-)
     """
-    result = cg.get_author_and_date_from_git_log(string)
-    assert result == ("", "")
+    author, date = cg.get_author_and_date_from_git_log(string)
+    assert author == ""
+    assert date == ""
 
 
 def test_get_author_and_date_from_git_log_no_date():
@@ -88,147 +97,6 @@ Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
     """
     result = cg.get_author_and_date_from_git_log(string)
     assert result == ("", "")
-
-
-def test_get_file_names_from_git_log():
-    string = """
-commit abc7659fec568cd0275aca143001a7493b0527ed
-Author: Arnas Žuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-02-19 13:45:32 +0200
-
-    Commint code of advent of code first task
-
- pythonProject/.idea/.gitignore                     |    3 +
- .../.idea/inspectionProfiles/profiles_settings.xml |    6 +
- pythonProject/.idea/misc.xml                       |    7 +
- pythonProject/.idea/modules.xml                    |    8 +
- pythonProject/.idea/pythonProject.iml              |   10 +
- pythonProject/.idea/vcs.xml                        |    6 +
- pythonProject/advent_of_code_1.py                  |   21 +
- pythonProject/advent_of_code_1_input               | 1000 ++++++++++++++++++++
- 8 files changed, 1061 insertions(+)
-    """
-    result = cg.get_file_names_from_git_log(string)
-    expected_result = ["pythonProject/.idea/.gitignore", ".../.idea/inspectionProfiles/profiles_settings.xml",
-                       "pythonProject/.idea/misc.xml", "pythonProject/.idea/modules.xml",
-                       "pythonProject/.idea/pythonProject.iml", "pythonProject/.idea/vcs.xml",
-                       "pythonProject/advent_of_code_1.py", "pythonProject/advent_of_code_1_input"]
-    assert result == expected_result
-
-
-def test_get_file_names_from_git_log_negative():
-    string = """
-    commit 0b44f202c497c7efb8599567c92b052ee573afc3
-Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-
-    wip: fixing stylish
-
- pythonProject  13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-    """
-    result = cg.get_file_names_from_git_log(string)
-    assert not result
-
-
-def test_get_file_names_from_git_log_negative_no_name():
-    string = """
-    commit 0b44f202c497c7efb8599567c92b052ee573afc3
-Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-
-    wip: fixing stylish
-
- | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-    """
-    result = cg.get_file_names_from_git_log(string)
-    assert result == [""]
-
-
-def test_get_file_names_from_git_log_negative_renamed_files():
-    string = """
-commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
-Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-03-14 13:46:48 +0200
-
-    wip: uppaded handling bad folders errors
-
- .../{training_task.py => find_pattern_usage.py}    |  0
- .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
- 2 files changed, 19 insertions(+), 9 deletions(-)
-    """
-    result = cg.get_file_names_from_git_log(string)
-    expected_result = ["find_pattern_usage.py", "sort_protocols.py"]
-    assert result == expected_result
-
-
-def test_get_message_from_git_log():
-    string = """
-commit 50c76e327549dd683d5a2af8310433589757725f
-Author: Arnas Žuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-02-19 14:57:17 +0200
-
-    Committing not completely done advent of code part 2
-
- pythonProject/advent_of_code_2.py | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-        """
-    _, date = cg.get_author_and_date_from_git_log(string)
-    result = cg.get_message_from_git_log(string, date)
-    expected_result = "Committing not completely done advent of code part 2"
-    assert result == expected_result
-
-
-def test_get_message_from_git_log_multiple_lines():
-    string = """
-commit 50c76e327549dd683d5a2af8310433589757725f
-Author: Arnas Žuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-02-19 14:57:17 +0200
-
-    Committing not completely done advent of code part 2
-    wip: getting rid of necessary subprocess commands
-
- pythonProject/advent_of_code_2.py | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-        """
-    _, date = cg.get_author_and_date_from_git_log(string)
-    result = cg.get_message_from_git_log(string, date)
-    expected_result = ("Committing not completely done advent of code part 2\n    wip: getting rid of necessary "
-                       "subprocess commands")
-    assert result == expected_result
-
-
-def test_get_message_from_git_log_no_message():
-    string = """
-commit 50c76e327549dd683d5a2af8310433589757725f
-Author: Arnas Žuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-02-19 14:57:17 +0200
-
-
- pythonProject/advent_of_code_2.py | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-        """
-    _, date = cg.get_author_and_date_from_git_log(string)
-    result = cg.get_message_from_git_log(string, date)
-    expected_result = ""
-    assert result == expected_result
-
-
-def test_get_message_from_git_log_renamed_files():
-    string = """
-commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
-Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-Date:   2024-03-14 13:46:48 +0200
-
-    wip: uppaded handling bad folders errors
-
- .../{training_task.py => find_pattern_usage.py}    |  0
- .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
- 2 files changed, 19 insertions(+), 9 deletions(-)
-        """
-    _, date = cg.get_author_and_date_from_git_log(string)
-    result = cg.get_message_from_git_log(string, date)
-    expected_result = "wip: uppaded handling bad folders errors"
-    assert result == expected_result
 
 
 def test_get_insertion_or_deletion_from_git_log():
@@ -288,77 +156,98 @@ Date:   2024-02-19 15:03:24 +0200
     assert deletions == expected_deletions
 
 
-def test_get_renamed_files_from_git_log():
+def test_get_insertion_or_deletion_from_git_log_no_changes():
     string = """
-    commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
-    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-    Date:   2024-03-14 13:46:48 +0200
+    commit e78c1fe49557fb8c713790f750b710c740bfb626
+Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+Date:   2024-02-19 15:03:24 +0200
 
-        wip: uppaded handling bad folders errors
+    Commiting not completely done advent of code part 2
+"""
+    insertions = cg.get_insertion_or_deletion_from_git_log(string, 'insertion')
+    deletions = cg.get_insertion_or_deletion_from_git_log(string, 'deletion')
+    expected_insertions = 0
+    expected_deletions = 0
+    assert insertions == expected_insertions
+    assert deletions == expected_deletions
 
-     .../{training_task.py => find_pattern_usage.py}    |  0
-     .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
-     2 files changed, 19 insertions(+), 9 deletions(-)
-        """
-    result = cg.get_renamed_files_from_git_log(string)
-    expected_result = ["training_task.py => find_pattern_usage.py", "training_task2.py => sort_protocols.py"]
-    assert result == expected_result
 
-
-def test_get_renamed_files_from_git_log_negative():
+def test_get_changed_and_renamed_files_from_git_log():
     string = """
-        commit e78c1fe49557fb8c713790f750b710c740bfb626
-    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-    Date:   2024-02-19 15:03:24 +0200
+        Merge remote-tracking branch 'origin/develop' into update_testscript_38280
 
-        Commiting not completely done advent of code part 2
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
 
-     pythonProject/advent_of_code_2.py | 2 +-
-     1 file changed, 1 insertion(+), 1 deletion(-)
-    """
-    result = cg.get_renamed_files_from_git_log(string)
-    expected_result = []
-    assert result == expected_result
+     .azuredevops/pull_request_template.md                                                                                                                       |    18 +-
+    {services/test_cases/core/web => framework/lib/report_engine/validation}/__init__.py                                                                         |     0
+    framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite                                                                             |   Bin 0 -> 90112 bytes
+     968 files changed, 163570 insertions(+), 86903 deletions(-)
+"""
+    first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
+    assert first_changed_file_line == ".azuredevops/pull_request_template.md                                                                                                                       |    18 +-"
+    assert modified_files == [".azuredevops/pull_request_template.md",
+                              "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
+    assert renamed_files == ["{services/test_cases/core/web => framework/lib/report_engine/validation}/__init__.py"]
 
 
-def test_get_renamed_file_line():
+def test_get_changed_and_renamed_files_from_git_log_no_renamed():
     string = """
-    commit 94f31ac4bcecdc66c4bf1ba33028a7460cf11085
-    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-    Date:   2024-03-14 13:46:48 +0200
 
-        wip: uppaded handling bad folders errors
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
 
-     .../{training_task.py => find_pattern_usage.py}    |  0
-     .../{training_task2.py => sort_protocols.py}       | 28 +++++++++++++++-------
-     2 files changed, 19 insertions(+), 9 deletions(-)
-            """
-    result = cg.get_renamed_file_line(string)
-    expected_result = "     .../{training_task.py => find_pattern_usage.py}    |  0"
-    assert result == expected_result
-
-
-def test_get_renamed_file_line_empty_string():
-    string = ""
-    result = cg.get_renamed_file_line(string)
-    expected_result = ""
-    assert result == expected_result
+     .azuredevops/ => pull_request_template.md                                                                                                                       |    18 +-
+    framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite                                                                             |   Bin 0 -> 90112 bytes
+     968 files changed, 163570 insertions(+), 86903 deletions(-)
+"""
+    first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
+    assert first_changed_file_line == ".azuredevops/ => pull_request_template.md                                                                                                                       |    18 +-"
+    assert modified_files == [".azuredevops/ => pull_request_template.md",
+                              "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
+    assert renamed_files == []
 
 
-def test_get_renamed_file_line_no_renamed_files():
+def test_get_changed_and_renamed_files_from_git_log_no_files():
     string = """
-        commit e78c1fe49557fb8c713790f750b710c740bfb626
-    Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
-    Date:   2024-02-19 15:03:24 +0200
+    Date:   Fri Nov 25 13:12:29 2022 +0200
 
-        Commiting not completely done advent of code part 2
+        Merge remote-tracking branch 'origin/develop' into update_testscript_38280
 
-     pythonProject/advent_of_code_2.py | 2 +-
-     1 file changed, 1 insertion(+), 1 deletion(-)
-            """
-    result = cg.get_renamed_file_line(string)
-    expected_result = ""
-    assert result == expected_result
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
+"""
+    first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
+    assert first_changed_file_line == ""
+    assert modified_files == []
+    assert renamed_files == []
+
+
+def test_get_changed_and_renamed_files_from_git_log_variety():
+    string = """
+    Date:   Fri Nov 25 13:12:29 2022 +0200
+
+        Merge remote-tracking branch 'origin/develop' into update_testscript_38280
+
+        # Conflicts:
+        #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
+
+ services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
+ services/{test_cases => project_service_tmt}/run.py                                                                                |     34 +-
+ services/{test_cases => project_service_tmt}/unittests/common.py                                                                   |     0
+ services/{test_cases => project_service_tmt}/unittests/test_case_fields.py                                                         |    13 +-
+ services/{test_cases => project_service_tmt}/unittests/test_data/testcases_process_test_cases_data.py                              |     0
+ services/{test_cases => project_service_tmt}/unittests/test_extractor.py                                                           |    45 +-
+
+"""
+    first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
+    assert first_changed_file_line == "services/{test_cases => project_service_tmt}/requirements.txt                                                                       |     0"
+    assert modified_files == ["services/{test_cases => project_service_tmt}/run.py",
+                              "services/{test_cases => project_service_tmt}/unittests/test_case_fields.py",
+                              "services/{test_cases => project_service_tmt}/unittests/test_extractor.py"]
+    assert renamed_files == ["services/{test_cases => project_service_tmt}/requirements.txt",
+                             "services/{test_cases => project_service_tmt}/unittests/common.py",
+                             "services/{test_cases => project_service_tmt}/unittests/test_data/testcases_process_test_cases_data.py"]
 
 
 if __name__ == "__main__":

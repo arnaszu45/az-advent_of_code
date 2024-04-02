@@ -46,7 +46,7 @@ def get_commits(git_repo: Path) -> list[str]:
             continue
 
         _, single_commit_hash, * _ = line.split(" ")
-        if len(single_commit_hash) != 40:  # Checked, commit hash is always 40 symbols
+        if len(single_commit_hash) != 40:
             logger.error(f"Expected commit hash to be 40 symbols, got {len(single_commit_hash)}")
             continue
 
@@ -57,12 +57,12 @@ def get_commits(git_repo: Path) -> list[str]:
 def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     """Finds and returns 'Author: ' or 'Date: ' from Git log message"""
 
-    print(commit_log)
     author_group = "author"
     date_group = "date"
     match = re.search(fr'Author: (?P<{author_group}>.*)\nDate: (?P<{date_group}>.*)', commit_log)
+
     if match is None:
-        logger.warning("Could not find author or date in log message")
+        logger.warning(f"Could not find {author_group} or {date_group} in log message")
         return "", ""
 
     author = match.group(author_group)
@@ -71,94 +71,44 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     return author.strip(), date.strip()
 
 
-def get_file_names_from_git_log(commit_log: str) -> list[str]:
+def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, list]:
     """Gets the list of file names changed in a commit from Git log"""
 
-    file_names = []
+    modified_files = []
+    renamed_files = []
+    first_changed_file = ""
+
     for line in commit_log.splitlines():
         if "|" not in line:
             continue
 
-        index = line.find("|")
-        if index == -1:
-            continue
+        if not first_changed_file:
+            first_changed_file = line.strip()
 
-        if "=>" not in line:
-            file_name = line[:index].strip()
-
-        elif "}" not in line:
-            renamed_file_name = line[line.index("=>") + 2:line.index("|")]
-            file_name = renamed_file_name.strip()
+        cropped_line = line[:line.index("|")].strip()
+        if "{" in line and "=>" in line and " 0" in line:
+            renamed_files.append(cropped_line)
 
         else:
-            renamed_file_name = line[line.index("=>")+2:line.index("}")]
-            file_name = renamed_file_name.strip()
+            modified_files.append(cropped_line)
 
-        file_names.append(file_name)
-
-    return file_names
+    return first_changed_file, modified_files, renamed_files
 
 
-def get_renamed_files_from_git_log(commit_log: str) -> list[str]:
-    """Gets the list of file names renamed in a commit from Git log"""
-    renamed_files = []
+def get_message_from_git_log(commit_log: str, date: str, first_commit_file_index: str) -> str:
+    """Gets the commit message - text between date and first changed file"""
 
-    if "=>" not in commit_log:
-        return []
-
-    for line in commit_log.splitlines():
-        if "=>" not in line:
-            continue
-
-        if "{" in line:
-            file_names = line[line.index("{")+1:line.index("}")]
-
-        elif "}" in line:
-            file_names = line[line.index("=>")+3:line.index("}")]
-
-        else:
-            renamed_file = line[line.index("=>") + 3:line.index("|")]
-            file_names = renamed_file.strip()
-        renamed_files.append(file_names)
-
-    return renamed_files
-
-
-def get_renamed_file_line(commit_log: str) -> str:
-    """Used in specific cases, when files are renamed in Git commits. Gets a line of renamed files"""
-
-    for line in commit_log.splitlines():
-        if "=>" in line and "|" in line:
-            return line
-    return ""
-
-
-def get_message_from_git_log(commit_log: str, date: str) -> str:
     date_index = commit_log.find(date)
     if date_index == -1:
         return ""
 
-    if "=>" not in commit_log and "|" not in commit_log:
-        message = commit_log[date_index + len(date):].strip()
-        return message
+    if first_commit_file_index == "":
+        message = commit_log[date_index + len(date):]
+        return message.strip()
 
-    commit_files = get_file_names_from_git_log(commit_log)
-    if not commit_files:
-        return ""
+    message = commit_log[date_index + len(date):commit_log.index(first_commit_file_index)]
 
-    first_changed_file = get_file_names_from_git_log(commit_log)[0]
-
-    if "=>" in commit_log and "|" in commit_log:
-        renamed_file = get_renamed_file_line(commit_log)
-
-        if commit_log.index(renamed_file) < commit_log.index(first_changed_file):
-            message = commit_log[date_index + len(date):commit_log.index(renamed_file)].strip()
-        else:
-            message = commit_log[date_index + len(date):commit_log.index(first_changed_file)].strip()
-        return message
-
-    message = commit_log[date_index + len(date):commit_log.index(first_changed_file)].strip()
-    return message
+    return message.strip()
 
 
 def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int:
@@ -199,18 +149,22 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
             logger.error(f"Error occurred running subprocess:\n{full_info_of_commit.args}\n{full_info_of_commit.stderr}\n")
             return {}
 
-        full_info_of_commit_output = full_info_of_commit.stdout
+        info_of_commit_output = full_info_of_commit.stdout
 
-        author, date = get_author_and_date_from_git_log(full_info_of_commit_output)
+        author, date = get_author_and_date_from_git_log(info_of_commit_output)
+        first_line, modified_files, renamed_files = get_changed_and_renamed_files_from_git_log(info_of_commit_output)
+        if not first_line:
+            logger.warning(f"Commit {commit_hash} does not have modified files")
+
         commit_data: CommitData = {
                 "Commit: ": commit_hash,
                 "Author: ": author,
                 "Date: ": date,
-                "Message: ": get_message_from_git_log(full_info_of_commit_output, date),
-                "Renamed_files: ": get_renamed_files_from_git_log(full_info_of_commit_output),
-                "Changed_files: ": get_file_names_from_git_log(full_info_of_commit_output),
-                "Insertions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "insertion"),
-                "Deletions: ": get_insertion_or_deletion_from_git_log(full_info_of_commit_output, "deletion")
+                "Message: ": get_message_from_git_log(info_of_commit_output, date, first_line),
+                "Renamed_files: ": renamed_files,
+                "Changed_files: ": modified_files,
+                "Insertions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "insertion"),
+                "Deletions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "deletion")
                 }
 
         all_commits_data[f"Commit - {commit_hash}"] = commit_data
@@ -235,7 +189,6 @@ def parse_args() -> argparse.Namespace:
 
 
 def configure_logger(filename: str) -> logging.Logger:
-    logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
     stdout_handle = logging.StreamHandler(sys.stdout)
@@ -266,6 +219,7 @@ def main(logger: logging.Logger):
     except PermissionError:
         logger.error(f"User does not have permission to write in {args.json_file}")
         sys.exit()
+
     logger.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
 
 
