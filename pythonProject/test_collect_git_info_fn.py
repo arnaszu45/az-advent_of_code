@@ -306,13 +306,5 @@ def test_get_message_from_git_log_no_message():
     assert message == expected_result
 
 
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     logger = cg.configure_logger("tester_log.log")
