@@ -80,7 +80,7 @@ def process_renamed_string(line: str) -> tuple[str, str]:
     return old_file, new_file
 
 
-def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, dict[str: str]]:
+def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, dict[str, str]]:
     """Gets the list of modified file names, old and new renamed file names and the first modified file name"""
 
     # NOTE: Returns only modified and renamed files, added and removed files cannot be indicated with 'git show'.
@@ -153,7 +153,7 @@ def get_insertion_or_deletion_from_git_log(commit_log: str, pattern: str) -> int
 
 
 CommitHash = str
-CommitData = Dict[str, str | list[str] | int | dict[str : str]]
+CommitData = Dict[str, str | list[str] | int | dict[str, str]]
 
 
 def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
