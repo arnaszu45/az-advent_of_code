@@ -2,45 +2,55 @@ import os
 from pathlib import Path
 import tempfile
 import collect_git_info as cg
+import subprocess
+import shutil
+import pytest
 
 
-def test_is_git_repo():
-    temporary_dir = Path(tempfile.mkdtemp())
-    os.chdir(temporary_dir)
-    os.system("git init")
-    result = cg.is_git_repo(temporary_dir)
+@pytest.fixture()
+def temp_dir():
+    temp_dir = tempfile.mkdtemp()
+    yield temp_dir
+    shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+@pytest.fixture()
+def temp_file():
+    with tempfile.TemporaryFile() as temp_file:
+        yield temp_file.name
+
+
+def test_is_git_repo(temp_dir):
+    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
+    result = cg.is_git_repo(Path(temp_dir))
     assert result
 
 
-def test_is_git_repo_negative_not_git_repo():
-    temporary_dir = Path(tempfile.mkdtemp())
-    result = cg.is_git_repo(temporary_dir.resolve())
+def test_is_git_repo_negative_not_git_repo(temp_dir):
+    result = cg.is_git_repo(Path(temp_dir))
     assert not result
 
 
-def test_is_git_repo_not_directory():
-    temporary_file = Path(tempfile.NamedTemporaryFile().name)
-    result = cg.is_git_repo(temporary_file)
+def test_is_git_repo_not_directory(temp_file):
+    result = cg.is_git_repo(Path(temp_file))
     assert not result
 
 
-def test_get_commits():
-    temporary_dir = Path(tempfile.mkdtemp())
-    os.chdir(temporary_dir)
-    os.system("git init")
-    os.system('echo. > filename.txt')
-    os.system("git add filename.txt")
-    os.system("git commit -m Test")
-    result = cg.get_commits(temporary_dir)
+def test_get_commits(temp_dir):
+    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
+    filename = os.path.join(temp_dir, "filename.txt")
+    with open(filename, "w") as f:
+        f.write("hello")
+    subprocess.run(["git", "add", "filename.txt"], cwd=temp_dir, check=True)
+    subprocess.run(["git", "commit", "-m", "Test"], cwd=temp_dir, check=True)
+    result = cg.get_commits(Path(temp_dir))
     assert isinstance(result, list)
     assert len(result) == 1
 
 
-def test_get_commits_empty_repo():
-    temporary_dir = Path(tempfile.mkdtemp())
-    os.chdir(temporary_dir)
-    os.system("git init")
-    result = cg.get_commits(temporary_dir)
+def test_get_commits_empty_repo(temp_dir):
+    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
+    result = cg.get_commits(Path(temp_dir))
     assert result == []
 
 
