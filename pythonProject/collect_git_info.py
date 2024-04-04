@@ -71,13 +71,15 @@ def get_author_and_date_from_git_log(commit_log: str) -> tuple[str, str]:
     return author.strip(), date.strip()
 
 
-def process_renamed_string(line: str) -> tuple[str, str]:
+def process_renamed_string(line: str):
     """Process the renamed file line, returns full old and new file names"""
 
     # NOTE: Pattern used for simplifying complex renamed or modified file path into two paths.
     pattern = r'{(.*?)\s*=>\s*(.*?)}'
     old_file, new_file = re.sub(pattern, r'\1', line), re.sub(pattern, r'\2', line)
-    return old_file, new_file
+    old_file_name = os.path.basename(old_file.strip())
+    new_file_name = os.path.basename(new_file.strip())
+    return old_file, new_file, new_file_name, old_file_name
 
 
 def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, list, dict[str, str]]:
@@ -100,13 +102,13 @@ def get_changed_and_renamed_files_from_git_log(commit_log: str) -> tuple[str, li
 
         # NOTE: "{}", "=>" indicates, that file is renamed, "0" indicates, that it wasn't modified
         if "{" in line and "=>" in line and " 0" in line:
-            old_file, new_file = process_renamed_string(cropped_line)
-            renamed_files["new_file_name"] = new_file
-            renamed_files["old_file_name"] = old_file
+            old_file, new_file, new_file_name, old_file_name = process_renamed_string(cropped_line)
+            renamed_files[f"new_'{new_file_name}'_name"] = new_file
+            renamed_files[f"old_'{old_file_name}'_name"] = old_file
 
         # NOTE: "{}", "=>" indicates, that file is renamed, keeping the new file
         elif "{" in line and "=>" in line:
-            _, new_file = process_renamed_string(cropped_line)
+            _, new_file, *_ = process_renamed_string(cropped_line)
             modified_files.append(new_file)
         else:
             modified_files.append(cropped_line)

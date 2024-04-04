@@ -184,8 +184,8 @@ Date:   2021-08-30 13:13:04 +0300
     print(first_changed_file_line)
     assert first_changed_file_line == "azure-pipelines.yml                                                                                                                        |    7 +-"
     assert modified_files == ["azure-pipelines.yml", "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
-    assert renamed_files == {"new_file_name": "framework/lib/report_engine/validation/__init__.py",
-                             "old_file_name": "services/test_cases/core/web/__init__.py"}
+    assert renamed_files == {"new_'__init__.py'_name": "framework/lib/report_engine/validation/__init__.py",
+                             "old_'__init__.py'_name": "services/test_cases/core/web/__init__.py"}
 
 def test_get_changed_and_renamed_files_from_git_log_no_renamed():
     string = """
@@ -224,8 +224,8 @@ def test_get_changed_and_renamed_files_from_git_log_variety():
     assert first_changed_file_line == "services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0"
     assert modified_files == ["services/project_service_tmt/run.py",
                               "services/project_service_tmt/unittests/test_case_fields.py"]
-    assert renamed_files == {"new_file_name": "services/project_service_tmt/requirements.txt",
-                             "old_file_name": "services/test_cases/requirements.txt"}
+    assert renamed_files == {"new_'requirements.txt'_name": "services/project_service_tmt/requirements.txt",
+                             "old_'requirements.txt'_name": "services/test_cases/requirements.txt"}
 
 
 def test_get_changed_and_renamed_files_from_git_log_variety_renamed_files():
@@ -238,14 +238,14 @@ def test_get_changed_and_renamed_files_from_git_log_variety_renamed_files():
     first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
     assert first_changed_file_line == "{services/test_cases/command.py => project_service_tmt/run.py}                                                         |     0"
     assert modified_files == []
-    assert renamed_files == {"new_file_name": "services/project_service_tmt/requirements.txt",
-                             "old_file_name": "services/test_cases/requirements.txt",
-                             "new_file_name": "framework/unittests/conductivity_calculation/__init__.py",
-                             "old_file_name": "services/test_cases/core/web/__init__.py",
-                             "new_file_name": "test_cases/EBM/BloodPump/test_bp_door_sensor_state_monitoring.py",
-                             "old_file_name": "test_cases/EBM/BloodPump/test_E0401_bp_door_sensor_state_monitoring.py",
-                             "new_file_name": "services/project_service_tmt/run.py",
-                             "old_file_name": "services/test_cases/run.py"
+    assert renamed_files == {"new_'run.py'_name": "services/project_service_tmt/run.py",
+                             "old_'command.py'_name": "services/test_cases/command.py",
+                             "new_'__init__.py'_name": "framework/unittests/conductivity_calculation/__init__.py",
+                             "old_'__init__.py'_name": "services/test_cases/core/web/__init__.py",
+                             "new_'test_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_bp_door_sensor_state_monitoring.py",
+                             "old_'test_E0401_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_E0401_bp_door_sensor_state_monitoring.py",
+                             "new_'run.py'_name": "services/project_service_tmt/run.py",
+                             "old_'run.py'_name": "services/test_cases/run.py"
                              }
 
 
