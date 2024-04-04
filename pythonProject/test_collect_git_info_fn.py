@@ -248,7 +248,7 @@ Date:   2024-03-26 23:21:18 +0200
         # Conflicts:
         #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
 
- services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
+ services/{test_cases => project_service_tmt}/requirements.txt                                          |     0
 """
     _, date = cg.get_author_and_date_from_git_log(string)
     first_file, _, _ = cg.get_changed_and_renamed_files_from_git_log(string)
@@ -284,7 +284,7 @@ def test_get_message_from_git_log_no_date():
         # Conflicts:
         #       test_cases/EBM/HeparinPump/test_T1_test_heparin_pump.py
         
- services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
+ services/{test_cases => project_service_tmt}/requirements.txt                                        |     0
 """
     _, date = cg.get_author_and_date_from_git_log(string)
     first_file, _, _ = cg.get_changed_and_renamed_files_from_git_log(string)
