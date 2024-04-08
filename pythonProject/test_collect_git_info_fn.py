@@ -21,7 +21,8 @@ def temp_file():
 
 
 def test_is_git_repo(temp_dir):
-    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
+    output = subprocess.run(["git", "init"], cwd=temp_dir)
+    assert output.returncode == 0, f"Failed to execute 'git init' command"
     result = cg.is_git_repo(Path(temp_dir))
     assert result
 
@@ -37,11 +38,11 @@ def test_is_git_repo_not_directory(temp_file):
 
 
 def test_get_commits(temp_dir):
-    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
+    _ = subprocess.run(["git", "init"], cwd=temp_dir, check=True)
     filename = os.path.join(temp_dir, "filename.txt")
     with open(filename, "w") as f:
         f.write("hello")
-    subprocess.run(["git", "add", "filename.txt"], cwd=temp_dir, check=True)
+    _ = subprocess.run(["git", "add", "filename.txt"], cwd=temp_dir, check=True)
     subprocess.run(["git", "commit", "-m", "Test"], cwd=temp_dir, check=True)
     result = cg.get_commits(Path(temp_dir))
     assert isinstance(result, list)
@@ -175,27 +176,30 @@ Date:   2021-08-30 13:13:04 +0300
     # Conflicts:
     #       framework/lib/device/monitor.py
 
- azure-pipelines.yml                                                                                                                        |    7 +-
- {services/test_cases/core/web => framework/lib/report_engine/validation}/__init__.py                                                       |     0
- framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite                                                           |   Bin 0 -> 90112 bytes
+ azure-pipelines.yml                                                                            |    7 +-
+ {services/test_cases/core/web => framework/lib/report_engine/validation}/__init__.py           |    0
+ framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite               |   Bin 0 -> 90112 bytes
  968 files changed, 163570 insertions(+), 86903 deletions(-)
 """
     first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
     print(first_changed_file_line)
-    assert first_changed_file_line == "azure-pipelines.yml                                                                                                                        |    7 +-"
-    assert modified_files == ["azure-pipelines.yml", "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
+    assert first_changed_file_line == "azure-pipelines.yml                                                                            |    7 +-"
+    assert modified_files == ["azure-pipelines.yml",
+                              "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
     assert renamed_files == {"new_'__init__.py'_name": "framework/lib/report_engine/validation/__init__.py",
                              "old_'__init__.py'_name": "services/test_cases/core/web/__init__.py"}
 
+
 def test_get_changed_and_renamed_files_from_git_log_no_renamed():
     string = """
- azure-pipelines.yml                                                                                                                        |    7 +-
- framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite                                                           |   Bin 0 -> 90112 bytes
+ azure-pipelines.yml                                                                 |    7 +-
+ framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite    |   Bin 0 -> 90112 bytes
  968 files changed, 163570 insertions(+), 86903 deletions(-)
 """
     first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
-    assert first_changed_file_line == "azure-pipelines.yml                                                                                                                        |    7 +-"
-    assert modified_files == ["azure-pipelines.yml", "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
+    assert first_changed_file_line == "azure-pipelines.yml                                                                 |    7 +-"
+    assert modified_files == ["azure-pipelines.yml",
+                              "framework/unittests/integration/polarion/test_db_20211019_121040_positive.sqlite"]
     assert renamed_files == {}
 
 
@@ -216,12 +220,12 @@ def test_get_changed_and_renamed_files_from_git_log_no_files():
 
 def test_get_changed_and_renamed_files_from_git_log_variety():
     string = """
- services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0
- services/{test_cases => project_service_tmt}/run.py                                                                                |     34 +-
- services/{test_cases => project_service_tmt}/unittests/test_case_fields.py                                                         |    13 +-
+ services/{test_cases => project_service_tmt}/requirements.txt             |    0
+ services/{test_cases => project_service_tmt}/run.py                       |   34 +-
+ services/{test_cases => project_service_tmt}/unittests/test_case_fields.py|   13 +-
 """
     first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
-    assert first_changed_file_line == "services/{test_cases => project_service_tmt}/requirements.txt                                                                      |     0"
+    assert first_changed_file_line == "services/{test_cases => project_service_tmt}/requirements.txt             |    0"
     assert modified_files == ["services/project_service_tmt/run.py",
                               "services/project_service_tmt/unittests/test_case_fields.py"]
     assert renamed_files == {"new_'requirements.txt'_name": "services/project_service_tmt/requirements.txt",
@@ -230,23 +234,24 @@ def test_get_changed_and_renamed_files_from_git_log_variety():
 
 def test_get_changed_and_renamed_files_from_git_log_variety_renamed_files():
     string = """
- {services/test_cases/command.py => project_service_tmt/run.py}                                                         |     0
- {services/test_cases/core/web => framework/unittests/conductivity_calculation}/__init__.py                             |     0
- test_cases/EBM/BloodPump/{test_E0401_bp_door_sensor_state_monitoring.py => test_bp_door_sensor_state_monitoring.py}    |     0
- services/{test_cases => project_service_tmt}/run.py                                                                    |     0
+ {services/test_cases/command.py => project_service_tmt/run.py}                                                     |  0
+ {services/test_cases/core/web => framework/unittests/conductivity_calculation}/__init__.py                         |  0
+ test_cases/EBM/BloodPump/{test_E0401_bp_door_sensor_state_monitoring.py => test_bp_door_sensor_state_monitoring.py}|  0
+ services/{test_cases => project_service_tmt}/execute.py                                                            |  0
 """
     first_changed_file_line, modified_files, renamed_files = cg.get_changed_and_renamed_files_from_git_log(string)
-    assert first_changed_file_line == "{services/test_cases/command.py => project_service_tmt/run.py}                                                         |     0"
+    assert first_changed_file_line == "{services/test_cases/command.py => project_service_tmt/run.py}                                                     |  0"
     assert modified_files == []
-    assert renamed_files == {"new_'run.py'_name": "services/project_service_tmt/run.py",
-                             "old_'command.py'_name": "services/test_cases/command.py",
-                             "new_'__init__.py'_name": "framework/unittests/conductivity_calculation/__init__.py",
-                             "old_'__init__.py'_name": "services/test_cases/core/web/__init__.py",
-                             "new_'test_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_bp_door_sensor_state_monitoring.py",
-                             "old_'test_E0401_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_E0401_bp_door_sensor_state_monitoring.py",
-                             "new_'run.py'_name": "services/project_service_tmt/run.py",
-                             "old_'run.py'_name": "services/test_cases/run.py"
-                             }
+    assert renamed_files == {
+        "new_'run.py'_name": "project_service_tmt/run.py",
+        "old_'command.py'_name": "services/test_cases/command.py",
+        "new_'__init__.py'_name": "framework/unittests/conductivity_calculation/__init__.py",
+        "old_'__init__.py'_name": "services/test_cases/core/web/__init__.py",
+        "new_'test_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_bp_door_sensor_state_monitoring.py",
+        "old_'test_E0401_bp_door_sensor_state_monitoring.py'_name": "test_cases/EBM/BloodPump/test_E0401_bp_door_sensor_state_monitoring.py",
+        "new_'execute.py'_name": "services/project_service_tmt/execute.py",
+        "old_'execute.py'_name": "services/test_cases/execute.py"
+    }
 
 
 def test_get_message_from_git_log():
@@ -314,7 +319,3 @@ def test_get_message_from_git_log_no_message():
     message = cg.get_message_from_git_log(string, date, first_file)
     expected_result = ""
     assert message == expected_result
-
-
-if __name__ == "__main__":
-    logger = cg.configure_logger("tester_log.log")

@@ -15,11 +15,15 @@ logger = logging.getLogger(__name__)
 def is_git_repo(git_repo: Path) -> bool:
     """Takes directory name and checks if it's Git repository"""
 
+    if not isinstance(git_repo, Path):
+        logger.error(f"{git_repo} - invalid path")
+        return False
+
     if not git_repo.is_dir():
         logger.error(f"{git_repo} is not a directory")
         return False
 
-    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True, cwd=git_repo)
+    result = subprocess.run(["git", "-C", str(git_repo.resolve()), "rev-parse"], capture_output=True)
 
     if result.returncode != 0:
         logger.error(f"{git_repo} is not a git repository: \n{' '.join(result.args)}\n{result.stderr}\n")
@@ -31,12 +35,17 @@ def is_git_repo(git_repo: Path) -> bool:
 def get_commits(git_repo: Path) -> list[str]:
     """Collects all commit hashes from given Git repository and put them into list"""
 
+    if not isinstance(git_repo, Path):
+        logger.error(f"{git_repo} - invalid path")
+        return []
+
     commits = []
 
     git_log_message = subprocess.run(["git", "log"], capture_output=True, text=True, cwd=git_repo,
                                      encoding="UTF-8")
     if git_log_message.returncode != 0:
-        logger.error(f"Error occurred running subprocess:\n{' '.join(git_log_message.args)}\n{git_log_message.stderr}\n")
+        logger.error(
+            f"Error occurred running subprocess:\n{' '.join(git_log_message.args)}\n{git_log_message.stderr}\n")
         return []
 
     git_log_output = git_log_message.stdout
@@ -45,7 +54,7 @@ def get_commits(git_repo: Path) -> list[str]:
         if not line.startswith("commit"):
             continue
 
-        _, single_commit_hash, * _ = line.split(" ")
+        _, single_commit_hash, *_ = line.split(" ")
         if len(single_commit_hash) != 40:
             logger.error(f"Expected commit hash to be 40 symbols, got {len(single_commit_hash)}")
             continue
@@ -159,7 +168,6 @@ CommitData = Dict[str, str | list[str] | int | dict[str, str]]
 
 
 def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
-
     all_commits_data: Dict[CommitHash, CommitData] = {}
     commits = get_commits(git_repo)
 
@@ -172,7 +180,9 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
         info_of_commit = subprocess.run(["git", "show", commit_hash, "--stat=350", "--date=iso8601"],
                                         capture_output=True, encoding="UTF-8", cwd=git_repo)
         if info_of_commit.returncode != 0:
-            logger.error(f"Error occurred running subprocess:\n{' '.join(info_of_commit.args)}\n{info_of_commit.stderr}\n")
+            logger.error(
+                f"Error occurred running subprocess:\n{' '.join(info_of_commit.args)}\n{info_of_commit.stderr}\n"
+            )
             return {}
 
         info_of_commit_output = info_of_commit.stdout
@@ -183,15 +193,15 @@ def get_commit_info(git_repo: Path) -> Dict[CommitHash, CommitData]:
             logger.warning(f"Commit {commit_hash} does not have modified files")
 
         commit_data: CommitData = {
-                "Commit: ": commit_hash,
-                "Author: ": author,
-                "Date: ": date,
-                "Message: ": get_message_from_git_log(info_of_commit_output, date, first_line),
-                'Renamed_files: ': renamed_files,
-                "Changed_files: ": modified_files,
-                "Insertions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "insertion"),
-                "Deletions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "deletion")
-                }
+            "Commit: ": commit_hash,
+            "Author: ": author,
+            "Date: ": date,
+            "Message: ": get_message_from_git_log(info_of_commit_output, date, first_line),
+            'Renamed_files: ': renamed_files,
+            "Changed_files: ": modified_files,
+            "Insertions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "insertion"),
+            "Deletions: ": get_insertion_or_deletion_from_git_log(info_of_commit_output, "deletion")
+        }
 
         all_commits_data[f"Commit - {commit_hash}"] = commit_data
 
@@ -229,8 +239,8 @@ def configure_logger(filename: str) -> logging.Logger:
     return logger
 
 
-def main(logger: logging.Logger):
-    logger.info(" >>> Running the script\n")
+def main(logger_: logging.Logger):
+    logger_.info(" >>> Running the script\n")
 
     git_repository = is_git_repo(args.git_repository)
     if not git_repository:
@@ -243,16 +253,16 @@ def main(logger: logging.Logger):
     try:
         create_json_file(commits_data, args.json_file)
     except Exception as e:
-        logger.error(f"Error occurred trying write {args.json_file}: \n{e}")
+        logger_.error(f"Error occurred trying write {args.json_file}: \n{e}")
         sys.exit(1)
 
-    logger.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
+    logger_.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
 
 
 if __name__ == "__main__":
     args = parse_args()
     logger = configure_logger(args.log_file)
     start = time.time()
-    main(logger=logger)
+    main(logger_=logger)
     end_time = time.time()
     print(end_time - start)
