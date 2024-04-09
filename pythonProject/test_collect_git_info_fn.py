@@ -1,12 +1,11 @@
-import os
-import unittest
-from pathlib import Path
-import tempfile
-from unittest import mock
-import collect_git_info as cg
-import subprocess
 import shutil
+import tempfile
+from pathlib import Path
+from unittest import mock
+
 import pytest
+
+import collect_git_info as cg
 
 
 @pytest.fixture()
@@ -23,44 +22,83 @@ def temp_file():
 
 
 @mock.patch("subprocess.run")
-def test_is_git_repo_(mock_subprocess_run, temp_dir):
+def test_is_git_repo_(mock_subprocess_run: mock.MagicMock, temp_dir: str):
     mock_subprocess_run.return_value.returncode = 0
     result = cg.is_git_repo(Path(temp_dir))
+
+    mock_subprocess_run.assert_called_once()
     assert result
 
 
 @mock.patch("subprocess.run")
-def test_is_git_repo_negative_not_git_repo(mock_subprocess_run, temp_dir):
+def test_is_git_repo_negative_not_git_repo(mock_subprocess_run: mock.MagicMock, temp_dir: str):
     mock_subprocess_run.return_value.returncode = 1
+    mock_subprocess_run.return_value.args = []
+    mock_subprocess_run.return_value.stderr = "error_message"
     result = cg.is_git_repo(Path(temp_dir))
+
+    mock_subprocess_run.assert_called_once()
     assert not result
 
 
-def test_is_git_repo_not_directory(temp_file):
+def test_is_git_repo_not_directory(temp_file: str):
     result = cg.is_git_repo(Path(temp_file))
     assert not result
 
 
 @mock.patch("subprocess.run")
-def test_get_commits(mock_subprocess_run, temp_dir):
+def test_get_commits(mock_subprocess_run: mock.MagicMock, temp_dir: str):
     mock_subprocess_run.return_value.returncode = 0
-    mock_subprocess_run.return_value.stdout = "commit 881e4aeddeaab2229583fbf05ff1d2e92f497234"
+    mock_subprocess_run.return_value.stdout = """
+commit 9b9494e8ac87f4ed63a6791304625f13a8c1d92a (HEAD -> master, origin/master)
+Author: arnas.zuklija <arnas.zuklija@qdevtechnologies.com>
+Date:   Tue Apr 9 09:30:20 2024 +0300
+
+commit e1f5b4ae1f6255df702da1c803e8ceeadd0795e7
+Date:   Tue Apr 9 09:28:56 2024 +0300
+
+commit 8b536b95e3333abaeee645d7b2df54cc6a7e1db6
+Date:   Mon Apr 8 13:54:53 2024 +0300
+
+commit 10e2c3ad229c3a65191002827003901fd1ea0afc
+Date:   Mon Apr 8 09:34:53 2024 +0300
+
+commit 881e4aeddeaab2229583fbf05ff1d2e92f497234
+Date:   Mon Apr 8 09:29:31 2024 +0300
+    """
     result = cg.get_commits(Path(temp_dir))
-    assert isinstance(result, list)
-    assert len(result) == 1
+
+    mock_subprocess_run.assert_called_once()
+    assert result == ["9b9494e8ac87f4ed63a6791304625f13a8c1d92a", "e1f5b4ae1f6255df702da1c803e8ceeadd0795e7",
+                      "8b536b95e3333abaeee645d7b2df54cc6a7e1db6", "10e2c3ad229c3a65191002827003901fd1ea0afc",
+                      "881e4aeddeaab2229583fbf05ff1d2e92f497234"]
+    assert len(result) == 5
 
 
 @mock.patch("subprocess.run")
-def test_get_commits_empty_repo(mock_subprocess_run, temp_dir):
+def test_get_commits_empty_repo(mock_subprocess_run: mock.MagicMock, temp_dir: str):
     mock_subprocess_run.return_value.returncode = 0
     result = cg.get_commits(Path(temp_dir))
-    assert result == []
+
+    mock_subprocess_run.assert_called_once()
+    assert not result
+
+
+@mock.patch("subprocess.run")
+def test_get_commits_returncode_error(mock_subprocess_run: mock.MagicMock, temp_dir: str):
+    mock_subprocess_run.return_value.returncode = 1
+    mock_subprocess_run.return_value.args = []
+    mock_subprocess_run.return_value.stderr = "error_message"
+    result = cg.get_commits(Path(temp_dir))
+
+    mock_subprocess_run.assert_called_once()
+    assert not result
 
 
 def test_get_commits_not_git_repo():
     temporary_dir = Path(tempfile.mkdtemp())
     result = cg.get_commits(temporary_dir)
-    assert result == []
+    assert not result
 
 
 def test_get_author_and_date_from_git_log():
