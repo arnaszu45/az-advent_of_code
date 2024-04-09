@@ -53,7 +53,6 @@ def test_get_commits(mock_subprocess_run, temp_dir):
 @mock.patch("subprocess.run")
 def test_get_commits_empty_repo(mock_subprocess_run, temp_dir):
     mock_subprocess_run.return_value.returncode = 0
-    subprocess.run(["git", "init"], cwd=temp_dir, check=True)
     result = cg.get_commits(Path(temp_dir))
     assert result == []
 
