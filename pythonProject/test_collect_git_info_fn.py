@@ -1,6 +1,8 @@
 import os
+import unittest
 from pathlib import Path
 import tempfile
+from unittest import mock
 import collect_git_info as cg
 import subprocess
 import shutil
@@ -17,17 +19,19 @@ def temp_dir():
 @pytest.fixture()
 def temp_file():
     with tempfile.TemporaryFile() as temp_file:
-        yield temp_file.name
+        yield str(temp_file.name)
 
 
-def test_is_git_repo(temp_dir):
-    output = subprocess.run(["git", "init"], cwd=temp_dir)
-    assert output.returncode == 0, f"Failed to execute 'git init' command"
+@mock.patch("subprocess.run")
+def test_is_git_repo_(mock_subprocess_run, temp_dir):
+    mock_subprocess_run.return_value.returncode = 0
     result = cg.is_git_repo(Path(temp_dir))
     assert result
 
 
-def test_is_git_repo_negative_not_git_repo(temp_dir):
+@mock.patch("subprocess.run")
+def test_is_git_repo_negative_not_git_repo(mock_subprocess_run, temp_dir):
+    mock_subprocess_run.return_value.returncode = 1
     result = cg.is_git_repo(Path(temp_dir))
     assert not result
 
@@ -37,19 +41,18 @@ def test_is_git_repo_not_directory(temp_file):
     assert not result
 
 
-def test_get_commits(temp_dir):
-    _ = subprocess.run(["git", "init"], cwd=temp_dir, check=True)
-    filename = os.path.join(temp_dir, "filename.txt")
-    with open(filename, "w") as f:
-        f.write("hello")
-    _ = subprocess.run(["git", "add", "filename.txt"], cwd=temp_dir, check=True)
-    subprocess.run(["git", "commit", "-m", "Test"], cwd=temp_dir, check=True)
+@mock.patch("subprocess.run")
+def test_get_commits(mock_subprocess_run, temp_dir):
+    mock_subprocess_run.return_value.returncode = 0
+    mock_subprocess_run.return_value.stdout = "commit 881e4aeddeaab2229583fbf05ff1d2e92f497234"
     result = cg.get_commits(Path(temp_dir))
     assert isinstance(result, list)
     assert len(result) == 1
 
 
-def test_get_commits_empty_repo(temp_dir):
+@mock.patch("subprocess.run")
+def test_get_commits_empty_repo(mock_subprocess_run, temp_dir):
+    mock_subprocess_run.return_value.returncode = 0
     subprocess.run(["git", "init"], cwd=temp_dir, check=True)
     result = cg.get_commits(Path(temp_dir))
     assert result == []
