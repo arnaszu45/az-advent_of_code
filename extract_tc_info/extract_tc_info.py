@@ -34,7 +34,7 @@ def collect_test_cases_from_directory(test_automation_directory: Path) -> list[P
     return test_cases_files
 
 
-def fetch_test_runs_data() -> dict:
+def fetch_test_runs_data() -> dict:  # Should this function have tests? Or it supposed to mocked?
     """Fetches test runs data from a remote server, returning the response JSON data as a formatted string."""
 
     url = "http://10.208.1.21:12001/test_runs"
@@ -48,6 +48,7 @@ def fetch_test_runs_data() -> dict:
 
     response = requests.get(url, params=params, headers=headers, data=json.dumps(params),
                             timeout=5)  # Need timeout exception
+
     if response.status_code != 200:
         logger.error(
             f"Failed to fetch data. URL: {response.url}\nStatus: {response.status_code}\nReason: {response.reason}\n")
@@ -66,9 +67,11 @@ def get_latest_submission_time(run_test_data: dict, test_case_file_name: str) ->
 
     for build in run_test_data["builds"]:
         try:
+            # Which way is better to call? is it okay to use try inside function? If I use get, I could check if it is empty
+            # tests = build.get("properties", {}).get("test_scenario", {}).get("tests", {})
             tests = build["properties"]["test_scenario"]["tests"]
         except KeyError as e:
-            logger.error(f"Missing or incorrectly formatted data in build properties - {e}.")
+            logger.error(f"Missing or incorrectly formatted data in 'build' properties - {e}.")
             return ""
 
         for test in tests:
@@ -76,28 +79,48 @@ def get_latest_submission_time(run_test_data: dict, test_case_file_name: str) ->
                 continue
 
             submission_time = test.get("submission_time")
+            if not submission_time:
+                logger.error(f"Missing or incorrectly formatted 'submission_time' in 'tests' properties.")  # Should 'submission_time' and 'tests' be saved as a variables so could be used it logger?
+                return ""
+
             datetime_object = datetime.strptime(submission_time, "%Y_%m_%d_%Hh_%Mm")
             formatted_time = datetime_object.strftime("%Y-%m-%d %H:%M")
             submission_times.append(formatted_time)
 
     if not submission_times:
-        return "Tests case was never executed"
+        return "NOT executed"  # Majority of tests from TestAutomation is not executed, it supposed to happen or I missing something?
 
     return max(submission_times)
 
 
 def write_test_cases_data(test_automation_directory: Path) -> dict:
+    all_test_cases_data: dict[str, dict[str, str]] = {}
+
     test_cases = collect_test_cases_from_directory(test_automation_directory)
     test_runs_data = fetch_test_runs_data()
-    print(test_runs_data)
+
     for test_case in test_cases:
         test_case_file_name = os.path.basename(test_case)
         last_execution_date = get_latest_submission_time(test_runs_data, test_case_file_name)
-        print(test_case_file_name)
+
         test_case_data = {
-            "test_case_file_name": test_case_file_name,
             "latest_submission_date": last_execution_date,
+            "amount_of_executions": "",  # How this supposed to be counted? Should I count how many times 'test_case_file_name' exists in run tests data? Or there could be another method?
         }
+
+        # Current example of json file
+        # "test_T1_test_negative_pressure_slice_init_1_2_3_4.py": {
+        #     "latest_submission_date": "2024-04-10 18:15"
+        # },
+
+        all_test_cases_data[test_case_file_name] = test_case_data
+
+    return all_test_cases_data
+
+
+def create_json_file(data, json_file_name):
+    with open(json_file_name, "w", encoding="UTF-8") as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
 
 
 def parse_args() -> argparse.Namespace:
@@ -130,6 +153,14 @@ def main(logger_: logging.Logger):
     logger_.info(" >>> Running the script\n")
 
     test_cases_data = write_test_cases_data(args.test_automation_directory)
+
+    try:
+        create_json_file(test_cases_data, args.json_file)
+    except Exception as e:
+        logger_.error(f"Error occurred trying write {args.json_file}: \n{e}")
+        sys.exit(1)
+
+    logger_.info(f" >>> Was generated {args.json_file} file in {os.getcwd()} directory")
 
 
 if __name__ == "__main__":
