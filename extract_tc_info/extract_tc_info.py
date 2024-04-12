@@ -34,35 +34,27 @@ def collect_test_cases_from_directory(test_automation_directory: Path) -> list[P
     return test_cases_files
 
 
-def fetch_test_runs_data() -> dict:
+def fetch_test_runs_data(ip_address: str, project_name: str, limit: int) -> dict | None:
     """Fetches test runs data from a remote server, returning the response JSON data as a formatted string."""
 
-    url = "http://10.208.1.21:12001/test_runs"
+    url = f"http://{ip_address}/test_runs"
     params = {
-        "project": "Test Automation",
-        "limit": 5000
+        "project": project_name,
+        "limit": limit
     }
     headers = {
         "accept": "application/json"
     }
-    response = None
-
     try:
-        response = requests.get(url, params=params, headers=headers, data=json.dumps(params),
-                                timeout=5)
-    except requests.exceptions.Timeout:
-        logger.error(f"The request timed out. Check the access to {url}.")
-    except requests.exceptions.ConnectionError as e:
-        logger.error(f"No connection - {e}")
-
-    if response is None:
-        logger.error(f"Could not get response from {url}")
-        return {}
+        response = requests.get(url, params=params, headers=headers, data=json.dumps(params), timeout=5)
+    except Exception as e:
+        logger.error(f"The request timed out. Error message:\n{e}.")
+        return None
 
     if response.status_code != 200:
         logger.error(
             f"Failed to fetch data. URL: {response.url}\nStatus: {response.status_code}\nReason: {response.reason}\n")
-        return {}
+        return None
 
     return response.json()
 
@@ -74,15 +66,15 @@ def extract_builds_and_tests(run_test_data: dict, test_case_file_name: str) -> t
     tests = []
 
     if "builds" not in run_test_data:
-        print("Key 'builds' does not exists in given data")
-        return builds, tests
+        logger.error("Key 'builds' does not exists in given data")
+        return [], []
 
     for build in run_test_data["builds"]:
         try:
             build_tests = build["properties"]["test_scenario"]["tests"]
         except KeyError as e:
-            print(f"Missing data in 'build' properties - {e}.")
-            return builds, tests
+            logger.error("Missing data in 'build' properties - {e}.")
+            return [], []
 
         builds.append(build)
 
@@ -155,23 +147,22 @@ def collect_revisions(test_case_file_name: str, builds: list) -> list[str]:
     return list(set(revisions))
 
 
-def calculate_pass_ratio(passed: int, failed: int) -> str:
-
+def calculate_pass_ratio(passed: int, failed: int) -> float:
     if passed + failed == 0:
-        return "NOT executed"
+        return 0
 
     pass_ratio = (passed / (failed + passed)) * 100
 
-    return str(pass_ratio) + "%"
+    return pass_ratio
 
 
 def write_test_cases_data(test_automation_directory: Path, test_runs_data: dict) -> dict:
-    all_test_cases_data: dict[str, dict[str, str]] = {}
 
+    all_test_cases_data: dict[str, dict[str, str]] = {}
     test_cases = collect_test_cases_from_directory(test_automation_directory)
 
-    for test_case in test_cases:
 
+    for test_case in test_cases:
         test_case_file_name = os.path.basename(test_case)
 
         builds, tests = extract_builds_and_tests(test_runs_data, test_case_file_name)
@@ -201,8 +192,14 @@ def parse_args() -> argparse.Namespace:
                         help="Specify the path to the git repository directory")
     parser.add_argument("-j", "--json_file", type=Path, default="test_cases_info.json",
                         help="Specify the json file name, where json output will be kept")
-    parser.add_argument("-l", "--log-file", default='test_cases_info.log',
+    parser.add_argument("-log", "--log-file", default='test_cases_info.log',
                         help="Specify the file name, where logs should be kept")
+    parser.add_argument("-ip", "--ip_address", type=str, default="10.208.1.21:12001",
+                        help="Specify the ip address for url, from where data will be extracted")
+    parser.add_argument("-p", "--project_name", type=str, default="Test Automation",
+                        help="Specify the project name to get data for")
+    parser.add_argument("-l", "--limit", type=int, default=1000,
+                        help="Specify the integer value by which to limit the query size")
     return parser.parse_args()
 
 
@@ -224,9 +221,18 @@ def configure_logger(filename: str) -> logging.Logger:
 def main(logger_: logging.Logger):
     logger_.info(" >>> Running the script\n")
 
-    test_runs_data = fetch_test_runs_data()
-    if not test_runs_data:
+    # TODO: this for using requests
+    test_runs_data = fetch_test_runs_data(ip_address=args.ip_address, project_name=args.project_name,
+                                          limit=args.limit)
+    if test_runs_data is None:
         sys.exit(1)
+
+    if not test_runs_data:
+        logger.info("Test runs data is empty.")
+
+    # # TODO: Delete this for using requests, now data is used from local file
+    # with open('data_input.json', 'r') as file:
+    #     test_runs_data = json.load(file)
 
     test_cases_data = write_test_cases_data(args.test_automation_directory, test_runs_data)
 
