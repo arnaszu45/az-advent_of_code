@@ -34,20 +34,30 @@ def collect_test_cases_from_directory(test_automation_directory: Path) -> list[P
     return test_cases_files
 
 
-def fetch_test_runs_data() -> dict:  # Should this function have tests? Or it supposed to mocked?
+def fetch_test_runs_data() -> dict:
     """Fetches test runs data from a remote server, returning the response JSON data as a formatted string."""
 
     url = "http://10.208.1.21:12001/test_runs"
     params = {
         "project": "Test Automation",
-        "limit": 50000000
+        "limit": 5000
     }
     headers = {
         "accept": "application/json"
     }
+    response = None
 
-    response = requests.get(url, params=params, headers=headers, data=json.dumps(params),
-                            timeout=5)  # Need timeout exception
+    try:
+        response = requests.get(url, params=params, headers=headers, data=json.dumps(params),
+                                timeout=5)
+    except requests.exceptions.Timeout:
+        logger.error(f"The request timed out. Check the access to {url}.")
+    except requests.exceptions.ConnectionError as e:
+        logger.error(f"No connection - {e}")
+
+    if response is None:
+        logger.error(f"Could not get response from {url}")
+        return {}
 
     if response.status_code != 200:
         logger.error(
@@ -57,61 +67,123 @@ def fetch_test_runs_data() -> dict:  # Should this function have tests? Or it su
     return response.json()
 
 
-def get_latest_submission_time(run_test_data: dict, test_case_file_name: str) -> str:
-    """From Run tests data extract the latest execution date of test case"""
+def extract_builds_and_tests(run_test_data: dict, test_case_file_name: str) -> tuple[list, list]:
+    """Gets 'builds' and 'tests' from run tests data, which are used in other functions"""
 
-    submission_times = []
+    builds = []
+    tests = []
+
     if "builds" not in run_test_data:
-        logger.error("Key 'builds' does not exists in given data")
-        return ""
+        print("Key 'builds' does not exists in given data")
+        return builds, tests
 
     for build in run_test_data["builds"]:
         try:
-            # Which way is better to call? is it okay to use try inside function? If I use get, I could check if it is empty
-            # tests = build.get("properties", {}).get("test_scenario", {}).get("tests", {})
-            tests = build["properties"]["test_scenario"]["tests"]
+            build_tests = build["properties"]["test_scenario"]["tests"]
         except KeyError as e:
-            logger.error(f"Missing or incorrectly formatted data in 'build' properties - {e}.")
-            return ""
+            print(f"Missing data in 'build' properties - {e}.")
+            return builds, tests
+
+        builds.append(build)
+
+        for test in build_tests:
+            if test.get("test_file") == test_case_file_name:
+                tests.append(test)
+
+    return builds, tests
+
+
+def get_latest_submission_time(tests: list) -> str:
+    """From Run tests data extract the latest execution date of test case"""
+
+    submission_times = []
+
+    for test in tests:
+        submission_time = test.get("submission_time")
+        if submission_time:
+            try:
+                datetime_object = datetime.strptime(submission_time, "%Y_%m_%d_%Hh_%Mm")
+                submission_times.append(datetime_object)
+            except ValueError:
+                print(f"Invalid submission time format: {submission_time}")
+
+    if not submission_times:
+        return "NOT executed"
+
+    latest_date = max(submission_times)
+
+    return str(latest_date)
+
+
+def count_amount_of_executions(test_case_file_name: str, builds: list) -> tuple[int, int]:
+    """Count the number of executions for the given test case"""
+
+    failed = 0
+    passed = 0
+
+    for build in builds:
+        tests = build["properties"]["test_scenario"]["tests"]
 
         for test in tests:
             if test.get("test_file") != test_case_file_name:
                 continue
 
-            submission_time = test.get("submission_time")
-            if not submission_time:
-                logger.error(f"Missing or incorrectly formatted 'submission_time' in 'tests' properties.")  # Should 'submission_time' and 'tests' be saved as a variables so could be used it logger?
-                return ""
+            if build["results"] == 2:
+                failed += 1
 
-            datetime_object = datetime.strptime(submission_time, "%Y_%m_%d_%Hh_%Mm")
-            formatted_time = datetime_object.strftime("%Y-%m-%d %H:%M")
-            submission_times.append(formatted_time)
+            if build["results"] == 0:
+                passed += 1
 
-    if not submission_times:
-        return "NOT executed"  # Majority of tests from TestAutomation is not executed, it supposed to happen or I missing something?
-
-    return max(submission_times)
+    return passed, failed
 
 
-def write_test_cases_data(test_automation_directory: Path) -> dict:
+def collect_revisions(test_case_file_name: str, builds: list) -> list[str]:
+    """From Run tests data takes all the revisions of specific test case"""
+
+    revisions = []
+
+    for build in builds:
+        properties = build["properties"]
+        tests = build["properties"]["test_scenario"]["tests"]
+
+        for test in tests:
+            if test.get("test_file") != test_case_file_name:
+                continue
+            revision = properties["revision"]
+            revisions.append(revision)
+
+    return list(set(revisions))
+
+
+def calculate_pass_ratio(passed: int, failed: int) -> str:
+
+    if passed + failed == 0:
+        return "NOT executed"
+
+    pass_ratio = (passed / (failed + passed)) * 100
+
+    return str(pass_ratio) + "%"
+
+
+def write_test_cases_data(test_automation_directory: Path, test_runs_data: dict) -> dict:
     all_test_cases_data: dict[str, dict[str, str]] = {}
 
     test_cases = collect_test_cases_from_directory(test_automation_directory)
-    test_runs_data = fetch_test_runs_data()
 
     for test_case in test_cases:
+
         test_case_file_name = os.path.basename(test_case)
-        last_execution_date = get_latest_submission_time(test_runs_data, test_case_file_name)
+
+        builds, tests = extract_builds_and_tests(test_runs_data, test_case_file_name)
+
+        passed, failed = count_amount_of_executions(test_case_file_name, builds)
 
         test_case_data = {
-            "latest_submission_date": last_execution_date,
-            "amount_of_executions": "",  # How this supposed to be counted? Should I count how many times 'test_case_file_name' exists in run tests data? Or there could be another method?
+            "latest_submission_date": get_latest_submission_time(tests),
+            "amount_of_executions": passed + failed,
+            "revisions": collect_revisions(test_case_file_name, builds),
+            "pass_ratio": calculate_pass_ratio(passed, failed)
         }
-
-        # Current example of json file
-        # "test_T1_test_negative_pressure_slice_init_1_2_3_4.py": {
-        #     "latest_submission_date": "2024-04-10 18:15"
-        # },
 
         all_test_cases_data[test_case_file_name] = test_case_data
 
@@ -152,7 +224,11 @@ def configure_logger(filename: str) -> logging.Logger:
 def main(logger_: logging.Logger):
     logger_.info(" >>> Running the script\n")
 
-    test_cases_data = write_test_cases_data(args.test_automation_directory)
+    test_runs_data = fetch_test_runs_data()
+    if not test_runs_data:
+        sys.exit(1)
+
+    test_cases_data = write_test_cases_data(args.test_automation_directory, test_runs_data)
 
     try:
         create_json_file(test_cases_data, args.json_file)
