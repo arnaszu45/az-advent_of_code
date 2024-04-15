@@ -6,6 +6,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import requests
 
@@ -59,52 +60,59 @@ def fetch_test_runs_data(ip_address: str, project_name: str, limit: int) -> dict
     return response.json()
 
 
-def extract_builds_and_tests(run_test_data: dict, test_case_file_name: str) -> tuple[list, list]:
-    """Gets 'builds' and 'tests' from run tests data, which are used in other functions"""
+def reprocess_the_run_tests_data(run_tests_data: dict) -> dict[str, list[Any]]:
+    extracted_info: dict[Any, list[Any]] = {}
+    builds_key = "builds"
 
-    builds = []
-    tests = []
+    if builds_key not in run_tests_data:
+        logger.info(f"The '{builds_key}' key does not exist in the provided data.")
+        return {}
 
-    if "builds" not in run_test_data:
-        logger.error("Key 'builds' does not exists in given data")
-        return [], []
-
-    for build in run_test_data["builds"]:
+    for build in run_tests_data[builds_key]:
         try:
-            build_tests = build["properties"]["test_scenario"]["tests"]
+            test_scenario = build["properties"]["test_scenario"]
         except KeyError as e:
-            logger.error("Missing data in 'build' properties - {e}.")
-            return [], []
+            logger.info(f"Missing '{e.args[0]}' data in the properties of '{builds_key}'.")
+            return {}
 
-        builds.append(build)
+        if "tests" not in test_scenario:
+            logger.info(f"The 'tests' key does not exist in the '{builds_key}' data.")
+            return {}
 
-        for test in build_tests:
-            if test.get("test_file") == test_case_file_name:
-                tests.append(test)
+        for test_info in test_scenario['tests']:
 
-    return builds, tests
+            test_file = test_info['test_file']
+            submission_time = test_info['submission_time']
+            results = build['results']
+            revision = build['properties']['revision']
+
+            if test_file not in extracted_info:
+                extracted_info[test_file] = []
+            extracted_info[test_file].append(
+                {
+                    "submission_time": submission_time,
+                    "results": results,
+                    "revision": revision
+                }
+            )
+
+    return extracted_info
 
 
-def get_latest_submission_time(tests: list) -> str:
+def get_latest_submission_time(test_case_file: str, test_cases_data: dict) -> str:
     """From Run tests data extract the latest execution date of test case"""
 
-    submission_times = []
+    test_case_info = test_cases_data.get(test_case_file)
+    if test_case_info is None:
+        return ""
 
-    for test in tests:
-        submission_time = test.get("submission_time")
-        if submission_time:
-            try:
-                datetime_object = datetime.strptime(submission_time, "%Y_%m_%d_%Hh_%Mm")
-                submission_times.append(datetime_object)
-            except ValueError:
-                print(f"Invalid submission time format: {submission_time}")
+    latest_submission = max(test_case_info, key=lambda x: x["submission_time"])
+    try:
+        latest_submission = datetime.strptime(latest_submission["submission_time"], "%Y_%m_%d_%Hh_%Mm")
+    except ValueError:
+        logger.info(f"Invalid submission time format: {latest_submission}")
 
-    if not submission_times:
-        return "NOT executed"
-
-    latest_date = max(submission_times)
-
-    return str(latest_date)
+    return str(latest_submission)
 
 
 def count_amount_of_executions(test_case_file_name: str, builds: list) -> tuple[int, int]:
@@ -113,8 +121,6 @@ def count_amount_of_executions(test_case_file_name: str, builds: list) -> tuple[
     failed = 0
     passed = 0
 
-    for build in builds:
-        tests = build["properties"]["test_scenario"]["tests"]
 
         for test in tests:
             if test.get("test_file") != test_case_file_name:
@@ -157,23 +163,18 @@ def calculate_pass_ratio(passed: int, failed: int) -> float:
 
 
 def write_test_cases_data(test_automation_directory: Path, test_runs_data: dict) -> dict:
-
     all_test_cases_data: dict[str, dict[str, str]] = {}
     test_cases = collect_test_cases_from_directory(test_automation_directory)
-
+    extracted_data = reprocess_the_run_tests_data(test_runs_data)
 
     for test_case in test_cases:
         test_case_file_name = os.path.basename(test_case)
 
-        builds, tests = extract_builds_and_tests(test_runs_data, test_case_file_name)
-
-        passed, failed = count_amount_of_executions(test_case_file_name, builds)
-
         test_case_data = {
-            "latest_submission_date": get_latest_submission_time(tests),
-            "amount_of_executions": passed + failed,
-            "revisions": collect_revisions(test_case_file_name, builds),
-            "pass_ratio": calculate_pass_ratio(passed, failed)
+            "latest_submission_date": get_latest_submission_time(test_case_file_name, extracted_data),
+            # "amount_of_executions": passed + failed,
+            # "revisions": collect_revisions(test_case_file_name, builds),
+            # "pass_ratio": calculate_pass_ratio(passed, failed)
         }
 
         all_test_cases_data[test_case_file_name] = test_case_data
