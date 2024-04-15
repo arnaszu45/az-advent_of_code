@@ -4,9 +4,9 @@ import logging
 import os.path
 import sys
 import time
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 import requests
 
@@ -17,13 +17,15 @@ def collect_test_cases_from_directory(test_automation_directory: Path) -> list[P
     """From given TA directory, collects all 'test_*.py' files from '/test_cases/'"""
 
     if not isinstance(test_automation_directory, Path):
-        logger.error(f"{test_automation_directory} - invalid path")
+        logger.error(
+            f"'{test_automation_directory}' expected to be Path type, got {type(test_automation_directory)} instead"
+        )
         return []
 
     test_cases_directory = test_automation_directory / "test_cases"
 
     if not test_cases_directory.is_dir():
-        logger.error(f"{test_cases_directory} - is not a valid directory path")
+        logger.error(f"{test_cases_directory} - is not a directory")
         return []
 
     test_cases_files = list(Path(test_cases_directory).rglob("test_*.py"))
@@ -60,31 +62,44 @@ def fetch_test_runs_data(ip_address: str, project_name: str, limit: int) -> dict
     return response.json()
 
 
-def reprocess_the_run_tests_data(run_tests_data: dict) -> dict[str, list[Any]]:
-    extracted_info: dict[Any, list[Any]] = {}
-    builds_key = "builds"
+def traverse_json(build: dict, keys: list) -> dict | None:
+    """Traverse through a nested dictionary using a list of keys and return the value if found, otherwise None."""
 
-    if builds_key not in run_tests_data:
-        logger.info(f"The '{builds_key}' key does not exist in the provided data.")
+    current_data: dict | None = build
+    for key in keys:
+        current_data = current_data.get(key)
+
+        if current_data is None:
+            logger.info(f"Missing key {key!r}")
+            return None
+
+    return current_data
+
+
+def process_the_run_tests_data(run_tests_data: dict) -> dict:
+    """Process the test run data and saves the information in easily accessible format"""
+    extracted_info = {}
+
+    builds = traverse_json(run_tests_data, keys=["builds"])
+    if builds is None:
         return {}
 
-    for build in run_tests_data[builds_key]:
-        try:
-            test_scenario = build["properties"]["test_scenario"]
-        except KeyError as e:
-            logger.info(f"Missing '{e.args[0]}' data in the properties of '{builds_key}'.")
+    for build in builds:
+        test_scenario = traverse_json(build, keys=["properties", "test_scenario"])
+
+        if test_scenario is None:
             return {}
 
-        if "tests" not in test_scenario:
-            logger.info(f"The 'tests' key does not exist in the '{builds_key}' data.")
+        tests_info = traverse_json(test_scenario, keys=["tests"])
+        if tests_info is None:
             return {}
 
-        for test_info in test_scenario['tests']:
-
-            test_file = test_info['test_file']
-            submission_time = test_info['submission_time']
-            results = build['results']
-            revision = build['properties']['revision']
+        for test in tests_info:
+            test_file = test.get('test_file', "")
+            submission_time = test.get('submission_time', "")
+            results = build.get('results', "")
+            properties = build.get('properties', {})
+            revision = properties.get('revision', "")
 
             if test_file not in extracted_info:
                 extracted_info[test_file] = []
@@ -99,10 +114,9 @@ def reprocess_the_run_tests_data(run_tests_data: dict) -> dict[str, list[Any]]:
     return extracted_info
 
 
-def get_latest_submission_time(test_case_file: str, test_cases_data: dict) -> str:
+def get_latest_submission_time(test_case_info) -> str:
     """From Run tests data extract the latest execution date of test case"""
 
-    test_case_info = test_cases_data.get(test_case_file)
     if test_case_info is None:
         return ""
 
@@ -115,47 +129,45 @@ def get_latest_submission_time(test_case_file: str, test_cases_data: dict) -> st
     return str(latest_submission)
 
 
-def count_amount_of_executions(test_case_file_name: str, builds: list) -> tuple[int, int]:
+def count_amount_of_executions(test_case_info) -> tuple[int, int]:
     """Count the number of executions for the given test case"""
 
     failed = 0
     passed = 0
 
+    if not test_case_info:
+        return 0, 0
 
-        for test in tests:
-            if test.get("test_file") != test_case_file_name:
-                continue
+    for test_run in test_case_info:
+        if test_run["results"] == 0:
+            passed += 1
+        elif test_run["results"] == 2:
+            failed += 1
 
-            if build["results"] == 2:
-                failed += 1
-
-            if build["results"] == 0:
-                passed += 1
-
-    return passed, failed
+    return failed, passed
 
 
-def collect_revisions(test_case_file_name: str, builds: list) -> list[str]:
-    """From Run tests data takes all the revisions of specific test case"""
-
-    revisions = []
-
-    for build in builds:
-        properties = build["properties"]
-        tests = build["properties"]["test_scenario"]["tests"]
-
-        for test in tests:
-            if test.get("test_file") != test_case_file_name:
-                continue
-            revision = properties["revision"]
-            revisions.append(revision)
-
-    return list(set(revisions))
-
-
+# def collect_revisions(test_case_file_name: str, builds: list) -> list[str]:
+#     """From Run tests data takes all the revisions of specific test case"""
+#
+#     revisions = []
+#
+#     for build in builds:
+#         properties = build["properties"]
+#         tests = build["properties"]["test_scenario"]["tests"]
+#
+#         for test in tests:
+#             if test.get("test_file") != test_case_file_name:
+#                 continue
+#             revision = properties["revision"]
+#             revisions.append(revision)
+#
+#     return list(set(revisions))
+#
+#
 def calculate_pass_ratio(passed: int, failed: int) -> float:
     if passed + failed == 0:
-        return 0
+        return 0.0
 
     pass_ratio = (passed / (failed + passed)) * 100
 
@@ -165,16 +177,29 @@ def calculate_pass_ratio(passed: int, failed: int) -> float:
 def write_test_cases_data(test_automation_directory: Path, test_runs_data: dict) -> dict:
     all_test_cases_data: dict[str, dict[str, str]] = {}
     test_cases = collect_test_cases_from_directory(test_automation_directory)
-    extracted_data = reprocess_the_run_tests_data(test_runs_data)
+
+    if not test_cases:
+        logger.info(f"Any testcases were found in {test_automation_directory}")
+        return {}
+
+    extracted_data = process_the_run_tests_data(test_runs_data)
+
+    if not extracted_data:
+        logger.info(f"Tests run data is empty")
+        return {}
 
     for test_case in test_cases:
-        test_case_file_name = os.path.basename(test_case)
+        test_case_file_name = test_case.name
+
+        test_case_info = extracted_data.get(test_case_file_name)
+
+        failed, passed = count_amount_of_executions(test_case_info)
 
         test_case_data = {
-            "latest_submission_date": get_latest_submission_time(test_case_file_name, extracted_data),
-            # "amount_of_executions": passed + failed,
+            "latest_submission_date": get_latest_submission_time(test_case_info),
+            "amount_of_executions": passed + failed,
             # "revisions": collect_revisions(test_case_file_name, builds),
-            # "pass_ratio": calculate_pass_ratio(passed, failed)
+            "pass_ratio": calculate_pass_ratio(passed, failed)
         }
 
         all_test_cases_data[test_case_file_name] = test_case_data
@@ -223,19 +248,23 @@ def main(logger_: logging.Logger):
     logger_.info(" >>> Running the script\n")
 
     # TODO: this for using requests
-    test_runs_data = fetch_test_runs_data(ip_address=args.ip_address, project_name=args.project_name,
-                                          limit=args.limit)
-    if test_runs_data is None:
-        sys.exit(1)
-
-    if not test_runs_data:
-        logger.info("Test runs data is empty.")
+    # test_runs_data = fetch_test_runs_data(ip_address=args.ip_address, project_name=args.project_name,
+    #                                       limit=args.limit)
+    # if test_runs_data is None:
+    #     sys.exit(1)
+    #
+    # if not test_runs_data:
+    #     logger.info("Test runs data is empty.")
+    #     return {}
 
     # # TODO: Delete this for using requests, now data is used from local file
-    # with open('data_input.json', 'r') as file:
-    #     test_runs_data = json.load(file)
+    with open('data_input.json', 'r') as file:
+        test_runs_data = json.load(file)
 
     test_cases_data = write_test_cases_data(args.test_automation_directory, test_runs_data)
+
+    if not test_cases_data:
+        sys.exit(1)
 
     try:
         create_json_file(test_cases_data, args.json_file)

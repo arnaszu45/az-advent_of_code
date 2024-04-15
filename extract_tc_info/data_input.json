@@ -1,0 +1,4246 @@
+{
+  "builds": [
+    {
+      "buildid": 37527,
+      "number": 8055,
+      "builderid": 1,
+      "buildrequestid": 38285,
+      "workerid": 71,
+      "masterid": 210,
+      "started_at": 1706260538,
+      "complete_at": 1706271257,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-22222",
+              "case_id": "8b6757f8-97d5-49ed-809e-b280242da503",
+              "submission_time": "2024_01_26_11h_15m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8055,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_01_26__11h_15m_37s_349ms_Mantas",
+        "run_tags": [
+          "Part_2"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_17",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "3188a10457ed609d79c1d2d16d5fdea2028ee422",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_17/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37637,
+      "number": 8077,
+      "builderid": 1,
+      "buildrequestid": 38395,
+      "workerid": 65,
+      "masterid": 247,
+      "started_at": 1709650811,
+      "complete_at": 1709652310,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_secondary_air_separation_and_filling_program_in_case_of_flow_off_bugfix.py",
+              "test_file": "test_secondary_air_separation_and_filling_program_in_case_of_flow_off_bugfix.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-79892",
+              "case_id": "df69c3c0-8f49-474b-8e13-733d16bfe729",
+              "submission_time": "2024_03_05_17h_00m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8077,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_1/test-run-main-test-automation-builder",
+        "run_id": "2024_03_05__17h_00m_05s_971ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_1",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "aa39b3514ed55f803e8d22f714e516b40459a703"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37774,
+      "number": 8106,
+      "builderid": 1,
+      "buildrequestid": 38532,
+      "workerid": 75,
+      "masterid": 247,
+      "started_at": 1710917270,
+      "complete_at": 1710920561,
+      "state_string": "cancelled triggered T1Test-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0bab9f161bcc4307388a7536dcaaf6979d7e0592",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_20__08h_47m_45s_355ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-80016",
+              "case_id": "0588e871-ba32-4e76-85d7-e0737e96c43d",
+              "submission_time": "2024_03_20_08h_47m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8106,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37592,
+      "number": 8068,
+      "builderid": 1,
+      "buildrequestid": 38350,
+      "workerid": 58,
+      "masterid": 247,
+      "started_at": 1709017005,
+      "complete_at": 1709023858,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_02_27__08h_56m_40s_513ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_2",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Pressure/test_cpht_error_handling.py",
+              "test_file": "test_cpht_error_handling.py",
+              "setup": "treatment",
+              "polarion_id": "PS-17560",
+              "case_id": "a79cc935-c13f-425c-93d3-089b197f63b1",
+              "submission_time": "2024_02_27_08h_56m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8068,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_2/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "800f67c2f3cd3865de5d361fd4ff52360d92af2e",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37622,
+      "number": 8074,
+      "builderid": 1,
+      "buildrequestid": 38380,
+      "workerid": 80,
+      "masterid": 247,
+      "started_at": 1709277674,
+      "complete_at": 1709280305,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Ultrafiltration/test_uf_auto_start_start_conditions.py",
+              "test_file": "test_uf_auto_start_start_conditions.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38317",
+              "case_id": "6cc6b560-45c5-4edd-a01f-0d05e05ce0f4",
+              "submission_time": "2024_03_01_09h_21m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8074,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_03_01__09h_21m_04s_601ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_23",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0c7f3fb6c2680fa7b6092af35ba3b69e5a643995",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_23/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37726,
+      "number": 8096,
+      "builderid": 1,
+      "buildrequestid": 38484,
+      "workerid": 65,
+      "masterid": 247,
+      "started_at": 1710748927,
+      "complete_at": 1710749526,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "run_id": "2024_03_18__10h_02m_02s_330ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_1",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "d1683010-50dc-4559-8f1d-db9916d1687e",
+              "submission_time": "2024_03_18_10h_02m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8096,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_1/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37530,
+      "number": 8057,
+      "builderid": 1,
+      "buildrequestid": 38289,
+      "workerid": 77,
+      "masterid": 210,
+      "started_at": 1706260551,
+      "complete_at": 1706265694,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_01_26__11h_15m_50s_721ms_Mantas",
+        "run_tags": [
+          "Part_2"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_19",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "3188a10457ed609d79c1d2d16d5fdea2028ee422",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-22222",
+              "case_id": "46f466c0-1dd1-4490-910e-3748c4097be2",
+              "submission_time": "2024_01_26_11h_15m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8057,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_19/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37670,
+      "number": 8084,
+      "builderid": 1,
+      "buildrequestid": 38428,
+      "workerid": 67,
+      "masterid": 247,
+      "started_at": 1710241390,
+      "complete_at": 1710241719,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "4429f4e9-cb96-4733-a43d-5cfb021632df",
+              "submission_time": "2024_03_12_13h_03m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8084,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_12__13h_03m_10s_631ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_6",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_6/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37516,
+      "number": 8052,
+      "builderid": 1,
+      "buildrequestid": 38275,
+      "workerid": 61,
+      "masterid": 210,
+      "started_at": 1706259501,
+      "complete_at": 1706260412,
+      "state_string": "cancelled triggered Cleaning-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "357600ba-c019-4916-a06e-266798eaedbb",
+              "submission_time": "2024_01_26_10h_58m"
+            }
+          ]
+        },
+        "run_id": "2024_01_26__10h_58m_20s_863ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_4",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "14fdb8b332f36e62daf1a96e204bcdfe8ab07941",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8052,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_4/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37647,
+      "number": 8079,
+      "builderid": 1,
+      "buildrequestid": 38405,
+      "workerid": 66,
+      "masterid": 247,
+      "started_at": 1709905275,
+      "complete_at": 1709905996,
+      "state_string": "cancelled triggered T1Test-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "run_id": "2024_03_08__15h_41m_10s_123ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_3",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "a511749c-f5aa-496d-9c4d-50af9e1806ae",
+              "submission_time": "2024_03_08_15h_41m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8079,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_3/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37663,
+      "number": 8083,
+      "builderid": 1,
+      "buildrequestid": 38421,
+      "workerid": 58,
+      "masterid": 247,
+      "started_at": 1710232683,
+      "complete_at": 1710235583,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "e58b188a-6e97-4ca2-8a92-1ba77dce3a54",
+              "submission_time": "2024_03_12_10h_38m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8083,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "run_id": "2024_03_12__10h_38m_03s_608ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_2",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_2/test-run-main-test-automation-builder",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37700,
+      "number": 8091,
+      "builderid": 1,
+      "buildrequestid": 38458,
+      "workerid": 71,
+      "masterid": 247,
+      "started_at": 1710496004,
+      "complete_at": 1710499714,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f02796832cd333b55a8d0db27eda52594d515075",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Conductivity/test_remeasurement_of_cd_aro_interference_with_iso_uf.py",
+              "test_file": "test_remeasurement_of_cd_aro_interference_with_iso_uf.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38184",
+              "case_id": "de54dae6-f8da-475e-80cd-e31cb1928a48",
+              "submission_time": "2024_03_15_11h_46m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8091,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_15__11h_46m_44s_225ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_17",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_17/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37503,
+      "number": 8048,
+      "builderid": 1,
+      "buildrequestid": 38261,
+      "workerid": 66,
+      "masterid": 210,
+      "started_at": 1706166590,
+      "complete_at": 1706172426,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_3/test-run-main-test-automation-builder",
+        "run_id": "2024_01_25__09h_09m_50s_323ms_Mantas",
+        "run_tags": [
+          "Bugfix"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_3",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "65913af98184f31bd68bde3f5a10ce2470813967",
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "ba537995-75a6-4849-ad9d-594d970a7cbc",
+              "submission_time": "2024_01_25_09h_09m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8048,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ]
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37513,
+      "number": 8050,
+      "builderid": 1,
+      "buildrequestid": 38271,
+      "workerid": 77,
+      "masterid": 210,
+      "started_at": 1706259477,
+      "complete_at": 1706260407,
+      "state_string": "cancelled triggered Cleaning-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "14fdb8b332f36e62daf1a96e204bcdfe8ab07941",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_01_26__10h_57m_57s_333ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_19",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "09b45e67-8c6f-4cf4-b9e6-1caa4d2362e5",
+              "submission_time": "2024_01_26_10h_57m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8050,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_19/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37795,
+      "number": 8111,
+      "builderid": 1,
+      "buildrequestid": 38553,
+      "workerid": 76,
+      "masterid": 249,
+      "started_at": 1711091600,
+      "complete_at": 1711095819,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "b8e460bc171deab70905f99932e0c1fbfdc7494a",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_main_workflow_treatment_bugfix.py",
+              "test_file": "test_main_workflow_treatment_bugfix.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-80242",
+              "case_id": "0f8a5d30-c709-4297-94a6-91506112796e",
+              "submission_time": "2024_03_22_09h_13m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8111,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_03_22__09h_13m_20s_470ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_14",
+        "codebase": "",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_14/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37602,
+      "number": 8070,
+      "builderid": 1,
+      "buildrequestid": 38360,
+      "workerid": 78,
+      "masterid": 247,
+      "started_at": 1709027415,
+      "complete_at": 1709034380,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_13/test-run-main-test-automation-builder",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "800f67c2f3cd3865de5d361fd4ff52360d92af2e",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_02_27__11h_50m_10s_889ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_13",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Pressure/test_cpht_error_handling.py",
+              "test_file": "test_cpht_error_handling.py",
+              "setup": "treatment",
+              "polarion_id": "PS-17560",
+              "case_id": "fd43129f-f644-481e-8e41-0f19aa5ac012",
+              "submission_time": "2024_02_27_11h_50m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8070,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ]
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37713,
+      "number": 8093,
+      "builderid": 1,
+      "buildrequestid": 38471,
+      "workerid": 60,
+      "masterid": 247,
+      "started_at": 1710512651,
+      "complete_at": 1710517290,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_15__16h_24m_06s_463ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_9",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "593c1867-7cde-4af4-ad53-42151c103a85",
+              "submission_time": "2024_03_15_16h_24m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8093,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_9/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37698,
+      "number": 8090,
+      "builderid": 1,
+      "buildrequestid": 38456,
+      "workerid": 63,
+      "masterid": 247,
+      "started_at": 1710495989,
+      "complete_at": 1710499147,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "8d728598-e58d-4a1f-8efa-ab9561936367",
+              "submission_time": "2024_03_15_11h_46m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8090,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f02796832cd333b55a8d0db27eda52594d515075",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_10/test-run-main-test-automation-builder",
+        "run_id": "2024_03_15__11h_46m_24s_681ms_Mantas",
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_tags": [
+          "Treatment MWF"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_10",
+        "codebase": ""
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37617,
+      "number": 8073,
+      "builderid": 1,
+      "buildrequestid": 38375,
+      "workerid": 59,
+      "masterid": 247,
+      "started_at": 1709274195,
+      "complete_at": 1709276819,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Ultrafiltration/test_uf_auto_start_start_conditions.py",
+              "test_file": "test_uf_auto_start_start_conditions.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38317",
+              "case_id": "b5fa8f50-765a-4f07-9461-3283b4350611",
+              "submission_time": "2024_03_01_08h_23m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8073,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0c7f3fb6c2680fa7b6092af35ba3b69e5a643995",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_01__08h_23m_05s_863ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_5",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_5/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37612,
+      "number": 8072,
+      "builderid": 1,
+      "buildrequestid": 38370,
+      "workerid": 75,
+      "masterid": 247,
+      "started_at": 1709271073,
+      "complete_at": 1709273854,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_01__07h_31m_08s_374ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Ultrafiltration/test_uf_auto_start_start_conditions.py",
+              "test_file": "test_uf_auto_start_start_conditions.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38317",
+              "case_id": "15082c86-5f0d-4eb0-895c-ff08ff33d50b",
+              "submission_time": "2024_03_01_07h_31m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8072,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "965f28a355e50935cceab1efcef7afb3ee325f52",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37787,
+      "number": 8109,
+      "builderid": 1,
+      "buildrequestid": 38545,
+      "workerid": 65,
+      "masterid": 249,
+      "started_at": 1711086137,
+      "complete_at": 1711092459,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-80016",
+              "case_id": "94fb1489-82e0-4524-9cd7-7b75d1b11cb6",
+              "submission_time": "2024_03_22_07h_42m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8109,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "231928740e7fa30ebb51a284fdfc9edef44fe19c",
+        "run_id": "2024_03_22__07h_42m_17s_381ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_1",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_1/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37802,
+      "number": 8112,
+      "builderid": 1,
+      "buildrequestid": 38560,
+      "workerid": 74,
+      "masterid": 249,
+      "started_at": 1711107003,
+      "complete_at": 1711111961,
+      "state_string": "failed triggered Treatment-bibag-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_main_workflow_treatment_bibag_bugfix.py",
+              "test_file": "test_main_workflow_treatment_bibag_bugfix.py",
+              "setup": "treatment-bibag",
+              "polarion_id": "4AP2-80243",
+              "case_id": "79ae9952-0e56-43e2-a068-6938157726aa",
+              "submission_time": "2024_03_22_13h_30m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8112,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_12/test-run-main-test-automation-builder",
+        "run_id": "2024_03_22__13h_30m_02s_937ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_12",
+        "codebase": "",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "b8e460bc171deab70905f99932e0c1fbfdc7494a"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37575,
+      "number": 8065,
+      "builderid": 1,
+      "buildrequestid": 38333,
+      "workerid": 70,
+      "masterid": 247,
+      "started_at": 1707824088,
+      "complete_at": 1707824358,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "d5de02d3-d1a9-485c-babb-334fcd9cf47f",
+              "submission_time": "2024_02_13_13h_34m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8065,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_02_13__13h_34m_43s_681ms_Angel",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_18",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Angel",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_18/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37632,
+      "number": 8076,
+      "builderid": 1,
+      "buildrequestid": 38390,
+      "workerid": 79,
+      "masterid": 247,
+      "started_at": 1709287055,
+      "complete_at": 1709290616,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_01__11h_57m_35s_181ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_16",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_uf_auto_start_only_once_bugfix.py",
+              "test_file": "test_uf_auto_start_only_once_bugfix.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-79872",
+              "case_id": "a70bf45f-e5f3-4c3f-b65f-f886d8221354",
+              "submission_time": "2024_03_01_11h_57m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8076,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "7a7765e36d20d8a5149ccaaae017ff4128a5efe0",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_16/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37545,
+      "number": 8059,
+      "builderid": 1,
+      "buildrequestid": 38303,
+      "workerid": 78,
+      "masterid": 210,
+      "started_at": 1706267330,
+      "complete_at": 1706274315,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-22222",
+              "case_id": "3dee862f-923f-4aa1-9607-85bb616e1999",
+              "submission_time": "2024_01_26_13h_08m"
+            }
+          ]
+        },
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8059,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_01_26__13h_08m_49s_593ms_Mantas",
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "total_tests": 1,
+        "run_tags": [
+          "Part_2"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_13",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_13/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37642,
+      "number": 8078,
+      "builderid": 1,
+      "buildrequestid": 38400,
+      "workerid": 69,
+      "masterid": 247,
+      "started_at": 1709900778,
+      "complete_at": 1709903681,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_08__14h_26m_13s_859ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_24",
+        "codebase": "",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "e28a1efc-a08d-4c47-bafe-0bbbcd5b3695",
+              "submission_time": "2024_03_08_14h_26m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8078,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_24/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37505,
+      "number": 8049,
+      "builderid": 1,
+      "buildrequestid": 38263,
+      "workerid": 59,
+      "masterid": 210,
+      "started_at": 1706166604,
+      "complete_at": 1706174217,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_5/test-run-main-test-automation-builder",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "65913af98184f31bd68bde3f5a10ce2470813967",
+        "run_id": "2024_01_25__09h_10m_03s_052ms_Mantas",
+        "run_tags": [
+          "Bugfix"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_5",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "4b13f0a4-45cc-49c5-a7c3-b1c39d599442",
+              "submission_time": "2024_01_25_09h_10m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8049,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37753,
+      "number": 8101,
+      "builderid": 1,
+      "buildrequestid": 38511,
+      "workerid": 78,
+      "masterid": 247,
+      "started_at": 1710769456,
+      "complete_at": 1710773712,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "a524a85d-1b3c-49bb-868a-72149e9387ee",
+              "submission_time": "2024_03_18_15h_44m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8101,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_03_18__15h_44m_16s_111ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_13",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_13/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37812,
+      "number": 8114,
+      "builderid": 1,
+      "buildrequestid": 38570,
+      "workerid": 72,
+      "masterid": 249,
+      "started_at": 1711441287,
+      "complete_at": 1711445226,
+      "state_string": "failed triggered Treatment-bibag-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_20/test-run-main-test-automation-builder",
+        "run_id": "2024_03_26__10h_21m_27s_132ms_oleg",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_20",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Conductivity/test_remeasurement_of_cd_aro_dialysis_iso_uf_power_failure_pht_change_between_treatments_bibag.py",
+              "test_file": "test_remeasurement_of_cd_aro_dialysis_iso_uf_power_failure_pht_change_between_treatments_bibag.py",
+              "setup": "treatment-bibag",
+              "polarion_id": "4AP2-68770",
+              "case_id": "eeba05e8-f998-4a09-b862-3aea54b1583e",
+              "submission_time": "2024_03_26_10h_21m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8114,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "b8e460bc171deab70905f99932e0c1fbfdc7494a",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "oleg",
+        "branch": null
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37807,
+      "number": 8113,
+      "builderid": 1,
+      "buildrequestid": 38565,
+      "workerid": 73,
+      "masterid": 249,
+      "started_at": 1711438364,
+      "complete_at": 1711440215,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_26__09h_32m_44s_322ms_oleg",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_15",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/ConcentrateSupply/test_ecd_reaction_if_concentrate_changed.py",
+              "test_file": "test_ecd_reaction_if_concentrate_changed.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38119",
+              "case_id": "969abe6b-3c0b-49bd-8368-b81af8551836",
+              "submission_time": "2024_03_26_09h_32m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8113,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "oleg",
+        "branch": null,
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "b8e460bc171deab70905f99932e0c1fbfdc7494a",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_15/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37543,
+      "number": 8058,
+      "builderid": 1,
+      "buildrequestid": 38301,
+      "workerid": 62,
+      "masterid": 210,
+      "started_at": 1706267324,
+      "complete_at": 1706272394,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-11111",
+              "case_id": "cbac837a-ec56-4b6f-84db-36649c4b9abb",
+              "submission_time": "2024_01_26_13h_08m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8058,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "run_id": "2024_01_26__13h_08m_44s_295ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37720,
+      "number": 8095,
+      "builderid": 1,
+      "buildrequestid": 38478,
+      "workerid": 63,
+      "masterid": 247,
+      "started_at": 1710748041,
+      "complete_at": 1710748648,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "run_id": "2024_03_18__09h_47m_16s_753ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_10",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_10/test-run-main-test-automation-builder",
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "b2299e9d-5939-4a5b-82df-3668737099da",
+              "submission_time": "2024_03_18_09h_47m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8095,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ]
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37627,
+      "number": 8075,
+      "builderid": 1,
+      "buildrequestid": 38385,
+      "workerid": 75,
+      "masterid": 247,
+      "started_at": 1709281433,
+      "complete_at": 1709284546,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_01__10h_23m_53s_559ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f75a4835b797f76eec01b4fd5e0467f0ccae5052",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "buildnumber": 8075,
+        "project": "Test Automation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_uf_auto_start_start_conditions_bugfix.py",
+              "test_file": "test_uf_auto_start_start_conditions_bugfix.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-79871",
+              "case_id": "ee2e20ef-c1b8-4f0b-8a0d-584378724d3d",
+              "submission_time": "2024_03_01_10h_23m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": ""
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37567,
+      "number": 8063,
+      "builderid": 1,
+      "buildrequestid": 38325,
+      "workerid": 77,
+      "masterid": 247,
+      "started_at": 1707823523,
+      "complete_at": 1707823776,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "donatello"
+        ],
+        "total_tests": 1,
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_19",
+        "codebase": "",
+        "run_tags": [],
+        "environment_variables": null,
+        "linked_run_id": null,
+        "buildnumber": 8063,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "scheduled_distribution": false,
+        "trigger_name": null,
+        "started_by": "tmt_admin",
+        "branch": null,
+        "run_id": "2024_02_13__13h_25m_18s_091ms_tmt_admin",
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "8964b01a-3dad-4f2d-b7d3-2b84978e933a",
+              "submission_time": "2024_02_13_13h_25m"
+            }
+          ]
+        },
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_19/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37550,
+      "number": 8060,
+      "builderid": 1,
+      "buildrequestid": 38309,
+      "workerid": 75,
+      "masterid": 210,
+      "started_at": 1706271474,
+      "complete_at": 1706276538,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-11111",
+              "case_id": "1c55237c-2683-40ee-a387-8f279d5884b8",
+              "submission_time": "2024_01_26_14h_17m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8060,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_01_26__14h_17m_54s_646ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37572,
+      "number": 8064,
+      "builderid": 1,
+      "buildrequestid": 38330,
+      "workerid": 75,
+      "masterid": 247,
+      "started_at": 1707823895,
+      "complete_at": 1707824162,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Angel",
+        "branch": null,
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_02_13__13h_31m_30s_695ms_Angel",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "f3213c1d-0a74-4599-98ac-5aa94faca667",
+              "submission_time": "2024_02_13_13h_31m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8064,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37777,
+      "number": 8107,
+      "builderid": 1,
+      "buildrequestid": 38535,
+      "workerid": 79,
+      "masterid": 249,
+      "started_at": 1711018198,
+      "complete_at": 1711018455,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_21__12h_49m_58s_613ms_Justina",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_16",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "99751580-22c1-42b8-8a77-c38d80867e8e",
+              "submission_time": "2024_03_21_12h_49m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8107,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_16/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Justina",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "7840a474ad24f3bbbb2caae9d6102a2504cc9baa",
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37756,
+      "number": 8102,
+      "builderid": 1,
+      "buildrequestid": 38514,
+      "workerid": 58,
+      "masterid": 247,
+      "started_at": 1710771999,
+      "complete_at": 1710775425,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_18__16h_26m_39s_666ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "Head"
+        ],
+        "repeat_failed_tests_times": 0,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "b0d27df8-07c8-4264-bcfb-deac4f66077c",
+              "submission_time": "2024_03_18_16h_26m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8102,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "workername": "trigger_worker_test_automation_2",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_2/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37790,
+      "number": 8110,
+      "builderid": 1,
+      "buildrequestid": 38548,
+      "workerid": 78,
+      "masterid": 249,
+      "started_at": 1711087183,
+      "complete_at": 1711090869,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_22__07h_59m_43s_458ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_13",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_13/test-run-main-test-automation-builder",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_remeasurement_of_cd_aro_interference_with_iso_uf_bugfix.py",
+              "test_file": "test_remeasurement_of_cd_aro_interference_with_iso_uf_bugfix.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-80244",
+              "case_id": "c0295a87-4e69-4cc3-aecc-286e4e33df34",
+              "submission_time": "2024_03_22_07h_59m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8110,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "b8e460bc171deab70905f99932e0c1fbfdc7494a"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37731,
+      "number": 8097,
+      "builderid": 1,
+      "buildrequestid": 38489,
+      "workerid": 71,
+      "masterid": 247,
+      "started_at": 1710752434,
+      "complete_at": 1710757338,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "3610a3b5-37ab-4978-80de-8227f7f5d18d",
+              "submission_time": "2024_03_18_11h_00m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8097,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_18__11h_00m_29s_801ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_17",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_17/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37515,
+      "number": 8051,
+      "builderid": 1,
+      "buildrequestid": 38273,
+      "workerid": 72,
+      "masterid": 210,
+      "started_at": 1706259490,
+      "complete_at": 1706260417,
+      "state_string": "cancelled triggered Cleaning-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_01_26__10h_58m_09s_287ms_Mantas",
+        "run_tags": [
+          "Part_2"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_20",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "14fdb8b332f36e62daf1a96e204bcdfe8ab07941",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "a1f1479a-9c54-49be-b8e5-b750b199cd37",
+              "submission_time": "2024_01_26_10h_58m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8051,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_20/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37766,
+      "number": 8104,
+      "builderid": 1,
+      "buildrequestid": 38524,
+      "workerid": 60,
+      "masterid": 247,
+      "started_at": 1710863409,
+      "complete_at": 1710863915,
+      "state_string": "cancelled triggered T1Test-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_19__17h_50m_04s_396ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_9",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-80016",
+              "case_id": "8914f71c-937c-467b-9a82-1b9243b1b92d",
+              "submission_time": "2024_03_19_17h_50m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8104,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0bab9f161bcc4307388a7536dcaaf6979d7e0592",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_9/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37595,
+      "number": 8069,
+      "builderid": 1,
+      "buildrequestid": 38353,
+      "workerid": 73,
+      "masterid": 247,
+      "started_at": 1709018394,
+      "complete_at": 1709023374,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "800f67c2f3cd3865de5d361fd4ff52360d92af2e",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Pressure/test_cpht_error_handling.py",
+              "test_file": "test_cpht_error_handling.py",
+              "setup": "treatment",
+              "polarion_id": "PS-17560",
+              "case_id": "54e0096f-7649-4d8e-9d10-c8183ebae58e",
+              "submission_time": "2024_02_27_09h_19m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8069,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_02_27__09h_19m_49s_335ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_15",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_15/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37708,
+      "number": 8092,
+      "builderid": 1,
+      "buildrequestid": 38466,
+      "workerid": 67,
+      "masterid": 247,
+      "started_at": 1710505036,
+      "complete_at": 1710508174,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "total_tests": 1,
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_15__14h_17m_06s_898ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_6",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "2d5e6805-0525-4e04-a021-8518312971bb",
+              "submission_time": "2024_03_15_14h_17m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8092,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_6/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37650,
+      "number": 8080,
+      "builderid": 1,
+      "buildrequestid": 38408,
+      "workerid": 77,
+      "masterid": 247,
+      "started_at": 1710228331,
+      "complete_at": 1710230619,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "9fcf9848-0cae-47e5-bf9b-773867e11057",
+              "submission_time": "2024_03_12_09h_25m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8080,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_19/test-run-main-test-automation-builder",
+        "run_id": "2024_03_12__09h_25m_26s_152ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_19",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37584,
+      "number": 8067,
+      "builderid": 1,
+      "buildrequestid": 38342,
+      "workerid": 77,
+      "masterid": 247,
+      "started_at": 1707824589,
+      "complete_at": 1707824863,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "c1c1dbb6-5bcf-4840-9faf-b59983855b31",
+              "submission_time": "2024_02_13_13h_43m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8067,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_02_13__13h_43m_04s_247ms_Angel",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_19",
+        "codebase": "",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Angel",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_19/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37691,
+      "number": 8089,
+      "builderid": 1,
+      "buildrequestid": 38449,
+      "workerid": 81,
+      "masterid": 247,
+      "started_at": 1710489476,
+      "complete_at": 1710491921,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "donatello"
+        ],
+        "run_id": "2024_03_15__09h_57m_51s_292ms_Mantas",
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_21",
+        "codebase": "",
+        "run_tags": [],
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Conductivity/test_remeasurement_of_cd_aro_interference_with_iso_uf.py",
+              "test_file": "test_remeasurement_of_cd_aro_interference_with_iso_uf.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-38184",
+              "case_id": "380fbfb3-32f8-4a36-934a-47c1ab20d83a",
+              "submission_time": "2024_03_15_09h_57m"
+            }
+          ]
+        },
+        "linked_run_id": null,
+        "buildnumber": 8089,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "scheduled_distribution": false,
+        "total_tests": 1,
+        "started_by": "Mantas",
+        "branch": null,
+        "trigger_name": null,
+        "environment_variables": null,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f02796832cd333b55a8d0db27eda52594d515075",
+        "notify_when_done": false,
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_21/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37582,
+      "number": 8066,
+      "builderid": 1,
+      "buildrequestid": 38340,
+      "workerid": 75,
+      "masterid": 247,
+      "started_at": 1707824517,
+      "complete_at": 1707824790,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Angel",
+        "branch": null,
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "9cd1449e-03a5-4e9f-8cda-f06cedaaa71c",
+              "submission_time": "2024_02_13_13h_41m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8066,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_02_13__13h_41m_52s_728ms_Angel",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_22",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_22/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37688,
+      "number": 8088,
+      "builderid": 1,
+      "buildrequestid": 38446,
+      "workerid": 62,
+      "masterid": 247,
+      "started_at": 1710486431,
+      "complete_at": 1710491301,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_03_15__09h_07m_11s_223ms_Mantas",
+        "run_tags": [
+          "Treatment MWF"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": "",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f02796832cd333b55a8d0db27eda52594d515075",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "0f22b23b-d2c2-4475-acf7-c23c2b5f8174",
+              "submission_time": "2024_03_15_09h_07m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8088,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37604,
+      "number": 8071,
+      "builderid": 1,
+      "buildrequestid": 38362,
+      "workerid": 62,
+      "masterid": 247,
+      "started_at": 1709027427,
+      "complete_at": 1709032363,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "800f67c2f3cd3865de5d361fd4ff52360d92af2e",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Pressure/test_cpht_error_handling.py",
+              "test_file": "test_cpht_error_handling.py",
+              "setup": "treatment",
+              "polarion_id": "PS-17560",
+              "case_id": "1ed38140-64e5-4721-bae7-65e9833b6885",
+              "submission_time": "2024_02_27_11h_50m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8071,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "run_id": "2024_02_27__11h_50m_22s_096ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37683,
+      "number": 8087,
+      "builderid": 1,
+      "buildrequestid": 38441,
+      "workerid": 57,
+      "masterid": 247,
+      "started_at": 1710412402,
+      "complete_at": 1710420610,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_14__12h_33m_22s_086ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_8",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "e540c4d8-4381-4f8d-b0c8-35edf5ad4e45",
+              "submission_time": "2024_03_14_12h_33m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8087,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_8/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37655,
+      "number": 8081,
+      "builderid": 1,
+      "buildrequestid": 38413,
+      "workerid": 60,
+      "masterid": 247,
+      "started_at": 1710231388,
+      "complete_at": 1710231500,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_12__10h_16m_28s_244ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_9",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "7afc10a4-a238-4276-93de-e9899355477c",
+              "submission_time": "2024_03_12_10h_16m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8081,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_9/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37743,
+      "number": 8099,
+      "builderid": 1,
+      "buildrequestid": 38501,
+      "workerid": 63,
+      "masterid": 247,
+      "started_at": 1710763388,
+      "complete_at": 1710766566,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "f02796832cd333b55a8d0db27eda52594d515075",
+        "test_run_devices": [
+          "shredder"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "dc51e6ac-ffe7-404e-93e0-0bb2704ba7ba",
+              "submission_time": "2024_03_18_14h_03m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8099,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_03_18__14h_03m_03s_826ms_Mantas",
+        "run_tags": [
+          "Treatment MWF"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_10",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_10/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37525,
+      "number": 8054,
+      "builderid": 1,
+      "buildrequestid": 38283,
+      "workerid": 64,
+      "masterid": 210,
+      "started_at": 1706260531,
+      "complete_at": 1706265580,
+      "state_string": "build successful",
+      "results": 0,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "3188a10457ed609d79c1d2d16d5fdea2028ee422",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_11/test-run-main-test-automation-builder",
+        "run_id": "2024_01_26__11h_15m_30s_720ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_11",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-11111",
+              "case_id": "a6c5446e-a81a-4295-bb4c-debd98669865",
+              "submission_time": "2024_01_26_11h_15m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8054,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": 1,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37678,
+      "number": 8086,
+      "builderid": 1,
+      "buildrequestid": 38436,
+      "workerid": 63,
+      "masterid": 247,
+      "started_at": 1710252240,
+      "complete_at": 1710255051,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_12__16h_03m_55s_428ms_oleg",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_10",
+        "codebase": "",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "aa39b3514ed55f803e8d22f714e516b40459a703",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "8132666d-6a16-42fc-9742-ab7b9286b7c8",
+              "submission_time": "2024_03_12_16h_04m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8086,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "oleg",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_10/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37763,
+      "number": 8103,
+      "builderid": 1,
+      "buildrequestid": 38521,
+      "workerid": 74,
+      "masterid": 247,
+      "started_at": 1710860130,
+      "complete_at": 1710863253,
+      "state_string": "cancelled triggered T1Test-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_19__16h_55m_25s_752ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_12",
+        "codebase": "",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0bab9f161bcc4307388a7536dcaaf6979d7e0592",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-80016",
+              "case_id": "2a746bf1-545e-4aa6-8a7a-faf8a72acf43",
+              "submission_time": "2024_03_19_16h_55m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8103,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_12/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37718,
+      "number": 8094,
+      "builderid": 1,
+      "buildrequestid": 38476,
+      "workerid": 66,
+      "masterid": 247,
+      "started_at": 1710748023,
+      "complete_at": 1710752446,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_18__09h_47m_03s_019ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_3",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "ea14f899-c707-47df-be50-4d65ea6442c9",
+              "submission_time": "2024_03_18_09h_47m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8094,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_3/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37552,
+      "number": 8061,
+      "builderid": 1,
+      "buildrequestid": 38311,
+      "workerid": 71,
+      "masterid": 210,
+      "started_at": 1706271479,
+      "complete_at": 1706281209,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_01_26__14h_17m_59s_518ms_Mantas",
+        "environment_variables": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "buildnumber": 8061,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "scheduled_distribution": false,
+        "notify_when_done": false,
+        "repeat_failed_tests_times": 0,
+        "branch": null,
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part2.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-22222",
+              "case_id": "72b777f0-fcea-4e7c-ab2c-afb2379119a8",
+              "submission_time": "2024_01_26_14h_17m"
+            }
+          ]
+        },
+        "run_tags": [
+          "Part_2"
+        ],
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "total_tests": 1,
+        "email": null,
+        "started_by": "Mantas",
+        "codebase": "",
+        "trigger_name": null,
+        "linked_run_id": null,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "workername": "trigger_worker_test_automation_17",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_17/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37769,
+      "number": 8105,
+      "builderid": 1,
+      "buildrequestid": 38527,
+      "workerid": 67,
+      "masterid": 247,
+      "started_at": 1710864316,
+      "complete_at": 1710870589,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_19__18h_05m_11s_807ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_6",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9_bugfix.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-80016",
+              "case_id": "b1e016cd-f5b7-4f90-a275-0683dd2595c8",
+              "submission_time": "2024_03_19_18h_05m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8105,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "0bab9f161bcc4307388a7536dcaaf6979d7e0592",
+        "test_run_devices": [
+          "michelangelo"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_6/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37782,
+      "number": 8108,
+      "builderid": 1,
+      "buildrequestid": 38540,
+      "workerid": 66,
+      "masterid": 249,
+      "started_at": 1711025001,
+      "complete_at": 1711025256,
+      "state_string": "failed triggered Service-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "christian",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "7840a474ad24f3bbbb2caae9d6102a2504cc9baa",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/System/test_communication_cpu1_xm1_normal_protocol_cpu1_only.py",
+              "test_file": "test_communication_cpu1_xm1_normal_protocol_cpu1_only.py",
+              "setup": "service",
+              "polarion_id": "4AP2-66320",
+              "case_id": "268c976a-46cf-474b-8dd9-19ecc682cb8f",
+              "submission_time": "2024_03_21_14h_43m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8108,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_03_21__14h_43m_21s_400ms_christian",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_3",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_3/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37672,
+      "number": 8085,
+      "builderid": 1,
+      "buildrequestid": 38430,
+      "workerid": 62,
+      "masterid": 247,
+      "started_at": 1710241396,
+      "complete_at": 1710241704,
+      "state_string": "cancelled triggered T1Test-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "220c7b12-11f3-4ccd-ab59-a850a7034a8a",
+              "submission_time": "2024_03_12_13h_03m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8085,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "run_id": "2024_03_12__13h_03m_16s_371ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": "",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37660,
+      "number": 8082,
+      "builderid": 1,
+      "buildrequestid": 38418,
+      "workerid": 59,
+      "masterid": 247,
+      "started_at": 1710231653,
+      "complete_at": 1710234554,
+      "state_string": "failed triggered T1Test-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_03_12__10h_20m_48s_249ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_5",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-68420",
+              "case_id": "dfab1609-5a2e-4514-9f8a-c7f39d2e700d",
+              "submission_time": "2024_03_12_10h_20m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8082,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_5/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37746,
+      "number": 8100,
+      "builderid": 1,
+      "buildrequestid": 38504,
+      "workerid": 62,
+      "masterid": 247,
+      "started_at": 1710764681,
+      "complete_at": 1710769140,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "run_id": "2024_03_18__14h_24m_31s_601ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "27a7f7d3-8bcd-452d-b936-80245a1b3043",
+              "submission_time": "2024_03_18_14h_24m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8100,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37738,
+      "number": 8098,
+      "builderid": 1,
+      "buildrequestid": 38496,
+      "workerid": 62,
+      "masterid": 247,
+      "started_at": 1710757897,
+      "complete_at": 1710761550,
+      "state_string": "failed triggered Treatment-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Workflow/test_main_workflow_treatment.py",
+              "test_file": "test_main_workflow_treatment.py",
+              "setup": "treatment",
+              "polarion_id": "4AP2-46406",
+              "case_id": "08db2ff5-7702-43f3-8425-243119bc28d3",
+              "submission_time": "2024_03_18_12h_31m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8098,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "5ca4b69c28a13dec06a01debe406f75260b4a667",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_7/test-run-main-test-automation-builder",
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": "",
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_18__12h_31m_32s_296ms_Mantas",
+        "run_tags": [
+          "Treatment MWF",
+          "VL_rev"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_7",
+        "codebase": ""
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37528,
+      "number": 8056,
+      "builderid": 1,
+      "buildrequestid": 38287,
+      "workerid": 66,
+      "masterid": 210,
+      "started_at": 1706260546,
+      "complete_at": 1706263712,
+      "state_string": "failed triggered Cleaning-scheduler, 1 failure triggered test-run-report-accumulator-scheduler, 1 failure",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_01_26__11h_15m_46s_323ms_Mantas",
+        "run_tags": [
+          "Part_1"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_3",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test_bugfix_part1.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-11111",
+              "case_id": "786e2036-3950-4d13-b8f5-e9731346def1",
+              "submission_time": "2024_01_26_11h_15m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8056,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "3188a10457ed609d79c1d2d16d5fdea2028ee422",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_3/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37518,
+      "number": 8053,
+      "builderid": 1,
+      "buildrequestid": 38277,
+      "workerid": 71,
+      "masterid": 210,
+      "started_at": 1706259508,
+      "complete_at": 1706260420,
+      "state_string": "cancelled triggered Cleaning-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "test_run_devices": [
+          "splinter"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_01_26__10h_58m_27s_536ms_Mantas",
+        "run_tags": [
+          "Part_2"
+        ],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_17",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "test_file": "test_E1067_proc_rpgm_rinsing_area_test_valve_test.py",
+              "setup": "cleaning",
+              "polarion_id": "4AP2-38075",
+              "case_id": "eaa75ffe-4838-4668-9080-815a24243f24",
+              "submission_time": "2024_01_26_10h_58m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8053,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "14fdb8b332f36e62daf1a96e204bcdfe8ab07941",
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_17/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 0,
+      "pretests_errors": 0
+    },
+    {
+      "buildid": 37565,
+      "number": 8062,
+      "builderid": 1,
+      "buildrequestid": 38323,
+      "workerid": 57,
+      "masterid": 246,
+      "started_at": 1707823091,
+      "complete_at": 1707823098,
+      "state_string": "cancelled triggered tools-verification-scheduler, 1 cancelled",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "run_id": "2024_02_13__13h_18m_06s_160ms_Angel",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_8",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/OpticalDetector/test_T1_test_optical_detector.py",
+              "test_file": "test_T1_test_optical_detector.py",
+              "setup": "t1test",
+              "polarion_id": "4AP2-34315",
+              "case_id": "3c222955-de55-498a-bd37-63fcd7095a1a",
+              "submission_time": "2024_02_13_13h_18m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8062,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_8/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Angel",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "d9d2b9c15206f2dc64a70f4772caa273b739b54b",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation"
+      },
+      "passed_tests": null,
+      "pretests_errors": 1
+    },
+    {
+      "buildid": 37817,
+      "number": 8115,
+      "builderid": 1,
+      "buildrequestid": 38575,
+      "workerid": 70,
+      "masterid": 249,
+      "started_at": 1711611314,
+      "complete_at": 1711611322,
+      "state_string": "cancelled interrupted",
+      "results": 6,
+      "complete": true,
+      "properties": {
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/Bugfix/test_main_workflow_treatment_bibag_bugfix.py",
+              "test_file": "test_main_workflow_treatment_bibag_bugfix.py",
+              "setup": "treatment-bibag",
+              "polarion_id": "4AP2-80243",
+              "case_id": "b6e1bef1-c385-4c12-8fce-a67ca348fb0f",
+              "submission_time": "2024_03_28_09h_35m"
+            }
+          ]
+        },
+        "scheduled_distribution": false,
+        "linked_run_id": null,
+        "buildnumber": 8115,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_18/test-run-main-test-automation-builder",
+        "total_tests": 1,
+        "trigger_name": null,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "ede6d12d81b3ee2eb335ca04780d81800aeae026",
+        "test_run_devices": [
+          "donatello"
+        ],
+        "email": null,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_id": "2024_03_28__09h_35m_14s_718ms_Mantas",
+        "run_tags": [],
+        "repeat_failed_tests_times": 0,
+        "workername": "trigger_worker_test_automation_18",
+        "codebase": ""
+      },
+      "passed_tests": null,
+      "pretests_errors": 1
+    },
+    {
+      "buildid": 37863,
+      "number": 8120,
+      "builderid": 1,
+      "buildrequestid": 38621,
+      "workerid": 72,
+      "masterid": 249,
+      "started_at": 1712762143,
+      "complete_at": 1712810927,
+      "state_string": "failed triggered T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, T1Test-scheduler, 23 successes, 4 failures",
+      "results": 2,
+      "complete": true,
+      "properties": {
+        "total_tests": 27,
+        "scheduled_distribution": true,
+        "started_by": "Mantas",
+        "branch": null,
+        "environment_variables": null,
+        "notify_when_done": false,
+        "buildername": "test-run-main-test-automation-builder",
+        "repository": "git;https://dev.azure.com/FMC-SSM/TestAutomation/_git/TestAutomation",
+        "run_from_xml": {
+          "project_id": "PressureSensorsTrunk",
+          "build_result": "PressureSensorsTrunk:PS-17650",
+          "verification_loop": "4008A_automated_004",
+          "validation_loop": "",
+          "run": "",
+          "test_run_name": "T1Test",
+          "part_of_release": "2.00",
+          "test_location": "testLocation_Vilnius",
+          "test_run_id": "4008A_automated_004_20240410_180709_204"
+        },
+        "trigger_name": null,
+        "scheduler": "test-run-main-test-automation-scheduler",
+        "revision": "800f67c2f3cd3865de5d361fd4ff52360d92af2e",
+        "run_id": "4008A_automated_004_20240410_180709_204",
+        "test_run_devices": [
+          "michelangelo",
+          "donatello"
+        ],
+        "email": null,
+        "workername": "trigger_worker_test_automation_20",
+        "codebase": "",
+        "test_scenario": {
+          "tests": [
+            {
+              "index": 0,
+              "test_path": "test_cases/EBM/Pressure/test_T1_diasafeplus_v183_feedback.py",
+              "test_file": "test_T1_diasafeplus_v183_feedback.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17533",
+              "case_id": "575d9004-79da-44b0-8270-b8dc38aba8e5",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 1,
+              "test_path": "test_cases/EBM/Pressure/test_T1_test_diasafe_plus_p185_v183_and_safety_switch_of_by_v43.py",
+              "test_file": "test_T1_test_diasafe_plus_p185_v183_and_safety_switch_of_by_v43.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17536",
+              "case_id": "2068479f-b56f-47f9-85fc-69d78b541199",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 2,
+              "test_path": "test_cases/EBM/Pressure/test_diasafe_plus_test_p185_v183_and_safety_switch_off_by_v43_subslices_3_to_4.py",
+              "test_file": "test_diasafe_plus_test_p185_v183_and_safety_switch_off_by_v43_subslices_3_to_4.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17535",
+              "case_id": "26583807-c531-42b2-a68b-4157a87d2bf1",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 3,
+              "test_path": "test_cases/EBM/Pressure/test_t1_test_positive_pressure_holding_slice_faulty_and_slice_passed.py",
+              "test_file": "test_t1_test_positive_pressure_holding_slice_faulty_and_slice_passed.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17525",
+              "case_id": "c0380480-38bc-4969-9730-0d988a0e4a82",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 4,
+              "test_path": "test_cases/Hydraulics/Cleaning/test_E1048_monitoring_of_diasafe_lifetime_T1_test_of_diasafe_filter_failed.py",
+              "test_file": "test_E1048_monitoring_of_diasafe_lifetime_T1_test_of_diasafe_filter_failed.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17539",
+              "case_id": "1ad0dea5-d93c-47c1-9901-b53e65bed160",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 5,
+              "test_path": "test_cases/NVRAM/test_T1_test_diasafeplius_integrity_diasafe_lifetime_of_diasafeplius_filter.py",
+              "test_file": "test_T1_test_diasafeplius_integrity_diasafe_lifetime_of_diasafeplius_filter.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17538",
+              "case_id": "3c310622-9494-41ab-aebe-628b9795a014",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 6,
+              "test_path": "test_cases/T1_Test/test_E1091_invalid_system_time.py",
+              "test_file": "test_E1091_invalid_system_time.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17537",
+              "case_id": "7c8d343d-abea-4c52-b511-bb97a50039bb",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 7,
+              "test_path": "test_cases/T1_Test/test_T1_test_negative_pressure_slice_11.py",
+              "test_file": "test_T1_test_negative_pressure_slice_11.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17566",
+              "case_id": "8bdbe897-ab47-437c-a72f-00b66f8357b0",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 8,
+              "test_path": "test_cases/T1_Test/test_T1_test_negative_pressure_slice_12_13.py",
+              "test_file": "test_T1_test_negative_pressure_slice_12_13.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17565",
+              "case_id": "77c29a93-f623-43b8-85a1-096d80fd97ef",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 9,
+              "test_path": "test_cases/T1_Test/test_T1_test_negative_pressure_slice_5_6_7_8.py",
+              "test_file": "test_T1_test_negative_pressure_slice_5_6_7_8.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17564",
+              "case_id": "05b9cc40-36e2-4642-9bc9-0203f4964ed3",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 10,
+              "test_path": "test_cases/T1_Test/test_T1_test_negative_pressure_slice_9_10_11.py",
+              "test_file": "test_T1_test_negative_pressure_slice_9_10_11.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17563",
+              "case_id": "9c20c219-954a-4fdb-bb1c-5c4c72c19bc5",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 11,
+              "test_path": "test_cases/T1_Test/test_T1_test_negative_pressure_slice_init_1_2_3_4.py",
+              "test_file": "test_T1_test_negative_pressure_slice_init_1_2_3_4.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17562",
+              "case_id": "072cf25b-2a55-4cfc-bafa-0a004285d2e9",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 12,
+              "test_path": "test_cases/T1_Test/test_T1_test_positive_pressure_holding_asp_test.py",
+              "test_file": "test_T1_test_positive_pressure_holding_asp_test.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17524",
+              "case_id": "451bf963-bbb9-4eab-bb10-ba558bf77d7a",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 13,
+              "test_path": "test_cases/T1_Test/test_T1_test_positive_pressure_hydraulic_test_v24_v24b_v189.py",
+              "test_file": "test_T1_test_positive_pressure_hydraulic_test_v24_v24b_v189.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17516",
+              "case_id": "186fc7ad-25d3-4b64-b01f-94fa738169ea",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 14,
+              "test_path": "test_cases/T1_Test/test_T1_test_positive_pressure_subslice_4_5.py",
+              "test_file": "test_T1_test_positive_pressure_subslice_4_5.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17520",
+              "case_id": "02baa143-903b-4578-8280-0377ddeeeb6a",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 15,
+              "test_path": "test_cases/T1_Test/test_T1_test_positive_pressure_subslice_6_7.py",
+              "test_file": "test_T1_test_positive_pressure_subslice_6_7.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17519",
+              "case_id": "ecf82234-5f45-458c-950e-7fa8c6da9208",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 16,
+              "test_path": "test_cases/T1_Test/test_T1_test_positive_pressure_switching_flow_off.py",
+              "test_file": "test_T1_test_positive_pressure_switching_flow_off.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17517",
+              "case_id": "4e691256-1333-4894-b3e8-66c6ab273b6b",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 17,
+              "test_path": "test_cases/T1_Test/test_T1test_positive_pressure_holding_test_testsubslice_10_faulty_passed.py",
+              "test_file": "test_T1test_positive_pressure_holding_test_testsubslice_10_faulty_passed.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17514",
+              "case_id": "cd12218d-063c-44b1-b333-8637b5fc2779",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 18,
+              "test_path": "test_cases/T1_Test/test_e0072_e0075_recognition_of_open_valve_v26_v189.py",
+              "test_file": "test_e0072_e0075_recognition_of_open_valve_v26_v189.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17529",
+              "case_id": "f0f0ffa9-c58a-4fd4-bc1c-8392bdc3a051",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 19,
+              "test_path": "test_cases/T1_Test/test_negative_and_positive_pressure_holding_T1_test_with_no_x_bypass.py",
+              "test_file": "test_negative_and_positive_pressure_holding_T1_test_with_no_x_bypass.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17569",
+              "case_id": "e3aa8dfb-82e0-4b62-aa2a-8b40fd0aa9e9",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 20,
+              "test_path": "test_cases/T1_Test/test_nph_pph_bc_switches_to_different_phase_after_flow_off.py",
+              "test_file": "test_nph_pph_bc_switches_to_different_phase_after_flow_off.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17568",
+              "case_id": "73968c59-e4cd-4f5c-825f-ec6a8e39b7f7",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 21,
+              "test_path": "test_cases/T1_Test/test_t1_positive_pressure_test_of_differential_pressure_amplifier.py",
+              "test_file": "test_t1_positive_pressure_test_of_differential_pressure_amplifier.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17518",
+              "case_id": "6d980650-568e-41f9-a45d-1b2597c523b6",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 22,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17541",
+              "case_id": "b395a982-20b9-43d5-bed9-309b9680922b",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 23,
+              "test_path": "test_cases/T1_Test/test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "test_file": "test_t1_test_diasafeplus_integrity_diasafe_slice_5_helptestslice_8_9.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17542",
+              "case_id": "726eb983-c55e-470e-b058-6bdda2590dec",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 24,
+              "test_path": "test_cases/T1_Test/test_t1_test_positive_pressure_test_connection_of_v24_v24b_and_first_cross_comparison_between_s9_and_s182.py",
+              "test_file": "test_t1_test_positive_pressure_test_connection_of_v24_v24b_and_first_cross_comparison_between_s9_and_s182.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17528",
+              "case_id": "32c110e3-8629-47ee-8b55-6f6930dc2594",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 25,
+              "test_path": "test_cases/T1_Test/test_t1_test_positive_pressure_test_zero_point_tolerance.py",
+              "test_file": "test_t1_test_positive_pressure_test_zero_point_tolerance.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17523",
+              "case_id": "f1011ccf-1202-46e5-afeb-529ae1d88286",
+              "submission_time": "2024_04_10_18h_15m"
+            },
+            {
+              "index": 26,
+              "test_path": "test_cases/T1_Test/test_t1_test_positive_pressure_testsubslice_init_1_2_3.py",
+              "test_file": "test_t1_test_positive_pressure_testsubslice_init_1_2_3.py",
+              "setup": "t1test",
+              "polarion_id": "PS-17522",
+              "case_id": "53762036-ce57-489b-a75d-f277f859c010",
+              "submission_time": "2024_04_10_18h_15m"
+            }
+          ]
+        },
+        "run_tags": [
+          "Verification loop",
+          "T1Test"
+        ],
+        "repeat_failed_tests_times": 0,
+        "buildnumber": 8120,
+        "project": "Test Automation",
+        "owners": [
+          "TMT"
+        ],
+        "builddir": "/opt/buildbot/master_test_automation/workers/trigger_worker_test_automation_20/test-run-main-test-automation-builder"
+      },
+      "passed_tests": 23,
+      "pretests_errors": 0
+    }
+  ]
+}
