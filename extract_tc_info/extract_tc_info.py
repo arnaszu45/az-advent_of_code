@@ -7,6 +7,7 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 from pathlib import Path
 
 import requests
@@ -14,16 +15,18 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+@dataclass
 class DataConverter:
-    def __init__(self, submission_time, ratio):
-        self.submission_time = submission_time
-        self.ratio = ratio
+    submission_time: Optional[datetime]
+    ratio: float
 
-    def convert_datetime_to_string(self):
+    def convert_submission_time(self) -> str | None:
+        if self.submission_time is None:
+            return None
         return str(self.submission_time)
 
-    def convert_ratio(self, ratio):
-        return f"{ratio*100}%"
+    def convert_pass_ratio(self) -> str:
+        return f"{self.ratio*100}%"
 
 
 def collect_test_cases_from_directory(test_automation_directory: Path) -> list[Path]:
@@ -89,17 +92,18 @@ def traverse_json(data: dict, keys: list) -> dict | None:
     return current_data
 
 
-def get_latest_submission_time(test_case_info) -> str:
+def get_latest_submission_time(test_case_info) -> datetime | None:
     """From Run tests data extract the latest execution date of test case"""
 
     if test_case_info is None:
-        return ""
+        return None
 
     latest_submission = max(test_case_info, key=lambda x: x["submission_time"])
     try:
         latest_submission = datetime.strptime(latest_submission["submission_time"], "%Y_%m_%d_%Hh_%Mm")
     except ValueError:
         logger.info(f"Invalid submission time format: {latest_submission}")
+        return None
 
     return latest_submission
 
@@ -144,9 +148,7 @@ def calculate_pass_ratio(passed: int, failed: int) -> float:
     if passed + failed == 0:
         return 0.0
 
-    pass_ratio = passed / (failed + passed)
-
-    return pass_ratio
+    return passed / (failed + passed)
 
 
 TestCaseName = str
@@ -204,14 +206,21 @@ def write_test_cases_data(test_automation_directory: Path, test_runs_data: dict)
         test_case_file_name = test_case.name
 
         test_case_info = extracted_data.get(test_case_file_name)
-
         failed, passed = count_amount_of_executions(test_case_info)
 
+        latest_submission_time = get_latest_submission_time(test_case_info)
+        pass_ratio = calculate_pass_ratio(passed, failed)
+
+        # NOTE: Converting data into JSON readable format
+        submission_converter = DataConverter(submission_time=latest_submission_time, ratio=pass_ratio)
+        converted_submission_time = submission_converter.convert_submission_time()
+        converted_pass_ratio = submission_converter.convert_pass_ratio()
+
         test_case_data = {
-            "latest_submission_date": get_latest_submission_time(test_case_info),
+            "latest_submission_date": converted_submission_time,
             "amount_of_executions": passed + failed,
             "revisions": collect_revisions(test_case_info),
-            "pass_ratio": calculate_pass_ratio(passed, failed)
+            "pass_ratio": converted_pass_ratio
         }
 
         all_test_cases_data[test_case_file_name] = test_case_data
